@@ -1,5 +1,43 @@
 
+///////////////////////// bureau à distance ////////////////////////////////////
+
+Installer RustDesk (bureau à distance). Lien de téléchargement :
+
+•	Windows : https://tp3.orsysformation.fr/rd-win.exe
+•	Linux (type Debian / Red Hat) : https://tp3.orsysformation.fr/rd-lin.deb / https://tp3.orsysformation.fr/rd-lin.rpm
+•	macOS Intel : https://tp3.orsysformation.fr/rd-mac.dmg
+
+
+Stagiaire	            N °poste	IP locale	    ID RustDesk 	Mdp RustDesk
+Naby Gueye	            36	        192.168.12.36	1616642832  	Orsys-spgcv1
+Corentin Bellec	        37	        192.168.12.37	1693836599	    Orsys-spgcv1 
+Wissem Bey	            38	        192.168.12.38	1393223132	    Orsys-spgcv1 
+Clémence Bitaud	        39	        192.168.12.39	1836256655  	Orsys-spgcv1 
+Julien Cornut	        40	        192.168.12.40	1044071833	    Orsys-spgcv1 
+Loic Demotier	        41	        192.168.12.41	1211118354	    Orsys-spgcv1 
+Laëtita Mesmeur	        42	        192.168.12.42	1597627043  	Orsys-spgcv1 
+Kao Kuei Setchao	    43	        192.168.12.43	1930534524	    Orsys-spgcv1 
+Secours	                44	        192.168.12.44	1470851828	    Orsys-spgcv1 
+Secours	                45	        192.168.12.45	1096869505	    Orsys-spgcv1 
+
+
+
+///////////////////////// repository pour les tps/corrections ///////////////////////////
+
+https://github.com/trainingnaby/spring
+
+///////////////////// Outils à installer (à faire ensemble)////////////////////////////////
+
+IDE au choix (Intellij ou Eclipse)
+Java 17
+Maven
+
+///////////////////////////////////////////////////////////////
+
+
 partage de texte : https://digidoc.app/p/springorsys
 
 spring boot https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties
+
+
 
