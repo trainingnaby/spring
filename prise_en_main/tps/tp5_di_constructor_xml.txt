@@ -5,7 +5,7 @@ Copier et coller le projet précédent, changer le nom en 5-di-via-constructor-x
 
 Supprimer le setter sur le champ moteur de la classe Voiture
 
-Ajouter un construteur prenant en argument un paramètre de type MoteurDiesel	
+Ajouter un construteur prenant en argument un paramètre de type Moteur	
 	Initialiser le champ moteur avec la valeur de ce paramètre
 	
 Ajout du contexte Spring avec utilisation de l'injection de dépendances par constructeur
