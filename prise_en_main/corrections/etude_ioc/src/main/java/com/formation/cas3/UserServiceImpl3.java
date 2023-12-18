@@ -21,8 +21,12 @@ public class UserServiceImpl3 implements UserService3{
  * d'un point d'injection de cette dépendance, va créer et injecter la dépendance
  * 
  * 
+ * Avantages :
+ * pas de duplication de code
+ * respecte le principe de l'IoC
+ * Vue claire des dépendances des classes (ideal pour les tests unitaires)
  * 
- * 
+ * Le gestionnaire de dépendances peut enrichir les objets via l'AOP
  * 
  * 
  */

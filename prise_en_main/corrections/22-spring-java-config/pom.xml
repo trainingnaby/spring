@@ -3,11 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.formation</groupId>
-	<artifactId>etude_ioc</artifactId>
+	<artifactId>22-spring-java-config</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 
-<!-- dépendance Spring context : permet d'utiliser spring IoC' -->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -15,5 +14,4 @@
 			<version>6.0.9</version>
 		</dependency>
 	</dependencies>
-
 </project>
