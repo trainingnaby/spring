@@ -20,7 +20,7 @@ Créer une classe Jeu avec un attribut joueur de type Joueur
 Annoter la classe avec @Component("mon_jeu")
 Ajouter les getters/Setters sur l'attribut jeu de la classe Joueur 
 Générer la méthode toString() de la classe Joueur
-Annoter l'attribut joueur de la classe Jeu avec @Resource("mon_joueur")
+Annoter l'attribut joueur de la classe Jeu avec @Resource(name = "mon_joueur")
 
 Créer un fichier context.xml dans le dossier src/main/resources avec le contenu suivant:
 
