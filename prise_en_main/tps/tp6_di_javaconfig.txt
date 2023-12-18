@@ -1,0 +1,47 @@
+
+========== Utilisation de l'injection de dépendances par constructor et par setter via une configuration Java ==============
+
+Copier et coller le projet précédent (5-di-via-constructor-xml), changer le nom en 6-di-javaconfig-without_annotations
+
+Créer une interface Roue avec une méthode
+	public void marqueRoue()
+Créer une classe implémentant RouePirelli implémentant l'interface Roue avec comme implémentation de la méthode marqueRoue :
+	public void marqueRoue(){
+		System.out.println("Le constructeur des roues est Pirelli")
+	}
+	
+Ajouter un champ roue de type Roue dans la classe Voiture
+	Ajouter un setter sur le champ roue de la classe Voiture
+	(On a aura alors deux champs dans la classe Voiture : moteur et roue; moteur sera injecté via le constructeur et roue via le setter)
+	
+Changer le corps de la méthode bouger de la classe Voiture par :
+		public void bouger(){
+			moteur.rouler();
+			roue.marqueRoue();
+		}
+		
+Supprimer le fichier context.xml dans src/main/resources
+
+Ajout du contexte Spring avec une classe de configuration
+	Créer une classe AppConfig (package com.formation.configuration) 
+	Y implémenter les méthodes permettant de créer les beans
+	Rappel :  on crée un bean géré par Spring en créant une méthode annotée avec @Bean dans la classe de configuration (on peut lui préciser le nom du bean) et	
+		en retournant une instance totalement construite de la classe du bean
+	
+		@Configuration
+		public class AppConfig {
+ 
+			// A implementer
+ 
+		}
+	
+Classe de test 
+	Créer une classe App avec une méthode main qui a comme contenu :
+	
+		public static void main(String args[]) {
+			AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+			Voiture bean = (Voiture) context.getBean("ma_voiture");
+			bean.bouger();
+			context.close();
+		}
+	

@@ -1,0 +1,44 @@
+
+======= comprendre la notion d'autowiring ByName, ByType ...=======
+
+Créer un nouveau projet 6-autowiring-xml
+Ajouter la dépendance spring context sur le fichier pom.xml
+
+////////////  Autowiring par nom
+
+Créer une classe Joueur
+	Ajouter un champ nom de type String dans la classe Joueur
+	Ajouter les getters/setters pour le champ nom
+	Générer avec Eclipse la méthode toString de la classe Joueur
+	
+Créer une classe Jeu 
+	Ajouter un champ joueur de type Joueur dans la classe Jeu
+	Ajouter les getters/setters pour le champ jeu
+	Générer avec Eclipse la méthode toString de la classe Jeu
+	
+Créer un fichier de configuration context.xml
+	Déclarer les beans pour les classes Joueur et Jeu
+	Utiliser l'attribut autowire de la balise bean pour injecter le bean de type Joueur dans le bean de type Jeu (autowire="byName")
+	
+Créer une classe de Test
+	Récupérer le bean de type Jeu dans le contexte Spring
+	Afficher le bean (System.out.println(bean_récupéré) => c'est le retour de la méthode toString qui sera affiché)
+	
+	
+/////////// Autowiring par type
+
+Créer une classe Addresse
+	Ajouter deux champs de type String : rue et ville
+	Ajouter les getters/setters sur ces champs
+	Générer la méthode toString
+	
+Créer une classe Etudiant
+	Ajouter un champ addresse de type Addresse 
+	Ajouter les getters/setters sur ce champ
+	Générer la méthode toString
+	
+Déclarer dans le fichier context.xml deux beans pour les classes Addresse et Etudiant
+	Utiliser l'attribut autowire de la balise bean pour injecter le champ addresse dans bean de type Etudiant (autowire="byType")
+	
+Récuperer dans la classe de test le bean de type Etudiant et afficher le contenu
+

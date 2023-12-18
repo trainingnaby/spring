@@ -1,0 +1,12 @@
+
+======= comprendre la notion d'autowiring via les annotations =======
+
+Copier le projet maven 8-autowiring-annotations et changer nom en 8-autowiring-annotations2
+
+Remplacer l'annotation  @Resource("mon_joueur") de l'attribut joueur  de la classe Jeu par
+	@Autowiring
+	
+Vérifier le bon focntionnement
+
+
+

@@ -1,0 +1,46 @@
+
+======= comprendre la notion d'autowiring via les annotations : @Autowiring vs @Resource =======
+
+Créer un nouveau projet maven 8-autowiring-annotations
+
+Ajouter la dépendance spring context dans le fichier pom.xml
+Ajouter la dépendance javax.annotation dans le fichier pom.xml :
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
+Créer une classe Joueur avec un attribut nom de type String; Initialiser l'attribut nom avec une valeur quelconque
+Annoter la classe Joueur avec @Component("mon_joueur")
+Ajouter les getters/Setters sur l'attribut nom de la classe Joueur 
+Générer la méthode toString() de la classe Joueur
+
+Créer une classe Jeu avec un attribut joueur de type Joueur 
+Annoter la classe avec @Component("mon_jeu")
+Ajouter les getters/Setters sur l'attribut jeu de la classe Joueur 
+Générer la méthode toString() de la classe Joueur
+Annoter l'attribut joueur de la classe Jeu avec @Resource("mon_joueur")
+
+Créer un fichier context.xml dans le dossier src/main/resources avec le contenu suivant:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	 
+	   <context:component-scan base-package="com.formation" />
+	   
+	</beans
+	
+Créer une classe de test
+	Initialiser le contexte Spring à partir du fichier context.xml
+	Récupérer le bean de type Joueur et l'afficher
+			
+
+
+
