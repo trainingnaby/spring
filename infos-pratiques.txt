@@ -1,3 +1,9 @@
+////////////////////// Lien orsys stagiaires ///////////////////////////////////
+
+https://eval.orsys.fr/
+mot de passe : yE3KoUq0
+
+
 
 ///////////////////////// bureau à distance ////////////////////////////////////
 
@@ -22,6 +28,8 @@ Secours	                45	        192.168.12.45	1096869505	    Orsys-spgcv1
 
 
 
+
+
 ///////////////////////// repository pour les tps/corrections ///////////////////////////
 
 https://github.com/trainingnaby/spring
@@ -31,6 +39,8 @@ https://github.com/trainingnaby/spring
 IDE au choix (Intellij ou Eclipse)
 Java 17
 Maven
+git
+postman
 
 ///////////////////////////////////////////////////////////////
 
