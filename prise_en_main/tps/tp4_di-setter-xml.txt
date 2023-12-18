@@ -1,0 +1,53 @@
+
+========== Utilisation de l'injection de dépendances par setter via le fichier de configuration xml ==============
+
+Créer un projet Maven 4-di-via-setter-xml
+Ajouter dans le fichier pom.xml la dépendance Spring context
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>6.0.9</version>
+			</dependency>
+
+Créer une interface Moteur (package com.formation.domain) avec une méthode 
+	public void rouler()
+	
+Créer une implémentation MoteurDiesel (package com.formation.domain)de l'interface Moteur avec comme corps de la méthode rouler :
+	System.out.println ("je roule au diesel ")
+	
+Créer une classe Voiture (package com.formation.domain)
+	Ajouter un champ moteur de type Moteur dans la classe Voiture
+	Ajouter un setter pour le champ moteur
+	Ajouter une méthode bouger dans la classe Voiture : 
+		public void bouger(){
+			moteur.rouler();
+		}
+		
+	
+Ajout du contexte Spring avec utilisation de l'injection de dépendances par setter
+	Créer un fichier context.xml dans le dossier src/main/resources avec comme contenu :
+	
+		<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+ 
+			<bean id="mon_moteur_diesel" class="com.formation.domain.MoteurDiesel" />
+ 
+			<bean id="ma_voiture" class="com.formation.domain.Voiture">
+				<property name="moteur">
+					<ref bean="mon_moteur_diesel" />
+				</property>
+			</bean>
+ 
+		</beans>
+	
+Classe de test 
+	Créer une classe App avec une méthode main qui a comme contenu :
+	
+		public static void main(String args[]) {
+			AbstractApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+			Voiture bean = (Voiture) context.getBean("ma_voiture");
+			bean.bouger();
+			context.close();
+		}
+	

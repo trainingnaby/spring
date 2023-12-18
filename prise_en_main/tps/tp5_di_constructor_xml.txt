@@ -1,0 +1,37 @@
+
+========== Utilisation de l'injection de dépendances par constructor via le fichier de configuration xml ==============
+
+Copier et coller le projet précédent, changer le nom en 5-di-via-constructor-xml
+
+Supprimer le setter sur le champ moteur de la classe Voiture
+
+Ajouter un construteur prenant en argument un paramètre de type MoteurDiesel	
+	Initialiser le champ moteur avec la valeur de ce paramètre
+	
+Ajout du contexte Spring avec utilisation de l'injection de dépendances par constructeur
+	Modifier le fichier context.xml dans le dossier src/main/resources avec ce contenu :
+	
+		<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+ 
+			<bean id="mon_moteur_diesel" class="com.formation.domain.MoteurDiesel" />
+ 
+			<bean id="ma_voiture" class="com.formation.domain.Voiture">
+				 <constructor-arg>
+					<ref bean="mon_moteur_diesel" />
+				 </constructor-arg>
+			</bean>
+ 
+		</beans>
+	
+Classe de test 
+	Créer une classe App avec une méthode main qui a comme contenu :
+	
+		public static void main(String args[]) {
+			AbstractApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+			Voiture bean = (Voiture) context.getBean("ma_voiture");
+			bean.bouger();
+			context.close();
+		}
+	

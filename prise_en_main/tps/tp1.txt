@@ -1,0 +1,43 @@
+
+========== Utilisation d'un fichier xml pour la déclaration des beans gérés par Spring ==============
+
+Créer un projet Maven sur Eclipse 
+	File => new => other ... => Maven project => cocher "create a simple project (skip archetype selection) =>
+		group id => com.formation
+		archetype id  => 1-spring-xml-config
+	=> finish
+	
+Ajouter dans le fichier pom.xml la dépendance Spring context
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>6.0.9</version>
+			</dependency>
+
+Créer une interface Vehicule (package com.formation.domain) avec une méthode 
+	public void bouger(String typeVehicule)
+	
+Créer une implémentation Avion (package com.formation.domain)de l'interface Vehicule avec comme corps de la méthode bouger :
+	System.out.println ("je bouge en "+typeVehicule)
+	
+Ajout du contexte Spring 
+	Créer un fichier context.xml dans le dossier src/main/resources avec comme contenu :
+	
+		<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+ 
+			<bean id="avionBean" class="com.formation.domain.Avion"/>
+    
+		</beans>
+	
+Classe de test 
+	Créer une classe App avec une méthode main qui a comme contenu :
+	
+		public static void main(String args[]) {
+			AbstractApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+			Avion bean = (Avion) context.getBean("avionBean");
+			bean.bouger("avion");
+			context.close();
+		}
+	

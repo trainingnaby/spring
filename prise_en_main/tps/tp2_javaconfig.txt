@@ -1,0 +1,50 @@
+
+========== Utilisation de la configuration des beans via une classe Java avec l'annotation @Configuration ==============
+========== Construction manuelle des beans via des des méthodes dans la classe de configuration ==============
+
+Créer un projet Maven sur Eclipse 
+	File => new => other ... => Maven project => cocher "create a simple project (skip archetype selection) =>
+		group id => com.formation
+		archetype id  => 2-spring-java-config
+	=> finish
+	
+Ajouter dans le fichier pom.xml la dépendance Spring context
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>6.0.9</version>
+			</dependency>
+
+Créer une interface Vehicule (package com.formation.domain) avec une méthode 
+	public void bouger(String typeVehicule)
+	
+Créer une implémentation Avion (package com.formation.domain)de l'interface Vehicule avec comme corps de la méthode bouger :
+	System.out.println ("je bouge en "+typeVehicule)
+	
+Ajout du contexte Spring avec une classe de configuration
+	On peut utiliser une classe Java pour déclarer les beans gérés par Spring. On crée un bean géré par Spring de cette manière en créant une méthode 
+	annotée avec @Bean dans la classe de configuration (on peut lui préciser le nom du bean) et en retournant une instance totalement construite de la 
+	classe du bean
+	Créer une classe AppConfig (package com.formation.configuration)
+	
+		@Configuration
+		public class AppConfig {
+ 
+			@Bean(name="avionBean")
+			@Description("Ceci un bean de Avion de type Vehicule")
+			public Avion nom_methode_arbitraire() {
+				return new Avion();
+			}
+ 
+		}
+	
+Classe de test 
+	Créer une classe App avec une méthode main qui a comme contenu :
+	
+		public static void main(String args[]) {
+			AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+			Avion bean = (Avion) context.getBean("avion");
+			bean.bouger("avion");
+			context.close();
+		}
+	

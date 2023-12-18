@@ -1,0 +1,46 @@
+
+
+========== Utilisation @ComponentScan pour définir les packages contenant les beans à gérer par Spring ==============
+========== Scan automatique des beans annotés avec @Component ==============
+
+Créer un projet Maven sur Eclipse 
+	File => new => other ... => Maven project => cocher "create a simple project (skip archetype selection) =>
+		group id => com.formation
+		archetype id  => 3-spring-componentscan-config
+	=> finish
+	
+Ajouter dans le fichier pom.xml la dépendance Spring context
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>6.0.9</version>
+			</dependency>
+
+Créer une interface Vehicule (package com.formation.domain) avec une méthode 
+	public void bouger(String typeVehicule)
+	
+Créer une implémentation Avion (package com.formation.domain)de l'interface Vehicule avec comme corps de la méthode bouger :
+	System.out.println ("je bouge en "+typeVehicule)
+	
+Ajouter au niveau de la classe l'annotation @Component (pour définir que c'est un bean à géré par Spring)
+	
+Ajout du contexte Spring avec une classe de configuration
+	Utilisation de l'annotation ComponentScan pour définir les packages contenant les beans à gérer par Spring
+	Créer une classe AppConfig (package com.formation.configuration)
+	
+		@Configuration
+		@ComponentScan("com.formation")
+		public class AppConfig {
+		 
+		}
+	
+Classe de test 
+	Créer une classe App avec une méthode main qui a comme contenu :
+	
+		public static void main(String args[]) {
+			AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+			Avion bean = (Avion) context.getBean("avionBean");
+			bean.bouger("avion");
+			context.close();
+		}
+	
