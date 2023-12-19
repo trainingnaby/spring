@@ -1,0 +1,50 @@
+
+
+/////////////// Selecteurs de pointcuts les plus utilisés /////////////// 
+
+	execution => pour faire correspondre l'aspect aux méthodes spécifiées dans execution
+	within => pour faire correspondre l'aspect aux méthodes de certains classes (exemples les classes dans un packahge donnée)
+	@within => pour faire correspondre l'aspect aux méthodes dont la classe a l'annotation spécifiée
+	@annotation => pour faire correspondre les joinpoints dont la méthode a l'annotation spécifiée
+	bean (id_du_bean) => limite l'aspect à un bean particulier avec l'id id_du_bean
+	target => pour faire correspondre l'aspect aux seules méthodes d'un bean d'un certain type
+	@target – pour faire correspondre l'aspect à des méthodes dont la classe a une annotation specifique
+	@args => pour faire correspondre l'aspect aux méthodes dont les arguments ont une annotation specifique
+
+
+////////////////// Caractères de remplacement ///////////////////
+
+	? => optionnel
+	* => wilcard
+	() => méthodes sans paramétres
+	(..) => zéro ou plusieurs arguments peu peu importe leurs types
+	(*) => méthodes prenant un paramétre peu importe le type
+	(*, String) => méthodes prenant deux paramétres : le premier peu importe le type et le second avec le type String
+
+//////////////// Exemples de pointcuts //////////////////
+
+	à l'execution de toutes les méthodes publiques => 	execution(public * *(..))
+	à l'execution de tous les setters => execution(* set*(..))
+	à l'execution de toutes les méthodes de DuplicataService dans le package com.formation.service => execution(* com.formation.service.DuplicataService.*(..)
+	à l'execution de tous les méthodes de toutes les classes du package com.service => "execution(* com.service.*.*(..))"
+	pour les jointpoints des méthodes du package com.formation.service uniquement => "within(com.formation.service.*)"
+	pour les jointpoints des méthodes du package com.formation.service et ses sous packages => => "within(com.formation.service..*)"
+	pour les joinpoints des méthodes dont la classe est annotée avec @Transactional => "@within( org.springframework.transaction.annotation.Transactional )"
+	similaire que le précédent => "@target(org.springframework.transaction.annotation.Transactional)"
+	pour les jointpoints des méthodes dont la classe implémente Vehicule => "target(com.formation.Vehicule)"
+	pour les joinpoints dont la méthode a l'annotation @Transactional => "@annotation(org.springframework.transaction.annotation.Transactional)"
+    "bean(*Service)"
+	"bean(DuplicataService)"
+	...
+	
+	
+////////////////// JointPoint & ProceedingJoinPoint en argument des méthodes des aspects //////////////////
+	JointPoint permet d'accéder aux éléments de la méthode appelée (arguments ...)
+	ProceedingJoinPoint est une extension de JointPoint proposant notamment la méthode proceed() pour exécuter la méthode réelle ou l'aspect suivant.
+	ProceedingJoinPoint est utilisé uniquement pour les aspects de type @Around
+	
+	
+
+
+	
+
