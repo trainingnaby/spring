@@ -1,0 +1,318 @@
+///////////// intégration de service REST ////////////////
+
+L'objectif est de créer une application avec qui sera déployé sur un tomcat embarqué. L'application sera de type standalone, donc exécutable via (java _jar mon_app)
+
+copier le projet  fil_rouge_1_init et renommer le en fil_rouge_2_rest
+Modifier dans le pom.xml artifactId et y mettre fil_rouge_2_rest
+
+///////////// Ajout des dépendances web ///////////////// 
+
+AJouter dans le fichier pom.xml
+
+	<packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+			</plugin>
+		</plugins>
+	</build>
+	
+Ajouter dans la section <dependencies> un tomcat embarqué :
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>10.1.8</version>
+    </dependency>
+	
+Ajouter le module Spring qui permet de faire du web spring-webmvc
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>6.0.9</version>
+	</dependency>
+	
+///////////////// Controlleur hello world ///////////
+
+Créer dans un package com.formation.controlleur ce controlleur 
+
+@Controller
+	public class MonPremierControlleurSpring {
+
+		@GetMapping("/")
+		@ResponseBody
+		public String index() {
+			return "Ici mon premier controlleur Spring !";
+		}
+	}
+	
+//////////////// Configuration de la servlet principal de spring ///////////
+
+Pour faire du web avec Spring, il faut déclarer un servlet qui s'appelle DispatcherServlet. Ce servlet recevra toutes les requêtes et les dispatchera au bon controlleur selon le path de la requête
+
+Notre application sera dépolyée dans le serveur tomcat embarqué; Tomcat doit connaitre le point d'entrée de notre application, qui est la DispatcherServlet
+
+On va créer une classe Main qui va instancier le serveur tomcat, instancier et enregistrer la DispatcherServlet sur tomcat
+
+supprimer la classe de test créée au préalable
+
+créer la nouvelle classe de test le contenu ci-dessous (package com.formation.config) :
+
+	package com.formation.config;
+			import org.apache.catalina.Context;
+			import org.apache.catalina.LifecycleException;
+			import org.apache.catalina.Wrapper;
+			import org.apache.catalina.startup.Tomcat;
+			import org.springframework.web.context.WebApplicationContext;
+			import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+			import org.springframework.web.servlet.DispatcherServlet;
+
+			import jakarta.servlet.ServletContext;
+
+			public class AppMainWithTomcat {
+
+			public static void main(String[] args) throws LifecycleException {
+
+				// création d'une instance de tomcat
+				Tomcat tomcat = new Tomcat();
+				// port d'écoute
+				tomcat.setPort(8080);
+				// initialise le moteur tomcat
+				tomcat.getConnector();
+				
+				//contexte path de notre application
+				Context contexteTomcat = tomcat.addContext("", null);
+
+				// création de l'application context de type web (voir méthode plus bas)
+				WebApplicationContext appCtx = creationApplicationContext(contexteTomcat.getServletContext());
+				
+				//Initialisation du servlet frontal DispatcherServlet, a besoin de connaitre le contexte web donc des controlleurs existants
+				DispatcherServlet dispatcherServlet = new DispatcherServlet(appCtx);
+				
+				//Enregistrement de la servlet sur tomcat
+				Wrapper servlet = Tomcat.addServlet(contexteTomcat, "dispatcherServlet", dispatcherServlet);
+				servlet.setLoadOnStartup(1);
+				servlet.addMapping("/*");
+
+				tomcat.start();
+			}
+
+			/**
+			 * Création de l'application contexte
+			 * @param servletContext
+			 * @return
+			 */
+			public static WebApplicationContext creationApplicationContext(ServletContext servletContext) {
+				
+				AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+				ctx.register(AppConfig.class); //classe de configuration
+				ctx.setServletContext(servletContext);
+				ctx.refresh();
+				ctx.registerShutdownHook();
+				return ctx;
+			}
+		}
+
+///////////////// Utilisation du plugin shade de Maven //////////////
+
+Le plugin shade de Maven permet de lors de la génération d'un jar, d'embarquer toutes les librairies du pom.xml; il permet aussi la classe d'entrée du jar
+
+Ajouter dans la section build du fichier pom.xml :
+	
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-shade-plugin</artifactId>
+		<version>3.4.1</version>
+		<executions>
+			<execution>
+				<phase>package</phase>
+				<goals>
+					<goal>shade</goal>
+				</goals>
+				<configuration>
+					<transformers>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>com.formation.config.AppMainWithTomcat</mainClass>
+						</transformer>
+					</transformers>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+
+
+///////////////// Ajout des endpoints REST ///////////////
+
+On veut créer deux endpoints REST dans l'application :
+	GET /duplicatas => renvoie tous les duplicatas
+	POST /duplicatas => créer un duplicatas
+
+Créer une classe DuplicataControlleur (package com.formation.web) :
+
+	package com.formation.web;
+
+	import java.util.List;
+
+	import org.springframework.web.bind.annotation.GetMapping;
+	import org.springframework.web.bind.annotation.RestController;
+
+	import com.formation.domain.Duplicata;
+	import com.formation.service.DuplicataService;
+
+	@RestController
+	public class DuplicataControlleur {
+
+@Autowired
+		private final DuplicataService duplicataService;
+
+		public DuplicataControlleur(DuplicataService duplicataService) {
+			this.duplicataService = duplicataService;
+		}
+
+		@GetMapping("/duplicatas")
+		// @RequestMapping(value = "/duplicatas", method = RequestMethod.GET)
+		public List<Duplicata> duplicatas() {
+			return duplicataService.getDuplicats();
+		}
+	}
+
+Tester avec postman, que remarquez-vous ?
+
+//////////////// intégration de la librairie jackson /////////////////
+
+L'erreur 406 est du au fait que quand on appelle le service /duplicatas, le controlleur retourne une liste et spring ne sait nativement faire la conversion en json : Il nous faut configurer une classe qui permet de faire ça
+
+=> jackson est une librairie qui permet la conversion objet<=>json
+la classe de cette libraie qui permet, est la classe ObjectMapper : il nous configurer un bean avec cette classe
+
+1 - Ajouter la dépendance jackson dans le pom.xml
+
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>2.15.0</version>
+	</dependency>
+	
+2 - Ajouter un bean de type ObjectMapper dans la classe de config
+	
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper();
+	}
+		
+		
+3 - Annoter la classe de configuration avec @EnableWebMvc : Avec cette annotation, spring initialise par défaut un convertisseur en objet<->json dés l'instant qu'il détecte que la librairie jackson est présente 
+dans le classpath
+		
+Tester
+
+////////////////// Créer endpoint /createDuplicata //////////////
+
+Ajouter le endpoint REST permettant la création d'un duplicata dans la controlleur DuplicataControlleur
+ 	
+	@PostMapping("/duplicatas")
+	public Duplicata createDuplicata(@RequestParam("user_id") String userId, @RequestParam Integer montant) {
+		return duplicataService.createDuplicata(userId, montant);
+	}
+		
+//////////// @RequestParam  vs @PathVariable //////////////////
+
+Créer un nouveau endpoint de création de duplicata mais en récupérant les paramétres du duplicata à créer dans le path de la requête
+
+ @PostMapping("/duplicatas/{userId}/{montant}")
+    public Duplicata createDuplicata_path(@PathVariable String userId, @PathVariable Integer montant) {
+	
+	
+//////////// Utilisation de DTOs (Data Transfer Object) /////////////
+
+Jusqu'a présent, on récuperer les paramètres du duplicata à créer soit dans les paramètres de la requête, soit le path. 
+L'objectif est d'accepter comme payload un json
+
+Créer une classe DuplicataDto dans le package com.formation.dto :
+
+     package com.formation.dto;
+		import com.fasterxml.jackson.annotation.JsonProperty;
+
+		public class DuplicataDto {
+
+			@JsonProperty("user_id")
+			private String userId;
+
+			private Integer montant;
+
+			public String getUserId() {
+				return userId;
+			}
+
+			public void setUserId(String userId) {
+				this.userId = userId;
+			}
+
+			public Integer getMontant() {
+				return montant;
+			}
+
+			public void setMontant(Integer montant) {
+				this.montant = montant;
+			}
+
+		}
+
+Créer un nouveau endpoint pour traiter les requêtes de création de duplicata avec un paload en json 
+
+	@PostMapping("/duplicatas")
+    public Duplicata createDuplicata_dto(@RequestBody DuplicataDto duplicataDto) {
+        return duplicataService.createDuplicata(duplicataDto.getUserId(), duplicataDto.getMontant());
+    }
+
+////////////// Envoyer du XML en réponse ////////////////
+
+Ajouter cette librairie qui permet la conversion objet<->xml :
+
+	<dependency>
+		<groupId>com.fasterxml.jackson.dataformat</groupId>
+		<artifactId>jackson-dataformat-xml</artifactId>
+		<version>2.15.0</version>
+	</dependency>
+
+Retester la création et la récuperation de duplicata
+
+@EnableWebMvc a trouvé deux convertisseurs XML et JSON, et le XML est plus prioritaire
+
+
+///////////////// Négociation de contenu ///////////////////
+
+Ajouter sur la requête postman un header Accept de valeur application/json lors de l'appel des services pour recevoir de nouveau du json
+
+Tester 
+
+Définir le header Content-Type pour les créations de duplicata de json selon le format en entrée (application/json ou application/xml)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

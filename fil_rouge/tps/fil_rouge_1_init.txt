@@ -1,0 +1,118 @@
+///////////// Création d'une application de génération de duplicatas d'avis d'impots //////////
+
+créer un projet fil_rouge_1_init
+
+////////// partie 1  création des classes du domaine //////////////
+
+Créer les classes suivantes (avec getters, setters) :
+
+	public class Duplicata (package com.formation.domain)
+		String id;
+		String userid;
+		Integer montant;
+		String pdfurl
+		
+	public class User (package com.formation.service)
+		String id;
+		String name;
+		
+Créer les classes de la couche service : 
+	Classe DuplicataService (package com.formation.service)
+		attributs
+			List<Duplicata> duplicatas; //modélise pour le moment notre base de données
+			UserService userService;
+		méthodes
+			getDuplicats() => retourne tous les duplicatas créés
+			createDuplicata(String userId, int montant) => crée un duplicata et le met dans la liste
+			createDuplicata va faire appel à UserService pour vérifier si le user existe ou pas
+
+		
+	Classe UserService	(package com.formation.service)
+		méthodes
+			findById(String userId) => Doit normalement en chercher en base si le user existe ou pas. pour le moment simplifier en créer un user et en settant ses propriétés et le retourner
+			
+Configurer Spring avec les bons beans et tester que l'application marche bien
+
+
+/////////// partie 2 Utilisation des beans post procesor //////////////
+
+Créer une classe DummyDuplicatas qui va instancier quelques duplicatas au
+démarrage de l'application si le profile spécifié au démarrage est "dev"
+
+Ajouter la dépendance jakarta pour les annotations (pour pouvoir utiliser @PostConstruct et @PreDestroy):
+
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+Indice : utilisation de @PostConstruct (voir slide associé)
+NB : pour démarrer spring avec un profil donné (exemple dev) en ligne de commande, il faut ajouter  -Dspring.profiles.active=dev => on verra comment le faire avec eclipse
+
+
+
+////////// partie 3 utilisation de profiles et propertySource ///////
+
+Supposons que les pdf générés sont stockés sur des cdn différents : un cdn
+pour la prod et un autre pour la dev
+
+créer deux fichiers properties qui contiennent les urls pour chaque environnnement
+	pour dev => cdn.url=https://cdn.dev.impots
+	pour prod => cdn.url=https://cdn.prod.impots
+	
+Ajouter un attribut cdnUrl de type String dans la classe DuplicataService
+Ajouter un constructeur DuplicataService prenant en argument un paramétre de type UserService et un paramétre de type String pour cdnUrl
+
+Prenant en compte l'url du cdn chargé lors de l'appel du setter sur pdfurl
+
+
+////////////// partie 4 scope des beans ///////////////////
+
+Sur la classe de test, Récuperer et afficher du contexte le bean duplicataService; observer l'addresse mémoire
+
+Changer le scope du bean en prototype et refaire même manipulation (utiliser @Scope pour mettre le scope)
+
+Remttre le scope à Singleton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
