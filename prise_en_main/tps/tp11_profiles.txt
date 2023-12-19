@@ -40,3 +40,5 @@ Créer une classe de test AppMain :
 		System.out.println(bean);
 		context.close();
 	}
+
+Tester en démarrant avec un profil donné (exemple master) : arguement -Dspring.profiles.active=master
