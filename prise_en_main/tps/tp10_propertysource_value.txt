@@ -1,7 +1,7 @@
 
 ======= comprendre les annotations @PropertySource et @Value et l'interface Environment =======
 
-Créer un nouveau projet maven 11_propertysource_value
+Créer un nouveau projet maven 10_propertysource_value
 
 Ajouter la dépendance spring context dans le fichier pom.xml
 
