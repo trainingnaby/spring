@@ -1,0 +1,92 @@
+//////Utilisation des validations sur les payloads d'entrées des endpoints rest ///////////////
+
+copier le projet  fil_rouge_2_rest et renommer le en fil_rouge_3_validation
+Modifier dans le pom.xml artifactId et y mettre fil_rouge_3_validation
+
+
+Lors de l'appel pour la création d'un Duplicata sur le endpoint dédié, il est
+possible faire une validation sur les paramètres du Duplicata à créer
+(genre que le chmap montant ne soit pas nul et supérieur à un certain chiffre ...)
+
+Pour ce faire, on va utiliser une implémentation de JSR 301 : c'est la spécification
+officielle de Java pour faire de la validation. Hibernate fournit une implémentation
+
+1 - Ajouter dans le pom.xml
+
+	<dependency>
+		<groupId>org.hibernate.validator</groupId>
+		<artifactId>hibernate-validator</artifactId>
+		<version>8.0.0.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish.expressly</groupId>
+		<artifactId>expressly</artifactId>
+		<version>5.0.0</version>
+	</dependency>
+	
+2 - Ajouter dans la classe DuplicataDto les annotations pour valider les attributs
+
+	  @NotBlank
+      @Min(10)
+      @Max(50) 
+	  ...
+	  
+3 - Pour bien valider DuplicataDto lors de l'appel du service de création d'un 
+duplicata avec la payload json, ajouter l'annotation @Valid aprés l'annotation
+@RequestBody du paramètre de type DuplicataDto
+
+
+//////////// Validation sur les paramètres (@PathVariable et @PathVariable) ///////
+
+Un bean spécifique de spring est à configurer pour permettre la validation dans les 
+paramètres sur @PathVariable ou @RequestParam. Il faut aussi activer cette 
+validation au niveau du controlleur
+
+1 - Ajouter dans la classe de config le bean :
+
+	@Bean 
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
+    }
+	
+2 - Ajouter sur le controlleur l'annotation @Validated
+
+
+3 - Utiliser les annotations de la JSR 303 sur les paramètres (aprés @RequestParam
+ou @PathVariable)
+
+
+///////////////////// Annotations JSR 303 les plus utilisées ///////////////
+
+@AssertFalse / @AssertTrue 
+
+@DecimalMin / @DecimalMax 
+
+@Digits
+
+@Email
+
+@Min / @Max 
+
+@Negative / @NegativeOrZero 
+
+@NotBlank / @NotEmpty 
+
+@Null / @NotNull 
+
+@Past / @PastOrPresent 
+
+@Pattern 
+
+@Positive
+
+@Size 
+
+
+
+
+
+
+
+ 
+
