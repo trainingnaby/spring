@@ -1,0 +1,34 @@
+///////////// Créer des aspects sur le projet /////////////////////
+
+Ajouter les dépendances Aspectj
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.9.20</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.20</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
+copier le projet  fil_rouge_3_validation et renommer le en fil_rouge_4_aop
+Modifier dans le pom.xml artifactId et y mettre fil_rouge_4_aop
+ 
+La programmation orientée aspects (AOP) permet d'externaliser les préoccupations
+transverses sur des classes dédiées 
+
+//////// Aspect de journalisation des appels sur sur les méthodes DuplicataService ////////
+
+Ajouter un aspect qui affiche les paramétres d'appel des méthodes du bean duplicataService 
+	Uitliser un aspect de type Before
+	Utiliser un objet en paramétre de l'aspect de type Joinpoint
+	
+
+//////////////// Aspect qui ajoute un prefix FR_ sur userId ////////////////
+
+Ajouter un aspect qui "FR_" sur userId lors de l'appel à createDuplicate avant l'appel à la vraie méthode 
+	Utiliser un aspect de type Around
+	Utiliser en paramétre de l'aspect un objet de type ProceedingJoinPoint
