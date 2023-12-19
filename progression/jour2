@@ -1,0 +1,31 @@
+Utilisation des fichiers properties
+    Déclaration des fichiers de propriétés avec @PropertySource
+    Injection des propriétés avec @Value
+    Utilisation du bean natif Environment
+
+Utilisation des profiles
+
+Spring MVC REST
+    Annotations
+        @EnableWebMvc
+        @Controller
+        @ResponseBody
+        @RestController
+        @GetMapping, @PostMapping
+        @RequestParam, @PathVariable, @RequestBody
+
+    Création des DTOs
+
+Validation avec la JSR 301
+    Annotations
+        @Min, @Max, @NotBlank ...
+        @Valid
+        @Validated
+
+Spring AOP
+    Annotations
+        @EnableAspectJAutoProxy
+        @Aspect
+    Théorie sur l'AOP : Aspect, Advice, Joinpoint, Pointcut, 
+    Aspect de type Before, After, Around
+
