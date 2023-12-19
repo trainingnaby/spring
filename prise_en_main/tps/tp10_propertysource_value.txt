@@ -1,0 +1,51 @@
+
+======= comprendre les annotations @PropertySource et @Value et l'interface Environment =======
+
+Créer un nouveau projet maven 11_propertysource_value
+
+Ajouter la dépendance spring context dans le fichier pom.xml
+
+Créer un fichier application.properties dans src/main/resources avec le contenu suivant :
+
+formation.lieu=orsys
+formation.module=spring
+formation.date=18122023
+
+Créer une interface FormationMetadata avec une méthode :
+	public void lireMetadata();
+	
+Créer une classe FormationSpring implémentant FormationMetadata
+	Annoter la classe avec @Service("formation_spring")
+	Voici le contenu de de la classe FormationSpring :
+
+		@Value("${formation.module:Java}")
+		private String module;
+		
+		@Value("${formation.salle:salleParDefaut}")
+		private String salle;
+	 
+		@Autowired
+		private Environment environment;
+		
+		@Override
+		public void lireMetadata() {
+			System.out.println("Lieu formation :"
+					+ environment.getProperty("formation.lieu"));
+	 
+			System.out.println("Module formation : " + module);
+			System.out.println("Salle formation : " +salle);
+			
+		}
+	
+Créer une classe de configuration AppConfig : 
+
+	@Configuration
+	@ComponentScan(basePackages = "com.formation")
+	@PropertySource(value = { "classpath:application.properties" })
+	public class AppConfig {
+
+	}
+
+Créer une classe de test
+	Y initialiser le contexte Spring
+	Récupérer le bean de type FormationMetadata et appeler la méthode lireMetadata
