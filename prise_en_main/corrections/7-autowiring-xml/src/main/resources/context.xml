@@ -1,0 +1,22 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+
+	<bean id="joueur" class="com.formation.domain.Joueur">
+		<property name="nom" value="Mario" />
+	</bean>
+	
+	<!-- autowiring byName -->
+	<bean id="mon_jeu" class="com.formation.domain.Jeu" autowire="byName"/>
+	
+	<bean id="addresse" class="com.formation.domain.Addresse">
+		<property name="rue" value="Rue de Rivoli" />
+		<property name="ville" value="Paris" />
+	</bean>
+	
+	<!-- autowiring byType -->
+	<bean id="etudiant" class="com.formation.domain.Etudiant" autowire="byType"/>
+	
+	
+</beans>
