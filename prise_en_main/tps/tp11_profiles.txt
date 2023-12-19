@@ -1,7 +1,7 @@
 
 ======= comprendre les profiles avec Spring =======
 
-Créer un nouveau projet maven 12_profiles
+Créer un nouveau projet maven 11_profiles
 
 Ajouter la dépendance spring context dans le fichier pom.xml
 
