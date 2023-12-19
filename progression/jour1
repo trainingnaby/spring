@@ -5,7 +5,7 @@ Spring Ioc (module de base de Spring fournissant l'injection de dépendances)
 
     configuration du contexte Spring avec du XML
 
-    Configurationn du contexte Spring avec une classe de Java annotée avec @Configuration et des ùéthodes "usines" de beans
+    Configurationn du contexte Spring avec une classe de Java annotée avec @Configuration et des méthodes "usines" de beans
 
     Utilisation du scanning automatique pour les classes annotées avec @Component
         Activation du scanning automatique avec la configuration Java avec @ComponentScan("com.formation")
@@ -26,10 +26,15 @@ Spring Ioc (module de base de Spring fournissant l'injection de dépendances)
                 </property>
 
         Pour la configuration avec une classe Java  :
-            Utilisation des méthodes usines de beans pour injecter expliciement les dépendances
+            Utilisation des méthodes usines de beans pour injecter explicitement les dépendances
 
     Injection implicite de beans par Spring 
-        PAr type,
-            Pour la configuration XML, utilisation de l'attribut autowire="ByType" 
+        Par type,
+            Pour la configuration XML, utilisation de l'attribut autowire="ByType" de la balise bean
+	    Pour la configuration Java @Autowired
+	Par nom
+	    Pour la configuration XML, utilisation de l'attribut autowire="ByName" de la balise bean
+	    Pour la configuration Java @Resource(name="nom_du_bean")
+
 
 			
