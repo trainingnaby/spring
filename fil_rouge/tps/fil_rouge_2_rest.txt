@@ -45,7 +45,7 @@ Ajouter le module Spring qui permet de faire du web spring-webmvc
 
 Créer dans un package com.formation.controlleur ce controlleur 
 
-@Controller
+@Controller 
 	public class MonPremierControlleurSpring {
 
 		@GetMapping("/")
