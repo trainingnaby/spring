@@ -22,7 +22,7 @@ Créer les classes de la couche service :
 			List<Duplicata> duplicatas; //modélise pour le moment notre base de données
 			UserService userService;
 		méthodes
-			getDuplicats() => retourne tous les duplicatas créés
+			getDuplicatas() => retourne tous les duplicatas créés
 			createDuplicata(String userId, int montant) => crée un duplicata et le met dans la liste
 			createDuplicata va faire appel à UserService pour vérifier si le user existe ou pas
 
