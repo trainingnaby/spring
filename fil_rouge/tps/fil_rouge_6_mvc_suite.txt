@@ -9,9 +9,9 @@ Télécharger le fichier https://github.com/trainingnaby/spring/blob/main/static
 
 Dezipper le et copier le dossier static dans src/main/resources du projet fil_rouge_6_mvc
 
-Ce fichier contient des css et js pour "rendre" plus jolie les interfaces 
+Ce fichier contient des css et js pour "rendre" plus jolies les interfaces 
 
-Copier les tous les fichiers dans https://github.com/trainingnaby/spring/tree/main/fil_rouge/gabarits_html
+Copier tous les fichiers dans https://github.com/trainingnaby/spring/tree/main/fil_rouge/gabarits_html
 les mettre dans le dossier templates du projet fil_rouge_6_mvc
 
 
