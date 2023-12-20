@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.formation.annotation.MonitorerTempsExecution;
 import com.formation.domain.Duplicata;
 import com.formation.domain.User;
 
@@ -28,10 +29,12 @@ public class DuplicataService {
 		this.cdnUrl = cdnUrl;
 	}
 
+	@MonitorerTempsExecution
 	public List<Duplicata> getDuplicatas(){
 		return duplicatas;
 	}
 	
+	@MonitorerTempsExecution
 	public Duplicata createDuplicata(String userId, int montant) {
 		//vérifier en base si le user existe
 		User user_db = userService.findById(userId);
