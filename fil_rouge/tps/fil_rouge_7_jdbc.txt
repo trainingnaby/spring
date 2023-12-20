@@ -38,7 +38,14 @@ Ajouter dans la classe de configuration la datasource pour H2
         ds.setPassword("sa");
         return ds;
     }
-		
+
+
+// classe utilitaire de Spring pour les opérations en base de données
+	// doit connaitre qui est l'interface avec la base de données
+	@Bean
+	JdbcTemplate beanJdbcTemplate() {
+		return new JdbcTemplate(dataSource());
+	}
 	
 ////////////////// script pour la table duplicatas ////////////
 
