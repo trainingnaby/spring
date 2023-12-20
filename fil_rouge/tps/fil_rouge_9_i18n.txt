@@ -1,0 +1,66 @@
+
+/////////////////////  Auto configuration avec I18n ///////////////////
+
+copier le projet fil_rouge_8_springboot et renommer le fil_rouge_9_i18n
+modifier artifcatId dans pom.xml et mettre fil_rouge_8_springboot
+
+Spring fait l'autoconfiguration s'il detecte un fichier messages.properties dans 
+src/main/properties
+
+configurable => spring.messages.basename=messages,config.i18n.messages
+
+S'il detecte ce fichier, Spring configure automatiquement un bean LocaleResolver qui 
+permettra de gérer l'internationalisation
+
+Il configure aussi aussi le bean qui va rechercher la locale selectionnée par le user.
+Par défaut il la cherche sur le header Accept-Language (classe AcceptHeaderLocaleResolver)
+
+
+
+Ajouter les fichiers messages_us.properties, messages_fr.properties et messages_it.properties
+
+Installer l'extension modheader sur chrome et tester
+
+//////////////// Utilisation des clés pour les validations ////////////////////
+
+Ajouter une clé pour valider les messages d'erreurs des formulaires :
+	Exemple : @NotBlank(message = "{userid.required}")
+	
+	
+Ajouter dans chacune des fichiers de langues la valeur correspondante 
+
+Tester
+
+
+//////////////////// Changement de detection de langue ///////////////////
+
+Pour utiliser la detection de la locale demandée en se basant un paramètre d'url, on peut implémenter 
+ces deux beans
+	
+			// permet de determiner la locale actuelle en se basant sur la session
+			// permet aussi de définir une locale par défaut
+			// peut determiner si l'information de la langue courante est dans les headers, cookies ou
+			//session
+			@Bean
+			public LocaleResolver localeResolver() {
+				SessionLocaleResolver slr = new SessionLocaleResolver();
+				slr.setDefaultLocale(Locale.FRENCH);
+				return slr;
+			}
+
+			// Intercepteur 
+			// qui permet de basculer de locale via un paramètre de requête langage
+			@Bean
+			public LocaleChangeInterceptor localeChangeInterceptor() {
+				LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+				localeChangeInterceptor.setParamName("langage");
+				return localeChangeInterceptor;
+			}
+
+
+
+
+
+
+
+
