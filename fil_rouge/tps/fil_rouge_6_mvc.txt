@@ -121,7 +121,7 @@ Tester
 
 //////////////////////// Démo utilisation des formulaires /////////////////
 
-Créer une classe FormulaireLogin dans le package com.formation.web.formulaires
+Créer une classe FormulaireConnexion dans le package com.formation.web.formulaires
 	
 	package com.formation.web.formulaires;
 
