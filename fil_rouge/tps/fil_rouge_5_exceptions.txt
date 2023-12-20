@@ -1,5 +1,7 @@
 /////////////// Utilisation d'un gestionnaire global d'exceptions ////////////
 
+copier le projet précédent et le renommer en fil_rouge_5_exceptions
+
 Spring permet l'utilisation d'une classe qui écoute les exceptions émises par toutes
 les controlleurs et de personaliser les messages renvoyées
 Cette classe doit être annotée avec @RestControllerAdvice
