@@ -147,7 +147,7 @@ Créer une classe FormulaireConnexion dans le package com.formation.web.formulai
 
 	}
 	
-Créer une page formulaire.html dans le dossier templates :
+Créer une page formulaireConnexion.html dans le dossier templates :
 
 	<!DOCTYPE HTML>
 	<html xmlns:th="https://www.thymeleaf.org">
