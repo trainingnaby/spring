@@ -2,7 +2,7 @@
 /////////////////////  Auto configuration avec I18n ///////////////////
 
 copier le projet fil_rouge_8_springboot et renommer le fil_rouge_9_i18n
-modifier artifcatId dans pom.xml et mettre fil_rouge_8_springboot
+modifier artifcatId dans pom.xml et mettre  fil_rouge_9_i18n
 
 Spring fait l'autoconfiguration s'il detecte un fichier messages.properties dans 
 src/main/properties
