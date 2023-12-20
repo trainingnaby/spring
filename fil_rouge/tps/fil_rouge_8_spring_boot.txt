@@ -1,0 +1,68 @@
+ 
+ https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+ 
+ 
+ 
+ ////////////// transformer le projet en projet spring boot /////////////////
+ 
+ Générer un projet spring boot sur https://start.spring.io/
+	groupId : com.formation
+	artifactId : fil_rouge_8_springboot
+	package name : com.formation
+	
+	Java 17 , Maven, packagin Jar
+ 
+ importer ce projet sur eclipse
+ 
+ En respectant la structure de répertoire du nouveau projet, copier les classes
+ du projet fil_rouge_7_jdbctemplate sur le nouveau projet 
+ 
+ com.formation
+ com.formation.domain
+ com.formation.service
+ com.formation.repository
+ com.formation.dto
+ com.formation.web
+ com.formation.aspects
+
+Ajouter les dépendances starter nécessaires et les autres dépendances
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf-spring6</artifactId>
+			<version>3.1.1.RELEASE</version>
+		</dependency>
+
+ 
+Copier le fichier schema.sql aussi dans src/main/resources
+ 
+ Ajouter dans le fichier application.properties, la configuration nécessaire à la base H2 :
+ 
+	spring.datasource.driver-class-name=org.h2.Driver
+	spring.datasource.url=jdbc:h2:mem:
+	spring.datasource.username=sa
+	spring.datasource.password=sa
+
+
+
+
+ 

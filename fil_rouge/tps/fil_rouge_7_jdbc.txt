@@ -1,0 +1,165 @@
+//////////////// Utilisation de JdbcTemplate //////////////////
+
+copier le projet fil_rouge_6_mvc et renommer le fil_rouge_7_jdbctemplate
+changer dans le pom.xml le champ artifactId avec comme valeur fil_rouge_7_jdbctemplate
+
+JdbcTemplate est une classe de Spring facilitant les accès en bases de données et le mapping 
+entre ligne d'une table et objet
+
+//////////////// Ajout des dépendences Maven /////////////////////
+
+On utilisera une base de données en mémoire H2
+
+Ajouter les dépendences suivantes dans le pom.xml du projet
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.1.214</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>6.0.9</version>
+		</dependency>
+		
+		
+///////////////// Configuration de la datasource ////////////////////
+
+La datasource est l'interface entre notre application et la base de données
+
+Ajouter dans la classe de configuration la datasource pour H2
+
+	@Bean
+    public DataSource dataSource() {
+        JdbcDataSource ds = new JdbcDataSource();
+        ds.setURL("jdbc:h2:~/myFirstH2Database;INIT=RUNSCRIPT FROM 'classpath:schema.sql'");
+        ds.setUser("sa");
+        ds.setPassword("sa");
+        return ds;
+    }
+		
+	
+////////////////// script pour la table duplicatas ////////////
+
+Créer un fichier schema.sql sous src/main/resources avec le contenu :
+
+	create table if not exists duplicatas
+	(
+		id      uuid  default random_uuid() primary key,
+		pdf_url varchar(255),
+		user_id varchar(255),
+		montant  int
+	);	
+
+//////////////////// Utilisation de JdbcTemplate ///////////////////
+
+JdbcTemplate va nous permettre d'effectuer toutes les opérations en base de données
+ 
+On va supprimer la liste qui contient les duplicatas de la la classe DuplicataService 
+et réécrire toutes les méthodes pour utiliser JdbcTemplate
+
+Remplacer le contenu de la classe DuplicataService par :
+
+	package com.formation.service;
+
+			import java.sql.PreparedStatement;
+			import java.sql.Statement;
+			import java.util.List;
+			import java.util.UUID;
+
+			import org.springframework.beans.factory.annotation.Value;
+			import org.springframework.jdbc.core.JdbcTemplate;
+			import org.springframework.jdbc.support.GeneratedKeyHolder;
+			import org.springframework.jdbc.support.KeyHolder;
+			import org.springframework.stereotype.Component;
+
+			import com.formation.domain.Duplicata;
+
+			@Component
+			public class DuplicataService {
+
+
+			private UserService userService;
+
+			private final JdbcTemplate jdbcTemplate;
+
+			private String cdnUrl;
+
+			public DuplicataService(UserService userService, JdbcTemplate jdbcTemplate, @Value("${cdn.url}") String cdnUrl) {
+				this.jdbcTemplate = jdbcTemplate;
+				this.userService = userService;
+				this.cdnUrl = cdnUrl;
+			}
+
+			public Duplicata createDuplicata(String userId, int montant) {
+
+				 String generatedPdfUrl = cdnUrl + "/images/default/sample.pdf";
+
+					KeyHolder keyHolder = new GeneratedKeyHolder();
+
+					jdbcTemplate.update(connection -> {
+						PreparedStatement ps = connection
+								.prepareStatement("insert into duplicatas (user_id, pdf_url, montant) values (?, ?, ?)",
+										Statement.RETURN_GENERATED_KEYS);
+						ps.setString(1, userId);  // 
+						ps.setString(2, generatedPdfUrl);
+						ps.setInt(3, montant);
+						return ps;
+					}, keyHolder);
+
+					String uuid = !keyHolder.getKeys().isEmpty() ? ((UUID) keyHolder.getKeys().values().iterator().next()).toString()
+							: null;
+
+					Duplicata duplicata = new Duplicata();
+					duplicata.setId(uuid);
+					duplicata.setPdfurl(generatedPdfUrl);
+					duplicata.setMontant(montant);
+					duplicata.setUserid(userId);
+					return duplicata;
+
+			}
+
+			public List<Duplicata> listDuplicatas() {
+				return jdbcTemplate.query("select id, user_id, pdf_url, montant from duplicatas", (resultSet, rowNum) -> {
+					Duplicata duplicata = new Duplicata();
+					duplicata.setId(resultSet.getObject("id").toString());
+					duplicata.setPdfurl(resultSet.getString("pdf_url"));
+					duplicata.setUserid(resultSet.getString("user_id"));
+					duplicata.setMontant(resultSet.getInt("montant"));
+					return duplicata;
+				});
+			}
+
+			}
+	
+	
+Tester
+
+/////////////////////// Activation des transactions //////////////////////
+
+Spring permet de créer des transactions en utilisant simplement les annotations
+Toute méthode annotée avec @Transactionnal s'exécutera ou non dans une transaction
+(les atributs determineront comment se comportera la transaction)
+
+Pour utiliser les transactions et l'utilisation de @Transactionnal, il faut
+
+1 - Activer les transactions dans la classe de configuration avec 
+	  @EnableTransactionManagement
+
+2 - Définir un bean qui fera le travail effectif des transactions :
+
+	@Bean
+	public TransactionManager platformTransactionManager() {
+		return new DataSourceTransactionManager(dataSource());
+	}
+
+
+Annoter les méthodes createDuplicata et listDuplicatas de la classe 
+DuplicataService avec @Transactional
+
+Verifier en début des méthodes qu'une transaction est bien ouverte :
+		System.out.println("Une transaction est t-il en cours? = " + TransactionSynchronizationManager.isActualTransactionActive());
+		
+
+ 
