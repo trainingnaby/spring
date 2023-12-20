@@ -121,7 +121,7 @@ Tester
 
 //////////////////////// Démo utilisation des formulaires /////////////////
 
-Créer une classe FormulaireLogin dans le package com.formation.web.formulaires
+Créer une classe FormulaireConnexion dans le package com.formation.web.formulaires
 	
 	package com.formation.web.formulaires;
 
@@ -147,7 +147,7 @@ Créer une classe FormulaireLogin dans le package com.formation.web.formulaires
 
 	}
 	
-Créer une page formulaire.html dans le dossier templates :
+Créer une page formulaireConnexion.html dans le dossier templates :
 
 	<!DOCTYPE HTML>
 	<html xmlns:th="https://www.thymeleaf.org">

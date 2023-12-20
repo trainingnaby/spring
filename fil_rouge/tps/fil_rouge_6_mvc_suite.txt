@@ -5,13 +5,13 @@ Ajouter une classe FormulaireDuplicata sur le package com.formation.web. Cette r
 les données saisies lors de la création d'un formulaire
 
 
-Télécharger le fichier https://github.com/trainingnaby/spring_27_novembre_2023/blob/main/static.7z
+Télécharger le fichier https://github.com/trainingnaby/spring/blob/main/static.7z
 
 Dezipper le et copier le dossier static dans src/main/resources du projet fil_rouge_6_mvc
 
 Ce fichier contient des css et js pour "rendre" plus jolie les interfaces 
 
-Copier les tous les fichiers dans https://github.com/trainingnaby/spring_27_novembre_2023/tree/main/fil_rouge/gabarits_html
+Copier les tous les fichiers dans https://github.com/trainingnaby/spring/tree/main/fil_rouge/gabarits_html
 les mettre dans le dossier templates du projet fil_rouge_6_mvc
 
 
