@@ -13,7 +13,7 @@ NB : l'appel du service léve une exception HttpServerErrorException si celui ci
 	Annoter la classe application avec @EnableScheduling
 	
 
-2 - Créer un package com.formation.duplicata
+2 - Créer un package com.formation.scheduler
 	Y copier le fichier https://github.com/trainingnaby/spring/blob/main/fil_rouge/HealthData.java
 	(ce fichier est le modéle java de la réponse du service appelé)
 
