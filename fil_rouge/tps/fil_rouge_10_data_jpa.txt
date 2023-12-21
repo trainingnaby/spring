@@ -47,6 +47,11 @@ Créer une classe DuplicataRepository :
 		
 	}
 
+
+////////////////////// Modifification du DuplicataService /////////////////////
+
+Modifier DuplicataService pour prendre en compte les valeurs de retours corrects
+
 ////////////////////// ajouter des propriétés de hibernate sur application.properties ///
 
 Ajouter dans le fichier application.properties :
@@ -56,6 +61,7 @@ spring.jpa.show-sql=true
 #spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.hibernate.ddl-auto=none
 #spring.sql.init.mode=never
+
 
 
 Tester
