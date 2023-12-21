@@ -149,7 +149,7 @@ Ajouter la bonne règle sur la securityFilterChain :
 
 	.requestMatchers(URLS_AUTHENTICATED).authenticated()
 	
-Autoriser l'accés à la méthode qui traite les requêtes /duplicatas au seul
+Autoriser l'accés à la méthode qui traite les requêtes /listeDuplicatas au seul
 user avec le role SUPER avec @PreAuthorize
 
 Tester en faisant varier les roles dans le fichier properties
