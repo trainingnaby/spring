@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>duplicata</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<p class="lead">
+			<span>Duplicata généré le </span>
+			<br />
+			<span th:text="${#temporals.format(dateActuelle, 'dd-MM-yyyy HH:mm')}">[dateActuelle]</span>
+		</p>
+		</div>
+
+		<div th:if="${duplicata != null}" class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+
+				<table  class="table">
+					<tr>
+						<th>Numéro fiscal</th>
+						<th>Montant</th>
+						<th>Lien de téléchargement</th>
+					</tr>
+					<tr>
+						<td></td><!--TODO  : inserer le userid -->
+						<td></td><!--TODO  : inserer le montant -->
+						<td></td><!--TODO  : inserer le pdf , url clicklable -->
+					</tr>
+					<table>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
+<br/>
+		<div><a href="/">Page d'Accueil</a></div>
+		<div><a href="/genererDuplicata">Créer nouveau duplicata</a></div>
+		<div>
+			<a href="/listeDuplicatas">Afficher la liste des duplicatas</a>
+		</div>
+	</div>
+	<script th:href="@{/js/bootstrap.js}"></script>
+</body>
+
+</html>
