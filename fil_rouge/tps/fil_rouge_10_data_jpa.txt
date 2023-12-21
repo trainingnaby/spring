@@ -50,7 +50,7 @@ Créer une classe DuplicataRepository :
 
 ////////////////////// Modifification du DuplicataService /////////////////////
 
-Modifier DuplicataService pour prendre en compte les valeurs de retours corrects
+Modifier DuplicataService pour prendre en compte les valeurs de retours corrects de DuplicataRepository
 
 ////////////////////// ajouter des propriétés de hibernate sur application.properties ///
 
