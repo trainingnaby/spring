@@ -1,0 +1,50 @@
+
+======= comprendre les annotations @Qualifier et @Primary =======
+
+Créer un nouveau projet maven 9-qualifier
+
+Ajouter la dépendance spring context dans le fichier pom.xml
+
+Créer une interface Voiture avec une méthode :
+	String marqueVoiture();
+
+Créer une classe Mercedes implémentant Voiture. Afficher "Je suis une mercedes" dans la méthode marqueVoiture
+Annoter la classe avec @Component("mercedes")
+
+Créer une classe Peugeot implémentant Voiture. Afficher "Je suis une Peugeot" dans la méthode marqueVoiture
+Annoter la classe avec @Component("peugeot")
+
+Créer une classe Garage avec un attribut voiture de type Voiture 
+Annoter la classe avec @Component
+Annoter l'attribut voiture avec @Autowiring
+Ajouter une méthode afficherVoiture dans la classe Garage:
+	public void afficherVoiture() {
+		System.out.println(voiture.marqueVoiture());
+	}
+
+Créer un contexte Spring Java ou xml
+	
+Créer une classe de test
+	Initialiser le contexte Spring
+	Récupérer le bean de type Garage et appeler la méthode afficherVoiture
+	Voir résulat
+	
+Ajouter sur l'attribut voiture de la classe Garage cette annotation :
+	@Qualifier("mercedes")
+	
+Tester que ça marche mieux
+
+Changer l'annotation avec @Qualifier("peugeot")
+
+Tester
+
+Supprimer l'annotation @Qualifier sur la classe Garage
+Ajouter dans la classe Peugeot l'annotation @Primary
+Tester
+
+Supprimer annotation @Primary sur la classe Peugeot et mettre @Primary sur Mercedes
+Tester
+			
+
+
+
