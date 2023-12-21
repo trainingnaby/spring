@@ -1,0 +1,73 @@
+////////////// Utilisation d'un reférentiel de users en base de données /////////////
+
+copier le projet fil_rouge_11_security_methods_ et renommer le en fil_rouge_12_security_users_en_base
+
+Cas : Les utilisateurs (login+mot de passe) se trouvent en base de données à laquelle a 
+accès l'application (accès aux logins et mots de passe des users). Voici comment procéder :
+
+
+1 - Créer une table pour les users (Mettez le dans le fichier schema.sql pour plus de simplicité)
+
+	create table users
+	(
+	   id varchar(255) not null,
+	   username  varchar(255) not null,
+	   password varchar(255) not null,
+	   enabled integer not null,
+	   authorities varchar(255) not null,
+	   primary key(id)
+	);
+	
+
+2 - Créer une classe qui implémente UserDetailsService (appelons la CustomDatabaseUserDetailsService)
+	implémenter la méthode UserDetails loadUserByUsername(String username) 
+		Dans l'implémentation, il faut extraire de la base le user avec le username spécifié
+		en paramètre de la méthode. Il faut retourner un objet de type UserDetails avec les infos
+		username, password et roles (colonne authorities)  bien renseignées 
+		
+		Exemple (la colonnne authorities contient la liste des roles séparés par une virgule): 
+		
+			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+				Users user = userRepository.findByUsername(username);
+				List<String> roles = Arrays.asList(user.getAuthorities());
+				List<SimpleGrantedAuthority> grantedAuthorities = roles.stream()
+						.map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
+				return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+						grantedAuthorities);
+			}
+		
+3 - Définir le bean en charge de l'encodage des mots de passe : Ce bean sera utilisé pour encoder les mots de passe
+	des users lors de leur création, et le mot de passe rentré lors du login pour comparaison. Ajouter dans WebSecurityConfig
+	
+	@Bean
+	public static PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+4 - Définir un bean de type DaoAuthenticationProvider :  dans la classe WebSecurityConfig, ajouter 
+
+
+	@Autowired
+	CustomDatabaseUserDetailsService customDatabaseUserDetailsService;
+	
+	@Bean
+	public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+		return customDatabaseUserDetailsService; 
+	}
+
+	@Bean
+    public DaoAuthenticationProvider authenticationProvider(CustomDatabaseUserDetailsService customDBUserDetailsService) {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(bean_CustomDBUserDetailsService); 
+        auth.setPasswordEncoder(bean_passwordEncoder); 
+        return auth;
+    }
+
+
+5 - Ajoutez dans le fichier data.sql quelques comptes de test
+	vous pouvez utiliser le site https://www.bcrypt.fr/ pour crypter les mots de passe pour le jeu de test
+	(avec le même algorithme que Spring). Exemple :
+		insert into users values('11111','admin', '$2y$10$Ms4nVuyvF0mn86cscyAMz.m4F6M5t36KJ8xHMQVpMGDvZLk8/RfJ2', 1, 'ROLE_ADMIN');
+		insert into users values('2222','user', '$2y$10$wmIKiZv2TySTtLeUKnOXEOP4e50cE1E9LiL7vq5s7LOjvXtHJZ9M.', 1, 'ROLE_USER');
+
+Tester
