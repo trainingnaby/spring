@@ -1,0 +1,62 @@
+///////////////////// Spring Data JPA ///////////////
+
+copier le projet fil_rouge_9_i18n et renommer le en fil_rouge_11_data_jpa
+
+Ajouter la dépendance 
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+JPA est la spécification Java pour le mapping objet/relationnel. Hibernate en est 
+l'implémentation de référence. Y'a autres impléméntations comme EclipseLink ou TopLink
+
+Spring Data JPA n'est pas une implémentation de JPA; Il rend plus simple l'utilisation de
+JPA. Spring Data utilise en interne Hibernate
+
+
+//////////////// Définition des entités /////////////////
+
+Une classe annotée @Entity sera matérialisé par une table en base de données par JPA
+
+Annoter la classe Duplicata avec @Entity et l'attribut id avec @Id (du package 
+import jakarta.persistence.Id;)
+
+
+//////////////// JpaRepository ////////////////////
+
+Remplacer le code dans DuplicataRepository par (ici on étend JpaRepository) :
+
+
+	package com.formation.repository;
+
+	import org.springframework.data.jpa.repository.JpaRepository;
+	import org.springframework.stereotype.Repository;
+
+	import com.formation.model.Duplicata;
+
+	@Repository
+	public interface DuplicataRepository extends JpaRepository<Duplicata,Integer>{
+		
+		Duplicata findById(String id);
+		
+	}
+
+////////////////////// ajouter des propriétés de hibernate sur application.properties ///
+
+Enlever du fichier application.properties
+
+logging.level.org.springframework.jdbc.datasource.init=DEBUG
+logging.level.org.springframework.jdbc.core.JdbcTemplate=debug
+
+Ajouter dans le fichier application.properties :
+ 
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=none
+#spring.sql.init.mode=never
+
+
+Tester

@@ -1,0 +1,17 @@
+Gestion des exceptions
+    @RestControllerAdvice
+
+Spring Web MVC
+    Formulaires
+    Notion de backing bean
+    Moteur de vues Thymeleaf
+    Notion de redirection et de forwarding
+
+
+Spring JdbcTemplate
+
+Spring boot
+
+Internationalisation
+    Header Accept-Language
+    Intercepteur pour changer la Langue
