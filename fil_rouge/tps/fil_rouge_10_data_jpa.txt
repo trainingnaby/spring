@@ -38,7 +38,7 @@ Créer une interface DuplicataRepository :
 	import org.springframework.data.jpa.repository.JpaRepository;
 	import org.springframework.stereotype.Repository;
 
-	import com.formation.model.Duplicata;
+	import com.formation.domain.Duplicata;
 
 	@Repository
 	public interface DuplicataRepository extends JpaRepository<Duplicata,Integer>{
