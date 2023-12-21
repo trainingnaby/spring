@@ -1,0 +1,155 @@
+ 
+/////////////// Securisation des pages /////////////////
+copier le projet fil_rouge_10_data_jpa et renommer le en fil_rouge_11_security_init
+Ajouter la dépendence pour spring security 
+
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+
+Tester 
+
+
+Modifier le user par défaut sur applications properties :
+
+	spring.security.user.name=admin
+	spring.security.user.password=admin
+	spring.security.user.roles=ADMIN
+
+Rajouter un lien de login sur les pages authentifiées
+Tester
+
+///////////////////// Sécurisation des pages /////////////////////////////////
+
+NB :  pour le moment on utilisera les paramètres du user définis dans le fichier application.properties
+
+Ajouter la dépendence pour spring security 
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+Modifier le user par défaut sur applications properties :
+
+	spring.security.user.name=admin
+	spring.security.user.password=admin
+	spring.security.user.roles=ADMIN
+		
+Créer une classe de configuration et annoter le aussi avec @EnableWebSecurity
+
+Voici les régles de sécurité :
+
+Les pages suivantes nécessitent d'avoir le role ADMIN
+	editerDuplicata
+	supprimerDuplicata
+	listeDuplicatas
+
+Les pages suivantes sont accessibles à tout le monde : 
+	genererDuplicata
+	afficherDuplicata
+	h2-console
+	
+Paramétrer dans cette classe le bean qui gére la chaine de filtres de Spring boot avec 
+les bonnes règles sécurité 
+
+	@Configuration
+	@EnableWebSecurity
+	public class WebSecurityConfig {
+	
+    // liste des urls sans authentification
+	private static final AntPathRequestMatcher[] WHITE_LIST_URLS = {
+            new AntPathRequestMatcher("/"),
+            new AntPathRequestMatcher("/titi/**"),
+            new AntPathRequestMatcher("/tutu/**")
+    };
+	
+    // liste des urls avec authentification et role ADMIN
+	private static final AntPathRequestMatcher[] URLS_ADMIN = {
+            new AntPathRequestMatcher("/toto/**"),
+            new AntPathRequestMatcher("/tata/**")
+    };
+
+    //COnfiguration de la SecurityFilterChain de Spring
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+       return  http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(WHITE_LIST_URLS)
+                .permitAll()
+                .requestMatchers(URLS_ADMIN).hasRole("ADMIN")
+                .anyRequest().denyAll()
+                )
+        .headers((headers) -> headers.frameOptions((frame) -> frame.disable())) // necessaire pour H2
+		.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+		.cors(cors -> cors.disable())
+		.formLogin(Customizer.withDefaults())
+        .build();
+	
+	}
+
+}
+
+//////////////////// page de login custom //////////////////
+
+Créer une page customLogin.html
+	vous pouvez utiliser comme exemple la page genererDuplicata.html :  changer les inputs 
+		<input type="text" name="username"> 
+		<input type="password" name="password"> 
+	
+Créer un méthode dans le controlleur WebControlleur qui mappe sur l'url /seloguer et qui retourne
+la page customLogin.html
+
+Ajouter une méthode pour se déconnecter sur WebControlleur :
+	@GetMapping("/sedeconnecter")
+    public String logout() {
+        return "redirect:/seloguer";
+		}
+	}
+
+Configurer cette page dans le securityFilterChain :
+	.formLogin(
+			form -> form
+					.loginPage("/seloguer")
+					.loginProcessingUrl("/seloguer")
+					.defaultSuccessUrl("/")
+					.permitAll())
+	
+	.logout(
+			logout -> logout
+					.logoutRequestMatcher(new AntPathRequestMatcher("/sedeconnecter"))
+					.permitAll()
+	)
+
+Tester 
+
+/////////////////// Sécurité sur les méthodes /////////////////////////
+
+Spring permet de sécuriser les méthodes en ajoutant via @PreAuthorize, @Secured ou
+@RolesAllowed les roles autorisées à exécuter la méthodes
+
+Copier le TP précédent et renommer le
+
+Ajouter @EnableMethodSecurity sur la classe de configuration
+
+Enlever la chaine /listDuplicatas du tableau des mappings autorisés avec le role 
+ADMIN dans le SecurityFilterChain
+
+Ajouter un nouveau tableeau d'urls autorisés pour les users qui sont authentifiés,
+quelque soit leur role; Y mettre la chaine /listeDuplicatas
+
+	private static final AntPathRequestMatcher[] URLS_AUTHENTICATED = {
+            new AntPathRequestMatcher("/listeDuplicatas/**")
+    };
+	
+Ajouter la bonne règle sur la securityFilterChain :
+
+	.requestMatchers(URLS_AUTHENTICATED).authenticated()
+	
+Autoriser l'accés à la méthode qui traite les requêtes /duplicatas au seul
+user avec le role SUPER avec @PreAuthorize
+
+Tester en faisant varier les roles dans le fichier properties
