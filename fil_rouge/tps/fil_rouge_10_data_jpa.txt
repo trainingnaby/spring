@@ -30,7 +30,7 @@ import jakarta.persistence.Id;)
 
 //////////////// JpaRepository ////////////////////
 
-Créer une classe DuplicataRepository :
+Créer une interface DuplicataRepository :
 
 
 	package com.formation.repository;
