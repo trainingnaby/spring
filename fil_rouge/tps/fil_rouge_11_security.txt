@@ -131,7 +131,7 @@ Tester
 Spring permet de sécuriser les méthodes en ajoutant via @PreAuthorize, @Secured ou
 @RolesAllowed les roles autorisées à exécuter la méthodes
 
-Copier le TP précédent et renommer le
+Copier le TP précédent et renommer le en fil_rouge_11_security_methods
 
 Ajouter @EnableMethodSecurity sur la classe de configuration
 
