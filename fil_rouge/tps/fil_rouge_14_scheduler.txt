@@ -1,0 +1,69 @@
+
+
+////////////////// Planification de tâches avec Spring /////////////////////////////
+
+Objectif : créer un scheduler qui tourne tous les 3 secondes et qui va appeler le service
+http://localhost:8080/actuator/health pour vérifier l'état de ce service  : 
+	Si le service est UP, afficher la réponse simplement 
+	Si le service est DOWN, afficher la réponse sur la console et envoyer un mail d'alerte (à simuler)
+	
+NB : l'appel du service léve une exception HttpServerErrorException si celui ci est down
+
+1 - Activer le scheduling avec Spring	
+	Annoter la classe application avec @EnableScheduling
+	
+
+2 - Créer un package com.formation.duplicata
+	Y copier le fichier https://github.com/trainingnaby/spring/blob/main/fil_rouge/HealthData.java
+	(ce fichier est le modéle java de la réponse du service appelé)
+
+3 - Créer une classe DuplicataStatusChecker :
+
+	package com.formation.scheduler;
+
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.boot.actuate.health.HealthEndpoint;
+	import org.springframework.http.ResponseEntity;
+	import org.springframework.scheduling.annotation.Scheduled;
+	import org.springframework.stereotype.Component;
+	import org.springframework.web.client.HttpServerErrorException;
+	import org.springframework.web.client.RestTemplate;
+
+	import com.fasterxml.jackson.core.JsonProcessingException;
+	import com.fasterxml.jackson.databind.JsonMappingException;
+	import com.fasterxml.jackson.databind.JsonNode;
+	import com.fasterxml.jackson.databind.ObjectMapper;
+
+	@Component
+	public class DuplicataStatusChecker {
+		
+		@Autowired
+		ObjectMapper objectMapper;
+		
+		
+		@Scheduled(fixedDelay = 3000)
+		public void sendMailWhenDuplicataIsLow() throws JsonMappingException, JsonProcessingException {
+			
+			RestTemplate restTemplate = new RestTemplate();
+			
+			try {
+				ResponseEntity<HealthData>  serviceResponse = 
+						restTemplate.getForEntity("http://localhost:8080/actuator/health", HealthData.class);
+				HealthData data = serviceResponse.getBody();
+				
+				System.out.println("Health status is : "+data.getStatus());
+			
+			} catch(HttpServerErrorException e) {
+				
+				HealthData data = objectMapper.readValue(e.getResponseBodyAsString(), HealthData.class);
+				System.out.println("Health status is : "+data.getStatus());
+				System.out.println("Sending alert notification with Data : "+e.getResponseBodyAsString());
+			}	
+			
+		}
+
+	}
+
+
+
+
