@@ -15,10 +15,6 @@ l'implémentation de référence. Y'a autres impléméntations comme EclipseLink
 Spring Data JPA n'est pas une implémentation de JPA; Il rend plus simple l'utilisation de
 JPA. Spring Data utilise en interne Hibernate
 
-Créer un fichier data.sql dans src/main/resources avec le contenu suivant :
-
-insert into duplicata values('10001','Naby', 1400, 'https://naby.com');
-insert into duplicata values('10002','Leon', 7500, 'https://leon.com');
 
 //////////////// Définition des entités /////////////////
 
