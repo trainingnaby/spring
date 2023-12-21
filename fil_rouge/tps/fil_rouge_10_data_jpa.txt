@@ -59,7 +59,7 @@ Ajouter dans le fichier application.properties :
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 spring.jpa.show-sql=true
 #spring.jpa.properties.hibernate.format_sql=true
-spring.jpa.hibernate.ddl-auto=none
+spring.jpa.hibernate.ddl-auto=create
 #spring.sql.init.mode=never
 
 
