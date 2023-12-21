@@ -1,0 +1,110 @@
+
+////////////////// activation de actuator ////////////////////
+
+
+
+Ajouter dans le pom.xml
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		
+
+Démarrer l'application et regarder les endpoints sur :
+	http://localhost:8080/actuator
+	
+	
+Afficher un endpoint en particulier, exemple : 
+	http://localhost:8080/actuator/health
+	pour ce endpoint, on peut avoir oplus de déatils en ajoutant dans application.properties :
+		management.endpoint.health.show-details=always
+	
+pour exposer tous les endpoints, ajouter dans application.properties
+		management.endpoints.web.exposure.include=*
+
+	pour exposer juste un ensemble de endpoints de actuator, ajouter dans application.properties
+		management.endpoints.web.exposure.include=health,info,beans,env
+ 
+ 
+///////////////// Créer un sonde custom /////////////////////
+
+le endpoint http://localhost:8080/actuator/health est un aggregat d'un ensemble de vérificationS
+pour determiner si l'application est UP ou pas : espace disque, état base de données ...
+Toutes les vérifications doivent être ok pour que la réponse du service soit UP. On peut rajouter des 
+vérifications personalisées sur des composants, des services ... 
+
+un cas réel : pouvoir être notifié si un produit d'un entrepot a un stock faible pour 
+commander du stock
+
+L'idée est de rajouter une vérification du nombre de duplicatas créés et de mettre la sonde
+http://localhost:8080/actuator/health à down si c'est ce nombre est inférieur à un seuil donné
+
+
+1 - copier le projet précédent et le renommer en fil_rouge_13_actuator
+
+2 - Ajouter la dépendence actuator 
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+3 - Autoriser /actuator/** sur la config spring security
+
+4 - Créer une classe qui implémente HealthIndicator (package com.formation.actuator)
+
+	package com.formation.actuator;
+
+	import java.util.HashMap;
+	import java.util.Map;
+
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.boot.actuate.health.Health;
+	import org.springframework.boot.actuate.health.HealthIndicator;
+	import org.springframework.stereotype.Component;
+
+	import com.formation.repository.DuplicataRepository;
+
+	@Component
+	public class DuplicataProbe implements HealthIndicator {
+
+		@Autowired
+		private final DuplicataRepository duplicataRepository;
+		
+		public DuplicataProbe(DuplicataRepository duplicataRepository) {
+			this.duplicataRepository =  duplicataRepository;
+		}
+		
+		private static final int SEUIL = 2;
+
+
+		@Override
+		public Health health() {
+			
+			// compter le nombre de duplicatas en base
+			long totalDuplicatas = duplicataRepository.count();
+			
+			// map pour avoir plus d'informations
+			Map<String,String> statusCheckDuplicatas = new HashMap<>();
+			
+			if(totalDuplicatas <= SEUIL) {
+				statusCheckDuplicatas.put("CheckTotalDuplicatas" , "Le nombre de duplicatas est trop bas !  Nombre actuel " + totalDuplicatas);
+				return Health.down().withDetails(statusCheckDuplicatas).build();
+			} else {
+				statusCheckDuplicatas.put("TotalDuplicatasOk" , "Le nombre de duplicatas est correct  Nombre actuel " + totalDuplicatas);
+				return Health.up().withDetail("CheckTotalDuplicatas", statusCheckDuplicatas).build();
+			}
+			
+		}
+}
+
+
+5 - voir le détail de chaque vérification, ajouter dans application.properties
+
+	management.endpoint.health.show-details=always
+	
+	
+
+
+
