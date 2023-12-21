@@ -26,7 +26,7 @@ import jakarta.persistence.Id;)
 
 //////////////// JpaRepository ////////////////////
 
-Remplacer le code dans DuplicataRepository par (ici on étend JpaRepository) :
+Créer une classe DuplicataRepository :
 
 
 	package com.formation.repository;
@@ -44,11 +44,6 @@ Remplacer le code dans DuplicataRepository par (ici on étend JpaRepository) :
 	}
 
 ////////////////////// ajouter des propriétés de hibernate sur application.properties ///
-
-Enlever du fichier application.properties
-
-logging.level.org.springframework.jdbc.datasource.init=DEBUG
-logging.level.org.springframework.jdbc.core.JdbcTemplate=debug
 
 Ajouter dans le fichier application.properties :
  
