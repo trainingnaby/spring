@@ -1,0 +1,28 @@
+Spring Data JPA 
+    Auto génération des méthodes
+
+Spring Security
+    Configuration de la filterChain
+    Concepts principaux
+    customisation de la page de login
+    Scénario users en base de données, étapes :
+        Redéfinition de UserDetailsService pour implémenter la logique de recherche des infos d'un user en base
+        Déclaration d'un bean de type PasswordEncoder pour l'encodage des mots de passe
+        Déclaration d'un bean de type DaoAuthenticationProvider prenant en paramétre le PasswordEncoder et le UserDetailsService
+
+    Protection "in-depth" : définition des rôles admis sur les méthodes du controlleur
+
+    Spring actuator
+        Définition d'une sonde personnalisée sur le endpoint /Health
+
+    Spring scheduler
+
+    Spring Cache
+        Cacheable
+        CachePut
+        CacheEvict
+
+    Notion de qualifier
+
+
+    

@@ -1,0 +1,58 @@
+////////////// Authentification fait par webservice ///////////////////
+
+Copier le projet fil_rouge_15_cache_ et le renommer fil_rouge_16_security_ws
+
+Cas : l'application ne connait pas le mot de passe des users; il fait appel à un service 
+externe pour l'authentification (SalesforcdIdentity, Atalassian Crowd ...)
+
+1 - Créer une classe qui implémente AuthenticationProvider (appelons le AuthentificationSalesforceIdentity)
+	implémenter la méthode  public Authentication authenticate(final Authentication authentication) throws AuthenticationException
+	
+		Dans cette méthode on appelle le service avec les infos rentrées par le user
+		Lorsque le service authentifie bien le user, il nous renvoie toutes les données
+		nécessaires avec les roles; on construit et retourne alors un UsernamePasswordAuthenticationToken
+		Exemple d'implementation simple :
+		
+			@Component
+			public class AuthentificationSalesforceIdentity implements AuthenticationProvider {
+
+				@Override
+				public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+					final String name = authentication.getName();
+					final String password = authentication.getCredentials().toString();
+					//appel du service d'authentification Salesforce, ici on le simule
+					if (name.equals("formation") && password.equals("spring")) {
+						final List<GrantedAuthority> grantedAuths = new ArrayList<>();
+						grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+						final UserDetails principal = new User(name, password, grantedAuths);
+						final Authentication auth = new UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
+						return auth;
+					} else {
+						return null;
+					}
+				}
+
+				 @Override
+					public boolean supports(Class<?> authentication) {
+						return authentication.equals(UsernamePasswordAuthenticationToken.class);
+						}
+				}
+				
+2 - Enregistrer ce bean dans le SecurityFilterChain :
+
+	@Autowired
+	AuthentificationSalesforceIdentity authentificationSalesforceIdentity;
+
+        @Bean
+	public AuthenticationProvider authenticationProvider() {
+		return authentificationSalesforceIdentity;
+	}
+	
+
+Ajouter dans le config de SecurityFilterChain :
+
+	.authenticationProvider(authenticationProvider())
+	
+	
+Appliquer et tester
+	
