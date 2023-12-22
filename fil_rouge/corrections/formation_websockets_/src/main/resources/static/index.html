@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Démonstration Spring WebSockets</title>
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body background="background.avif"
+      style="background-position: center; background-repeat: no-repeat; background-size: cover;">
+<noscript>
+    <h2>Il semble que votre navigateur ne supporte Javascript :(</h2>
+</noscript>
+
+<div id="section-pseudo">
+    <div class="section-pseudo-container">
+        <h1 class="title">Entrez votre pseudo</h1>
+        <form id="formPseudo" name="formPseudo">
+            <div class="form-group">
+                <input type="text" id="pseudo" placeholder="Pseudo"
+                       autocomplete="off" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent username-submit">Démarrer chat</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="section-chat" class="hidden">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Forum de discussion</h2>
+        </div>
+        <div class="connexion">Se connecter pour discuter...</div>
+        <ul id="zoneMessage">
+
+        </ul>
+        <form id="formMessage" name="formMessage" nameForm="formMessage">
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" id="message" placeholder="Entrez un message..."
+                           autocomplete="off" class="form-control" />
+                    <button type="submit" class="primary">Envoyer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
