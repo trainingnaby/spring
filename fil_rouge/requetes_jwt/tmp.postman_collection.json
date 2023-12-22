@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "90e54856-26eb-495d-8fea-7b359e180394",
+		"name": "tmp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25692770",
+		"_collection_link": "https://cloudy-shuttle-296291.postman.co/workspace/spring-18-decembre-2023~d0110372-4efb-4f06-87f8-bf3bf44249f7/collection/25692770-90e54856-26eb-495d-8fea-7b359e180394?action=share&source=collection_link&creator=25692770"
+	},
+	"item": [
+		{
+			"name": "ajouter user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"user\",\r\n    \"password\": \"user\",\r\n    \"roles\": \"ROLE_USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/authentification/ajouter_user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentification",
+						"ajouter_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ajouter admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"admin\",\r\n    \"password\": \"admin\",\r\n    \"roles\": \"ROLE_ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/authentification/ajouter_user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentification",
+						"ajouter_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generer token admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/authentification/generer_token",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentification",
+						"generer_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generer token user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"user\",\r\n    \"password\": \"user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/authentification/generer_token",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentification",
+						"generer_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "espace admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcwMzE4ODk1NiwiZXhwIjoxNzAzMTkwNzU2fQ.4WlxNE-Xjb5_i6USYIeq-bo-qv_ufDa-_qnHtBHT-Xc",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/authentification/admin/espace_admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentification",
+						"admin",
+						"espace_admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "espace user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzAzMTg5MDI3LCJleHAiOjE3MDMxOTA4Mjd9.-Ek5jwGSpVDuRhERDgQ6WET7UtgQTphAcbUQTQNHHaU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/authentification/user/espace_user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authentification",
+						"user",
+						"espace_user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
