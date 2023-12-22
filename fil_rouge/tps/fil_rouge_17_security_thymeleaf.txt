@@ -1,5 +1,12 @@
 
 /////////////////// Intégration de la sécurité avec Thymeleaf ////////////////////
+Ajouter la dépendance :
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+			<!-- Temporary explicit version to fix Thymeleaf bug -->
+			<version>3.1.1.RELEASE</version>
+		</dependency>
 
 
 Utiliser la balise <span sec:authentication="name"/> pour afficher le nom du user connecté
