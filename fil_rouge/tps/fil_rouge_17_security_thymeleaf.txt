@@ -1,0 +1,15 @@
+
+/////////////////// Intégration de la sécurité avec Thymeleaf ////////////////////
+
+
+Utiliser la balise <span sec:authentication="name"/> pour afficher le nom du user connecté
+sur les pages de l'application aprés la chaine Bonjour
+
+Conditionner l'affichage du lien qui permet de lister les duplicatas aux seuls users
+avec le role admin avec sec:authorize de thymeleaf. Exemple :
+
+<span sec:authorize="hasRole('ADMIN')">
+					Bienvenue <span sec:authentication="name"/>
+					</span>
+					
+					<span sec:authentication="name"/>

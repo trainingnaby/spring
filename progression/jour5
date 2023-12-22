@@ -1,0 +1,13 @@
+
+
+Spring security avec authentification via un service externe
+    Etapes :
+        Créer une implémentation d'un classe de type AuthenticationProvider
+            Y appeler le service externe d'authentification
+            Parser le resultat (infos du user)
+            Initialiser l'objet correspodant (Objet User) avec les infos du user
+
+        Déclarer un bean de type AuthenticationProvider (celui qui a été implémenté ci-dessus)
+
+        Enregistrer le bean dans Spring security
+
