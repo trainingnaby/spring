@@ -55,13 +55,12 @@ Créer les classes suivantes avec leurs attributs et méthodes (à implementer) 
 
 	DuplicataService
 	
-		public List<Duplicata> listDuplicatas()
+		public List<Duplicata> listDuplicatas()  => retourne la liste des duplicatas créés
 		
 		public void supprimerDuplicata(Duplicata duplicata)
 		
 		public Duplicata getDuplicata(String id) 
 		
-		public List<Duplicata> getDuplicatas() => retourne la liste des duplicatas créés
 		
 		public Duplicata createDuplicata(String numeroFiscal, int montant, int annee) => crée un duplicata et le sauvergarde. Avant de créer le duplicata, il faut vérifier si un user associé au numeroFiscal en paramètre existe; lever une exception de type UserException dans le cas contraire
 		
