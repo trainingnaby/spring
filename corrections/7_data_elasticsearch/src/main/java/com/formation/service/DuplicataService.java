@@ -26,9 +26,6 @@ public class DuplicataService {
 	@Autowired
 	DuplicataElasticRepository elasticRepository;
 	
-	@Autowired
-	ElasticsearchTemplate elasticsearchTemplate;
-	
 	public List<Duplicata> listDuplicatas() {
 		return duplicataRepository.findAll();
 	}
