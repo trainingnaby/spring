@@ -7,4 +7,4 @@ Créer une instance, un bean de type UserDetailsService (objet en charge de rech
 
 Créer un bean de type PasswordEncoder 
 
-Brancher ces deux beans dans la securityfilterchain
+Brancher ces deux beans dans la securityfilterchain (en déclarant un bean de type DaoAuthenticationProvider)
