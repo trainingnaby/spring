@@ -1,0 +1,12 @@
+
+
+//////////////////// scénario 2 : les users sont hébergés via un service externe accessible par des endpoints (authentification ...) //////////////////////
+
+Il suffit de définir un objet de tupe AuthenticationProvider et d'y implémenter la logique d'authentification (appel dui service externe, recuperation des infos du users authentifié, mapping entre 
+les infos du service et le modéle de données par Spring Security)
+
+(Ici on peut simuler service)
+
+Il faut enregistrer le provider dans la securityFilterChain
+.provider(custom_provider)
+
