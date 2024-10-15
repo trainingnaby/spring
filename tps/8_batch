@@ -4,3 +4,7 @@ Créer un batch qui permet d'importer les duplicatas qui ont un montant supérie
 créer un endpoint dans un controlleur dédié pour lancer le job
 
 
+Créer un nouveau job lit le fichier csv et  qui affiche le contenu sur la console; Ce job sera multithreadhré 
+Créer un endpoint pour lancé ce job
+
+
