@@ -12,11 +12,9 @@ import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 
 import com.formation.domain.Duplicata;
-import com.formation.domain.DuplicataDocument;
 import com.formation.exception.DuplicataException;
 import com.formation.exception.UserException;
 import com.formation.repository.AppUserRepository;
-import com.formation.repository.DuplicataElasticRepository;
 import com.formation.repository.DuplicataRepository;
 
 import jakarta.transaction.Transactional;
@@ -27,11 +25,6 @@ public class DuplicataService {
 	@Autowired
 	DuplicataRepository duplicataRepository;
 	
-	@Autowired
-	DuplicataElasticRepository elasticRepository;
-	
-	@Autowired
-	ElasticsearchTemplate elasticsearchTemplate;
 	
 	@Autowired
 	AppUserRepository appUserRepository;
@@ -67,16 +60,6 @@ public class DuplicataService {
 		createdDuplicata.setPdfUrl("https://pdf.com");
 		Duplicata saveDuplicata = duplicataRepository.save(createdDuplicata);
 		
-		DuplicataDocument document = new DuplicataDocument();
-		document.setId(saveDuplicata.getId());
-		document.setAnnee(saveDuplicata.getAnnee());
-		document.setMontant(saveDuplicata.getMontant());
-		document.setNumeroFiscal(saveDuplicata.getNumeroFiscal());
-		document.setPdfUrl(saveDuplicata.getPdfUrl());
-		
-		//persister aussi ElasticSearch
-		elasticRepository.save(document);
-		
 		return saveDuplicata;
 		
 	}
@@ -93,12 +76,5 @@ public class DuplicataService {
 		return duplicataRepository.existsByMontantGreaterThan(montant);
 	}
 
-	public Optional<DuplicataDocument> getDocumentById(long id) {
-		return elasticRepository.findById(id);
-	}
-
-	public Iterable<DuplicataDocument> getDocuments() {
-		return elasticRepository.findAll();
-	}
 
 }

@@ -1,24 +1,16 @@
 package com.formation.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,16 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.formation.domain.AppUser;
 import com.formation.domain.Duplicata;
-import com.formation.domain.DuplicataDocument;
 import com.formation.dto.DuplicataDto;
 import com.formation.exception.DuplicataException;
 import com.formation.exception.UserException;
-import com.formation.formulaires.FormulaireUser;
 import com.formation.hateoas.DuplicataModelAssembler;
 import com.formation.service.DuplicataService;
-import com.formation.service.UserService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -112,18 +100,6 @@ public class DuplicataControlleur {
 	@GetMapping("/duplicata/existsgreater/{montant}")
 	public boolean listDuplicatasSorted(@PathVariable int montant){
 		return duplicataService.existsGreaterThan(montant);
-	}
-	
-	@GetMapping("/duplicata/document/{id}")
-	public DuplicataDocument getDocument(@PathVariable long id){
-		return duplicataService.getDocumentById(id).get();
-	}
-	
-	@GetMapping("/duplicata/documents")
-	public Iterable<DuplicataDocument> getDocuments(){ 
-		List<DuplicataDocument> result = new ArrayList<>();
-		duplicataService.getDocuments().forEach(result::add);
-		return result;
 	}
 	
 }

@@ -23,4 +23,6 @@ public interface AppUserRepository extends JpaRepository<AppUser,Long>{
 	
 	boolean existsByNumeroFiscal(String numeroFiscal);
 	
+	AppUser findByUsername(String username);
+	
 }

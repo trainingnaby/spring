@@ -3,6 +3,7 @@ package com.formation.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.formation.domain.Addresse;
@@ -17,6 +18,9 @@ public class UserService {
 	
 	@Autowired
 	AppUserRepository userRepository;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 
 	public AppUser findByNumeroFiscal(String numeroFiscal) throws UserException{
@@ -38,7 +42,7 @@ public class UserService {
 		AppUser newUser = new AppUser();
 		
 		newUser.setNumeroFiscal(numeroFiscal);
-		newUser.setPassword(password);
+		newUser.setPassword(passwordEncoder.encode(password)); 
 		newUser.setEnabled(1);
 		newUser.setUsername(username);
 		newUser.setAuthorities("ROLE_USER");
