@@ -1,0 +1,14 @@
+
+//////////////////////// scenario : les utilisateurs sont dans une base de données accessible à l'application //////////////////////////:
+
+Utitisez la table AppUser pour créer les users avec leurs roles dans l'application
+
+Créer une instance, un bean de type UserDetailsService (objet en charge de rechercher et croiser les infos du user en base et les infos rentrées lors du login)   
+
+Créer un bean de type PasswordEncoder 
+
+Brancher ces deux beans dans la securityfilterchain (en déclarant un bean de type DaoAuthenticationProvider)
+
+Ajouter un fichier data.sql avec les instructions de création sql d'un user avec le role ADMIN (login = admin, mot de passe = admin)
+  Ajouter dans le fichier properties : spring.jpa.defer-datasource-initialization=true
+    (permet de coupler la création des tables avec jpa et d'executer les instructions dans le fichier data.sql)  

@@ -42,7 +42,7 @@ GrantedAuthority
 Exemple de cheminement d'une requête d'authentification
 	formulaire de connexion => requête interceptée le filtre UsernamePasswordAuthenticationFilter
 		UsernamePasswordAuthenticationFilter => soumission à AuthenticationManager 
-			AuthenticationManager => déléguation de la requête à 1 ou plusieurs AuthenticationManager
+			AuthenticationManager => déléguation de la requête à 1 ou plusieurs AuthenticationProvider
 				AuthenticationProvider => chargement du user en base via UserDetailsService
 					UserDetailsService => comparaison des infos user en base avec celles rentrées dans le formulaire (utilisation de PasswordEncoder)
 						Si ok, objet Authentication mis à jour dans SecurityContext avec les infos du user
