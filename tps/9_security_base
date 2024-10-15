@@ -1,5 +1,7 @@
 
-//////////////////////// scenario : les utilisateurs sont dans une base de données accessible à l'application //////////////////////////:
+//////////////////////// scenario : les utilisateurs sont dans une base de données accessible à l'application //////////////////////////
+
+Copier le précédent projet et le renommer en 9_security_via_ws
 
 Utitisez la table AppUser pour créer les users avec leurs roles dans l'application
 
