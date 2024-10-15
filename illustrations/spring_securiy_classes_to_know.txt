@@ -1,0 +1,59 @@
+
+
+////////////////////// classes/interfaces Spring security à connaitre /////////////////////////////
+
+
+Authentication
+	represente les informations du user connecté ou les informations rentrées par le user pour se connecter
+	Exemple d'implémentation : UsernamePasswordAuthenticationToken  pour une authentification par mot de passe et login
+	
+AuthenticationManager
+	Gére la tentative d'authentification via sa méthode authenticate(Authentication authentication)
+	si ok, retourne un objet de type Authentication; si non ok léve une exception
+	Délégue le processus d'authentification à un ou plusieurs AuthenticationProvider pour vérifier les informations rentrées par le user
+	
+AuthenticationProvider
+	responsable de la logique d'authentification réell via sa méthode authenticate(Authentication authentication)
+	Contient aussi la méthode supports(Class<?> authentication) qui permet de préciser s'il peut traiter un type particulier de requête d'authentification. Plusieurs  fournisseurs peuvent être utilisés pour différents types d'authentification (par exemple, authentification login/pwd, OAuth2, ldap...)
+	
+UserDetails
+	interface qui contient les informations de l'utilisateur chargées depuis la base de données ou une autre source. Utilisé par AuthenticationProvider pour comparer ces informations avec celles rentrées par le user
+
+UserDetailsService
+	 interface responsable de la récupération des détails de l'utilisateur à partir d'une source de données. Une seule méthode à implémenter : loadUserByUsername(String username) qui devra renvoyer un objet de type UserDetails
+	 
+PasswordEncoder
+	interface utilisée pour encoder les mots de passe avant stockage enb base de données. Aussi pour comparer le mot de passe entré lors du login au mot de passe en base de données
+	
+SecurityContext 
+	 contient des informations de sécurité sur la session actuelle de l'utilisateur
+	 
+SecurityContextHolder 
+	classe utilitaire qui fournit un accès au SecurityContext
+	
+FilterChainProxy
+	filtre principal de Spring Security. Contient une chaîne de filtres (FilterChain) qui exécutent diverses (authentification, gestion des sessions, etc.) pour chaque requête HTTP
+	Exemple de filtre : UsernamePasswordAuthenticationFilter
+
+GrantedAuthority 
+	Interface qui représente une autorité (ou un rôle) accordée à un utilisateur
+	
+
+Exemple de cheminement d'une requête d'authentification
+	formulaire de connexion => requête interceptée le filtre UsernamePasswordAuthenticationFilter
+		UsernamePasswordAuthenticationFilter => soumission à AuthenticationManager 
+			AuthenticationManager => déléguation de la requête à 1 ou plusieurs AuthenticationManager
+				AuthenticationProvider => chargement du user en base via UserDetailsService
+					UserDetailsService => comparaison des infos user en base avec celles rentrées dans le formulaire (utilisation de PasswordEncoder)
+						Si ok, objet Authentication mis à jour dans SecurityContext avec les infos du user
+						
+						
+					
+	
+	
+
+	
+
+
+
+
