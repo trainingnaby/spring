@@ -1,0 +1,6 @@
+Copier le projet précédent et changer le nom en 8_batch
+Créer un batch qui permet d'importer les duplicatas qui ont un montant supérieur à 4500 euros en base de données depuis le fichier csv
+
+créer un endpoint dans un controlleur dédié pour lancer le job
+
+
