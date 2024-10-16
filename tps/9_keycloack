@@ -1,0 +1,38 @@
+//////////////////////////// Utilisation d'un keycolack pour l'openid connect ///////////////////////////////
+
+1 - Démarrer une instance de Keycloack
+  docker pull keycloak/keycloak:17.0.0
+  docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin keycloak/keycloak:17.0.0  start-dev
+
+
+2 - Créer un realm
+    Créer une application cliente
+    Créer un user 
+
+
+Ajouter dans le pom.xml
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+
+3 - Ajouter dans le fichier application.properties :
+
+
+      server.port=8081
+    	server.forward-headers-strategy=FRAMEWORK
+    	spring.security.oauth2.client.provider.external.issuer-uri=http://localhost:8080/realms/external
+    
+    	spring.security.oauth2.client.registration.external.provider=external
+    	spring.security.oauth2.client.registration.external.client-name=external-client
+    	spring.security.oauth2.client.registration.external.client-id=external-client
+    	spring.security.oauth2.client.registration.external.client-secret=8rV22s0AJxZGkKAITY8hgh48K1MWNt7y
+    	spring.security.oauth2.client.registration.external.scope=openid,offline_access,profile
+    	spring.security.oauth2.client.registration.external.authorization-grant-type=authorization_code
+
+
+4 - Configurer dans la securityFilterChain Oauth2
+
+  
