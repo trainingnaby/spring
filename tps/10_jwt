@@ -88,6 +88,33 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 
 
 	}
+///////////////////// UserControlleur ///////////////////////////////////////
 
-
-  
+// bean permettantt de s'authentifier
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JWTService jwtService;
+	
+	@PostMapping("/user/create")
+	public AppUser createDuplicataDto(@RequestBody @Valid UserDto userDto) throws UserException {
+		return userService.createUser(userDto.getNumeroFiscal(), 
+				userDto.getUsername(), userDto.getPassword());
+	}
+	
+	@PostMapping("/user/token")
+	public String authAndTokenGeneration(@RequestBody LoginDto loginDto) {
+		
+		// tentative d'authentification
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), 
+				loginDto.getPassword()));
+		
+		// génération du token
+		if(authentication.isAuthenticated()) {
+			return jwtService.generateToken(loginDto.getUsername());
+		} else {
+			throw new UsernameNotFoundException("requête invalide");
+		}
+	
+	}
