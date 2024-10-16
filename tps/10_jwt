@@ -1,0 +1,41 @@
+
+
+///////////////////// Utilisation de JWT avec un signature asymétrique (basé RSA) ///////////////////////////////
+
+Cas 1 - Utilisation d'une clé unique pour crypter et décrypter le JWT (moins sécurisé)
+Cas 2 - Utilisation de deux clés : 1 pour crypter le JWT et 1 autre clé pour décrypter ( utilisé dans le cas ou le JWT doit vérifié par d'autres applications différentes de l'application qui génére le JWT)
+
+copier le projet 10_web et le renommer en 12_jwt
+
+Ajouter la librairie 
+    <dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.4.0</version>
+		</dependency>
+Générer une paire de clé de clés asymétriques avec l'algorithme :
+    Générer une paire de clés 
+		openssl genrsa -out keypair.pem 2048
+
+	  Extraire la clé publique 
+		openssl rsa -in keypair.pem -pubout -out public.pem
+
+	  Extraire la clé privée 
+		openssl pkcs8 -in keypair.pem -topk8 -nocrypt -inform PEM -outform PEM -out private.pem
+
+Mettre les deux clés dans resources/certs
+
+Créer une classe JWTService : va permet de faire les actions relatives à JWT (création de token, verification ...)
+
+Créer un endpoint pour se loguer et récupérer un jwt
+
+Créer un filtre : il va vérifier l'entete http Authorization si on a une valeur. Si oui, on va extraire la valeur du token et valider, via les classes de la librairie, le token; 
+ensuite mettre à jour le securityContext avec les infos si tout est ok
+
+Brancher ce filtre dans le securityFilterChain
+
+
+
+
+
+  
