@@ -9,6 +9,15 @@
     Créer une application cliente
     Créer un user 
 
+
+Ajouter dans le pom.xml
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+
 3 - Ajouter dans le fichier application.properties :
 
 
