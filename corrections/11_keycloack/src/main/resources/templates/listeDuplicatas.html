@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Liste duplicatas</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<p class="lead">
+				Liste des duplicatas
+				<br />
+				<span th:text="${#temporals.format(dateActuelle, 'dd-MM-yyyy HH:mm')}">[dateActuelle]</span>
+
+				<br />
+			</p>
+
+
+			<div class="row" th:if="${not#lists.isEmpty(duplicatas)}">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6">
+					<table class="table">
+						<thead class="thead-light">
+							<tr>
+								<th>Numero fiscal</th>
+								<th>Montant</th>
+								<th>Document</th>
+								<th>Annee</th>
+								<th>.</th>
+								<th>.</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="duplicata : ${duplicatas}">
+								<td th:text="${duplicata.numeroFiscal}"></td>
+								<td th:text="${duplicata.montant}"></td>
+								<td><a th:href="${duplicata.pdfUrl}"><span th:text="${duplicata.pdfUrl}"></span></td>
+							    <td th:text="${duplicata.annee}"></td>
+							    <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/afficherDuplicata/{id}(id = ${duplicata.id})}">afficher</span></td>
+							    <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/supprimerDuplicata/{id}(id = ${duplicata.id})}">supprimer</span></td>
+							</tr>
+						</tbody>
+						<table>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div><a href="/">Page d'Accueil</a></div>
+	<div><a href="genererDuplicata">Créer duplicata</a></div>
+
+	<script th:href="@{/js/bootstrap.js}"></script>
+</body>
+
+</html>
