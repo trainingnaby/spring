@@ -61,7 +61,7 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 		private final JWTVerifier verifier;
 
 		// permettre de garder la clé de génération 
-		public JwtAsymetriqueSymetriqueService(@Value("classpath:certs/public.pem") final RSAPublicKey publicKey,
+		public JWTService(@Value("classpath:certs/public.pem") final RSAPublicKey publicKey,
 				@Value("classpath:certs/private.pem") final RSAPrivateKey privateKey) {
 			this.rsa256 = Algorithm.RSA256(publicKey, privateKey);
 			this.verifier = JWT.require(this.rsa256).build();
