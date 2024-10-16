@@ -185,3 +185,8 @@ public class JwtFilter extends OncePerRequestFilter{
 	
 
 }
+
+//////////////////////////// ajout du filtre /////////////////////////////
+
+ .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
