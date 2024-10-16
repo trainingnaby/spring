@@ -1,0 +1,1 @@
+insert into APP_USER (id, numero_fiscal, username, password, enabled, authorities) values('11111', 'ADMIN_FISCAL','admin', '$2y$10$34Kwd1MEnwBKQc9dLng4de1DaaqNxPqbpefyiPWQvYEFGsoH/kiAa', 1, 'ROLE_ADMIN');
