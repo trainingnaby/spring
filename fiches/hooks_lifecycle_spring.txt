@@ -1,0 +1,62 @@
+
+/////////////// hooks sur le cycle de vie des beans //////////////////
+
+BeanPostProcessor
+	But
+		Permet d'intercepter la création des beans juste avant/après leur initialisation
+		
+	Méthodes
+		Object postProcessBeforeInitialization(Object bean, String beanName)
+		Object postProcessAfterInitialization(Object bean, String beanName)
+		
+	Exemples d'utilisation 
+		Ajouter un comportement aux beans (e.g., proxy, logs, modification des propriétés)
+		
+BeanFactoryPostProcessor
+	But 
+		Modifier la configuration des beans avant leur instanciation
+		
+	Methode :
+		void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
+	
+	Exemples d'utilisation 
+		Modifier dynamiquement la configuration des beans, Ajout/modification de propriétés ...
+		
+InitializingBean
+	But	
+		 Initialiser des ressources après injection des dépendances
+	Méthode
+		void afterPropertiesSet() throws Exception;
+
+	Exemples d'utilisation
+		Remplir un cache, verification de dépendances, établissement de connexions externes ...
+	Analogie :
+		@PostConstruct
+		
+DisposableBean
+	But 
+		Faire des actionsq avant la destruction d'un bean
+	Méthode 
+		void destroy() throws Exception;
+
+	Exemples d'utilisation
+		Liberer des ressources, fermer des connexions, sauvegarde ...
+	Analogie :
+		@PreDestroy
+
+
+////////////////// Timeline du cycle de vie //////////////////////////
+
+1 :  Instantiation des beans
+2 : Injection de dépendances
+3 :  BeanNameAware, BeanFactoryAware ... (donne des infos sur le contexte aux beans qui les veulent)
+4 :  postProcessBeforeInitialization (BeanPostProcessor)
+5 :  afterPropertiesSet (InitializingBean) / @PostConstruct
+6 :  init-method custom
+7 : postProcessAfterInitialization (BeanPostProcessor)
+8 :  le bean est disponible et utilisée dans l'application
+9 : destroy (DisposableBean) / @PreDestroy / custom destroy-method
+
+
+		
+	
