@@ -1,0 +1,35 @@
+
+
+
+/////////////// emargement //////////////////
+
+https://docadmin.orsys.fr/
+mot de passe : RSGJpjfS8
+
+
+////////// tools ///////////
+IDE (Eclipse, Intellij)
+Java 17
+postman
+maven
+
+///////////// spring releases ///////////////////
+latest : 6.2.5
+https://github.com/spring-projects/spring-framework/releases
+
+"1.0": 2004
+"2.0": 2006
+"3.0": 2009
+"4.0": 2013
+"5.0": 2017
+"6.0": 2022
+
+////////////// spring boot releases ///////////////
+latest : 3.4.4
+https://github.com/spring-projects/spring-boot/releases
+
+"1.0": 2014
+"2.0": 2018
+"2.5": 2021
+"3.0": 2022
+"3.1": 2023
