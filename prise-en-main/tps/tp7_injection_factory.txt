@@ -1,0 +1,40 @@
+////////////// TP7 injection de dépendance via factory de beans  ////////////////
+
+Ajouter une interface Constructeur (package basics.beans.factoryconfig) avec la méthode :
+	public void marqueConstructeur();
+
+Créer une classe Eiffage (package basics.beans.factoryconfig) implémentant Constructeur
+Ajouter dans la classe Eiffage la méthode :
+	public void marqueConstructeur(){
+		System.out.println ("le constructeur du batiment est Eiffage ");
+	}
+	
+Ajouter une interface MaitreOuvrage (package basics.beans.factoryconfig) avec la méthode :
+	public void maitreOuvrage();
+
+Créer une classe MairieParis (package basics.beans.factoryconfig) implémentant MaitreOuvrage avec la méthode : 
+	public void maitreOuvrage(){
+		System.out.println ("Le maitre d'ouvrage du batiment est Maire de Paris ");
+	}
+	
+Ajouter une classe Batiment (package basics.beans.factoryconfig) 
+
+Ajouter un attribut constructeur de type Constructeur dans la classe Batiment; Ajouter un setter sur cette attribut
+
+Ajouter un attribut maitreOuvrage de type MaitreOuvrage dans la classe Batiment
+
+Ajouter un constructeur dans la classe Batiment prenant en argument un paramètre de type MaitreOuvrage; initialiser l'attribut maitreOuvrage avec la valeur de ce paramètre
+
+Ajouter un setter sur l'attribut de type Constructeur
+
+Ajouter une méthode DonneesCoursBatiment dans la classe Batiment : 
+	public void DonneesCoursBatiment(){
+		constructeur.marqueConstructeur();
+		maitreOuvrage.maitreOuvrage();
+	}
+
+Dans la classe FactoryConfig, implémenter les méthodes "fabriquant" les beans de type Constructeur, MaitreOuvrage et Batiment. Faire l'injection de dépendances
+
+RAPPEL : la valeur de retour d'une méthode annotée avec @Bean, dans une classe annotée avec @Configuration, sera un bean géré par Spring
+
+Tester avec la classe App
