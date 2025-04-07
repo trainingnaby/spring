@@ -1,0 +1,89 @@
+ 
+//////////////////// Spel /////////////////////////
+
+Langage utilisé dans Spring pour interagir dynamiquement avec des objets à l’exécution
+
+avec @Value
+
+	@Value("#{2 * 3}")
+	private int result; 
+	
+Accès à des propriétés de beans 
+
+    @Value("#{monBean.nom}")
+    private String injectedName;
+	
+	Autres exemples
+		#{user.salaire}
+		#{commande.client.addresse.ville}
+	
+Appels de méthodes (T(Type) – Référence à une classe Java)
+
+	@Value("#{T(java.lang.Math).random() * 3}")
+	private double randomNumber;
+	
+	Autres exemples 
+		#{user.getNom()}
+		#{'Bonjour'.toUpperCase()}
+		
+Expressions 
+
+	#{age > 18 ? 'Adulte' : 'Mineur'}
+	
+	#{1 == 1} 
+	#{2 < 5} 
+	
+	#{10 - 3}
+	#{4 * 5}
+	
+	#{[1, 2, 3][0]} 
+	#{maListe[2]}
+	#{monBean.myList[0]}
+	
+	#{map['key']}
+	#{map['nom'] == 'Andre'}
+	
+Exemples avancées
+
+	Dans Spring Security
+		@PreAuthorize("hasRole('ADMIN') and #user.name == authentication.name")
+		
+	Dans Spring Data
+		@Query("SELECT u FROM User u WHERE u.name = :#{#user.name}")
+		
+	Appel de méthode custom
+		@Value("#{T(com.formation.Utils).convert('Bienvenue !')}")
+	
+	Injection de propriétés
+		@Value("#{systemProperties['user.name']}")
+	
+		@Value("#{environment['spring.profiles.active'] == 'prod' ? 'PROD MODE' : 'DEV MODE'}")
+		private String mode;
+		
+	Extraction dans une liste
+		@Value("#{monBean.myList.?[startsWith('A')]}")
+		private List<String> namesStartingWithA;
+		
+	
+Subtilité : avec @PreAuthorize et @PostAuthorize, l'expression qui suit est considéré comme une Spel
+
+	// ici je récupére la valeur de l'attribut name du paramètre user
+	@PreAuthorize("hasRole('ADMIN') and #user.name == authentication.name")
+	public void updateUser(User user) {
+	
+	// ici j'appelle la méthode checkUser d'un bean nommé service
+	@PreAuthorize("hasRole('ADMIN') and @service.checkUser(authentication.name)")
+
+		
+	
+		
+	
+
+	
+	
+
+	
+
+	
+
+
