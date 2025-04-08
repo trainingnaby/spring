@@ -1,3 +1,4 @@
+Votre ami :) https://docs.spring.io/spring-boot/appendix/application-properties/index.html
 
 /////////////// Objectif transformer le projet en spring boot /////////////
 
@@ -6,7 +7,7 @@
 	artifactId : 7_springboot
 	package name : com.formation
 	
-	Java 17 , Maven, packagin Jar
+	Java 17 , Maven, packaging Jar
  
 importer ce projet sur eclipse/intellij
  
