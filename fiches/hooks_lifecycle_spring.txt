@@ -49,7 +49,7 @@ DisposableBean
 
 1 :  Instantiation des beans
 2 : Injection de dépendances
-3 :  BeanNameAware, BeanFactoryAware ... (donne des infos sur le contexte aux beans qui les veulent)
+3 :  BeanNameAware, BeanFactoryAware ... execution des méthodes des interfaces de type aware (donne des infos sur le contexte aux beans :  avoir une référence sur le applicationContext, connaitre son propre nom dans le contexte ...)
 4 :  postProcessBeforeInitialization (BeanPostProcessor)
 5 :  afterPropertiesSet (InitializingBean) / @PostConstruct
 6 :  init-method custom
