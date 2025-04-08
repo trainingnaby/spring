@@ -1,0 +1,140 @@
+
+///////////////// SPRING - CHEAT SHEET DES ANNOTATIONS REST /////////////////////////
+
+ Contrôleurs REST :
+    @RestController
+        - Combine @Controller + @ResponseBody
+        - Utilisé pour créer une API REST (retourne des objets JSON)
+    
+    @Controller
+        - Utilisé pour les applications web classiques (retourne des vues HTML)
+
+    @RequestMapping("/api")
+        - Définit un chemin de base pour toutes les méthodes du contrôleur
+
+ Requêtes HTTP :
+
+    @GetMapping("/books")
+    @PostMapping("/books")
+    @PutMapping("/books/{id}")
+    @PatchMapping("/books/{id}")
+    @DeleteMapping("/books/{id}")
+        - Mapping direct aux méthodes HTTP
+
+    @RequestMapping(method = RequestMethod.GET, value = "/books")
+        - Alternative plus flexible à @GetMapping (utile si besoin de plusieurs méthodes)
+
+ Récupération des paramètres :
+
+    @PathVariable
+        - Récupère une valeur de l’URL
+        Exemple : @GetMapping("/books/{id}")
+                  public Book getBook(@PathVariable("id") Long id)
+
+    @RequestParam
+        - Paramètre de requête (query param)
+        Exemple : /books?page=0&size=10
+                  public Page<Book> getBooks(@RequestParam int page)
+
+        - Optionnel :
+          public Book search(@RequestParam(required = false) String keyword)
+
+    @RequestBody
+        - JSON → Java (désérialisation automatique)
+        Exemple : public ResponseEntity<?> createBook(@RequestBody Book book)
+
+    @ResponseBody
+        - Retourne un objet directement en JSON
+
+ Subtilités avancées :
+
+    @PathVariable vs @RequestParam
+        - @PathVariable est utilisé pour les segments fixes dans l’URL (/books/{id})
+        - @RequestParam est utilisé pour des paramètres dynamiques optionnels (?page=1)
+
+    @RequestMapping + headers
+        @RequestMapping(value = "/books", headers = "X-Custom-Header=myvalue")
+        - Gère les requêtes uniquement si l’en-tête est présent
+
+    @RequestMapping + consumes / produces
+        @PostMapping(value = "/books", consumes = "application/json", produces = "application/xml")
+        - Gère les formats d’entrée/sortie spécifiques
+
+ Validation :
+
+    @Valid
+        - Déclenche la validation (JSR-303) sur un objet
+        Exemple : public ResponseEntity<?> create(@Valid @RequestBody Book book)
+
+    @Validated
+        - Permet la validation sur les contrôleurs ou services entiers
+
+ Gestion des erreurs :
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+        public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex)
+
+    @ControllerAdvice
+        - Classe globale pour intercepter les erreurs
+        Exemple :
+        @ControllerAdvice
+        public class GlobalExceptionHandler {
+            @ExceptionHandler(Exception.class)
+            public ResponseEntity<?> handleAll(Exception ex) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur");
+            }
+        }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+        - Associe une exception à un code HTTP directement
+
+ Configuration des CORS :
+
+    @CrossOrigin(origins = "*")
+        - Autorise l’accès CORS à une ressource
+        - Peut être placé au niveau méthode ou classe
+
+        Exemple :
+        @CrossOrigin(origins = "http://localhost:4200")
+        @GetMapping("/books")
+
+ Exemples complexes :
+
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    @GetMapping
+    public Page<Book> listBooks(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "title") String sortBy,
+        @RequestParam(defaultValue = "asc") String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc") ?
+                    Sort.by(sortBy).descending() :
+                    Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return bookService.findAll(pageable);
+    }
+
+    @PostMapping
+    public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
+        Book saved = bookService.save(book);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Book> updateBook(
+        @PathVariable Long id,
+        @Valid @RequestBody Book bookDetails) {
+        return ResponseEntity.ok(bookService.update(id, bookDetails));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        bookService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}
