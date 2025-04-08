@@ -1,3 +1,12 @@
+//////////////// savoir l'objet qui intercepte mon appel est un proxy ou mon vrai objet //////////////////////
+import org.springframework.aop.support.AopUtils;
+
+System.out.println("Is proxy jmsService : " + AopUtils.isAopProxy(jmsService));
+		System.out.println("Classe active jmsService: " + jmsService.getClass().getName());
+		System.out.println("Classe réelle jmsService: " + AopUtils.getTargetClass(jmsService));
+
+
+
 //////////// lien github /////////////////////
 
 https://github.com/trainingnaby/spring
