@@ -1,0 +1,61 @@
+
+======================= Injection de Prototype dans un Singleton ================================
+
+Injecter un bean de scope "prototype" (par exemple, un "Livre") dans un bean singleton (comme un "BibliothequeService").
+
+///////////////////// Avec @Lookup /////////////////////////////
+
+	Livre.java (Bean prototype)
+	@Component
+		@Scope("prototype")
+		public class Livre {
+			private static int count = 0;
+			private int id = ++count;
+
+			public Livre() {
+				System.out.println("Création du livre #" + id);
+			}
+
+			public int getId() {
+				return id;
+			}
+		}
+
+	BibliothequeService.java (Bean singleton)
+
+		@Component
+		public class BibliothequeService {
+
+			@Lookup
+			public Livre getLivre() {
+				// Spring implémente dynamiquement cette méthode pour retourner un nouveau prototype
+				return null;
+			}
+
+			public void emprunterLivre() {
+				Livre livre = getLivre();
+				System.out.println("Livre emprunté ID: " + livre.getId());
+			}
+		}
+
+	Résultat 
+		Chaque appel à emprunterLivre() crée une nouvelle instance de Livre.
+
+////////////////////// avec ObjectProvider /////////////////////////////
+
+import org.springframework.beans.factory.ObjectProvider;
+
+@Component
+public class BibliothequeService {
+
+    @Autowired
+    private ObjectProvider<Livre> livreProvider;
+
+    public void emprunterLivre() {
+        Livre livre = livreProvider.getObject();
+        System.out.println("Livre emprunté ID: " + livre.getId());
+    }
+}
+
+
+
