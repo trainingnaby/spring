@@ -41,6 +41,8 @@ Spring Ioc (module de base de Spring fournissant l'injection de dépendances)
 Autowiring avec les annotations Jakarta @Inject et @Resource
 
 Projet demo de l'utilisation de la reflection par Spring pour créer les beans et injecter les dependances
+	avec les beans implémentant des interfaces, Spring utilise les proxies dynamiques du jdk
+	si le bean n'implémente pas une interface, spring se base sur la librairie CGLIB (lib java permettant de générer du bytecode à la volée)
 
 Import de configuration avec @Import et @ImportResource
 
