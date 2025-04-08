@@ -1,0 +1,83 @@
+
+/////////// Objectif du projet : application de génération de duplicatas d'impots ////////////
+
+Créer un projet maven 1_fil_rouge_init
+
+Créer les packages suivantes : 
+	com.formation.domain
+	com.formation.service
+	com.formation.dao
+
+Créer les classes suivantes avec leurs attributs dans le package com.formation.domain :
+	Duplicata
+		String id;
+		String userId;
+		Integer montant;
+		String pdfUrl;
+		
+	User
+		String id;
+		String name;
+	
+Ajouter les getters/setters pour chacune des classes créés
+
+Créer les classes suivantes avec leurs attributs et méthodes (à implementer) dans le package com.formation.service : 
+
+	UserService
+		public User findById(String userId) => cherche un user en base de données à partir du userId. Pour le moment, instancier simplement un objet avec un id random et retourner ce user 
+
+	DuplicataService
+		List<Duplicata> duplicatas;
+		UserService userService;
+		
+		public List<Duplicata> getDuplicatas() => retourne la liste des duplicatas créés
+		
+		public Duplicata createDuplicata(String userId, int montant) => crée un duplicata et le met sur la 	liste duplicatas. Avant de créer le duplicata, il faut vérifier si un user associé au userId en paramètre existe ou non en base de données. Lever une exception de type IllegalArgumentException dans le cas contraire
+		
+		
+Configurer cette application avec spring IOC et vérifier la bonne marche
+	
+Tester
+	
+/////////////// Cycle de vie des objets Spring //////////////////////
+
+@PostConstruct est une annotation qui permet de jouer du code, via une méthode, aprés l'instanciation des objets par Spring
+
+Ajouter la dépendance Jakarta suivante (pour avoir notamment les annotations @PostConstruct et @PreDestroy):
+
+	<dependency>
+		<groupId>jakarta.annotation</groupId>
+		<artifactId>jakarta.annotation-api</artifactId>
+		<version>2.1.1</version>
+	</dependency>
+
+
+Créer une classe DummyDuplicatas dans le package com.formation.service. La déclarer comme bean avec @Service
+
+Utiliser l'annotation @PostConstruct dans la classe DummyDuplicatas pour y initialiser quelques duplicatas au démarrage de l'application si le profil est "dev"
+
+Tester
+
+////////////////// profile avec les propertySource ////////////////
+
+On suppose que les pdf des duplicatas sont stockés sur des serveurs avec des urls différentes selon l'environment
+
+Créer deux fichier properties, 1 pour la dev et 1 pour la prod. Ajouter ces entrées :
+
+	pour le fichier properties de dev => cdn.url=https://cdn.dev.impots
+	pour le fichier properties de prod => cdn.url=https://cdn.prod.impots
+
+Ajouter un attribut cdnUrl de type String dans la classe DuplicataService
+
+Ajouter un constructeur dans la classe DuplicataService prenant en argument un paramètre de type UserService et un paramètre de type String. Injecter la valeur de la clé cdn.url dans le paramètre de type String.
+initialiser l'attribut userService avec le paramètre de type UserService et l'attribut cdnUrl avec le paramètre de type String
+
+Tester
+
+/////////////// Scope des beans ///////////////////
+
+Dans la classe de test, Récupérer plusieurs fois dans le contexte le bean de type DuplicataService. Observer l'addresse mémoire
+
+Changer le scope de ce bean en prototype (annotation @Scope) et refaire même manipulation
+
+Remettre le scope du bean à Singleton 
