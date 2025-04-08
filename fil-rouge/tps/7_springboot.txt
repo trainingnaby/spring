@@ -1,4 +1,5 @@
 Votre ami :) https://docs.spring.io/spring-boot/appendix/application-properties/index.html
+	doc classes autoconfigurées https://docs.spring.io/spring-boot/appendix/auto-configuration-classes/core.html
 
 /////////////// Objectif transformer le projet en spring boot /////////////
 
