@@ -1,0 +1,64 @@
+
+/////////////////////// SPRING SECURITY CLASSES/INTERFACES PRINCIPALES //////////////////////////////
+
+1. SecurityFilterChain (interface)
+   - Définit la chaîne de filtres de sécurité
+   - Utilisée dans la configuration via des beans
+   - Implémentation principale : DefaultSecurityFilterChain
+
+2. WebSecurityConfigurerAdapter (classe - deprecated)
+   - Ancienne méthode d’extension pour configurer la sécurité
+   - Remplacée par SecurityFilterChain et lambdas
+
+3. HttpSecurity (classe)
+   - API fluente pour configurer les règles de sécurité HTTP (authentification, autorisation...)
+   - Exemple : http.authorizeHttpRequests().anyRequest().authenticated();
+
+4. AuthenticationManager (interface)
+   - Traite les demandes d’authentification
+   - Peut être exposé en tant que bean
+   - Implémentation principale : ProviderManager
+
+5. UserDetailsService (interface)
+   - Charge les détails d’un utilisateur à partir d’une source (BDD, mémoire…)
+   - Méthode principale : loadUserByUsername(String username)
+   - Implémentations : InMemoryUserDetailsManager, JdbcUserDetailsManager, LdapUserDetailsManager
+
+6. UserDetails (interface)
+   - Représente les informations de l’utilisateur
+   - Implémenté souvent par org.springframework.security.core.userdetails.User
+
+7. GrantedAuthority (interface)
+   - Représente une autorisation accordée à l’utilisateur
+   - Exemple : ROLE_ADMIN
+   - Implémentation principale : SimpleGrantedAuthority
+
+8. Authentication (interface)
+   - Représente l’état d’authentification d’un utilisateur
+   - Implémentations : UsernamePasswordAuthenticationToken, AnonymousAuthenticationToken, RememberMeAuthenticationToken
+
+9. SecurityContext (interface)
+   - Contient le contexte de sécurité (principal, authentification)
+   - Accessible via SecurityContextHolder
+   - Implémentation principale : SecurityContextImpl
+
+10. SecurityContextHolder (classe)
+    - Stocke le SecurityContext (ThreadLocal)
+    - Méthodes : getContext(), setContext()
+    - Mode de stockage configurable : MODE_THREADLOCAL, MODE_INHERITABLETHREADLOCAL, MODE_GLOBAL
+
+11. PasswordEncoder (interface)
+    - Utilisé pour encoder/matcher les mots de passe
+    - Implémentations : BCryptPasswordEncoder, NoOpPasswordEncoder, Pbkdf2PasswordEncoder, Argon2PasswordEncoder
+
+12. AuthenticationProvider (interface)
+    - Fournit une logique d’authentification personnalisée
+    - Méthode principale : authenticate(Authentication auth)
+    - Implémentations : DaoAuthenticationProvider, LdapAuthenticationProvider, JwtAuthenticationProvider (custom)
+
+13. @EnableWebSecurity (annotation)
+    - Active la configuration de sécurité web
+
+14. @PreAuthorize / @PostAuthorize (annotations)
+    - Sécurisent des méthodes via SpEL.
+    - Exemple : @PreAuthorize("hasRole('ADMIN')")
