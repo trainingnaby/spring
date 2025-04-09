@@ -1,0 +1,2 @@
+insert into users (id, username, password, enabled, authorities) values('11111','admin', '$2y$10$34Kwd1MEnwBKQc9dLng4de1DaaqNxPqbpefyiPWQvYEFGsoH/kiAa', 1, 'ROLE_ADMIN');
+insert into users (id, username, password, enabled, authorities) values('2222','user', '$2y$10$mrGKOvK8f/PykCV6eKTd.efJoBaWzeQvsc6rDgkiRoidjwmuP5azq', 1, 'ROLE_USER');
