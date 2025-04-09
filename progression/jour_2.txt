@@ -1,0 +1,15 @@
+
+/////////////////// jour 2 ////////////////////
+
+spring REST
+	annoatations courantes, gestion des paramétres en requêtes, path ou payload de type dto
+Validations des beans avec la JSR 303
+Gestion des exceptions avec @RestControllerAdvice
+Spring Jdbc
+	configuration datasource
+	configuration jdbc
+	Transactions (propagation, isolation)
+
+migration de Spring vers Spring boot
+	Notion d'autoconfiguration
+	Exemple de bean autoconfiguré
