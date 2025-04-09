@@ -145,6 +145,40 @@ Ajouter un nouveau endpoint de type GET pour déclencher l'exécution du job :
 		}
 	}
 
+	
+//////////////////// Multithreading de step /////////////////////////
+
+Ajouter le bean de type TaskExecutor dans la classe DuplicataBatchConfig (chargé de multithreader les steps) :
+
+	@Bean
+	public TaskExecutor taskExecutor() {
+		SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
+		asyncTaskExecutor.setConcurrencyLimit(10);
+		return asyncTaskExecutor;
+	}
+
+
+Dans la classe DuplicataBatchConfig : 
+ Ajouter un nouveau ItemProcessor et un nouveau ItemProcessor qui afficheront simplement le duplicata en cours de traitement; conserver le même writer que le précédent job
+
+Ajouter un step multithreadé : 
+
+	@Bean
+	public Step stepMultiThreaded() {
+		return new StepBuilder("step-csv-import", jobRepository)
+				.<Duplicata, Duplicata>chunk(10, transactionManager)
+				.reader(reader())
+				.processor(processorMultiThreaded()) // retourne le nouveau processor 
+				.writer(writerMultiThreaded())		// retourne le nouveau writer
+				.taskExecutor(taskExecutor()) // va permettre le multithreadring
+				.build();
+	}
+	
+Configurer un nouveau job avec ce step dans la classe DuplicataBatchConfig 
+
+COnfigurer un nouveau endpoint sur la classe DuplicataBatchControlleur pour déclencher ce nouveau job 
+
+
 
 
 
