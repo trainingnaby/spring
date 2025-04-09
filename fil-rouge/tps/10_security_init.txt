@@ -1,0 +1,112 @@
+
+
+////////////// Initialisation securité ///////////////////
+
+copier le précédent projet et renommer le en 10_security_init
+
+Ajoute la dépendance de spring secutrity :
+
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId>
+	</dependency>
+	
+Tester les services 
+
+Ajouter les infos du user par défaut dans le fichier application.properties : 	
+	spring.security.user.name=admin
+	spring.security.user.password=admin
+	spring.security.user.roles=ADMIN	
+	
+Tester
+
+///////////////// Configuration du bean FilterChain avec users en mémoire ///////////////////
+
+supprimer les entrées suivantes du fichier application.properties :
+	spring.security.user.name=admin
+	spring.security.user.password=admin
+	spring.security.user.roles=ADMIN
+	
+
+Créer une classe WebSecurityConfig dans le package com.formation.config : 
+
+	@Configuration
+	@EnableWebSecurity
+	public class WebSecurityConfig {
+	
+		// liste des urls sans authentification
+		private static final AntPathRequestMatcher[] WHITE_LIST_URLS = {
+				new AntPathRequestMatcher("/"),
+				new AntPathRequestMatcher("/css/**"),
+				new AntPathRequestMatcher("/js/**"),
+				new AntPathRequestMatcher("/h2-console/**"),
+				new AntPathRequestMatcher("/actuator/**"),
+				new AntPathRequestMatcher("/countByMontantGreaterThan**"),
+		};
+		
+		// liste des urls avec authentification et role ADMIN
+		private static final AntPathRequestMatcher[] URLS_ADMIN = {
+				new AntPathRequestMatcher("/paging**"),
+		};
+		
+		private static final AntPathRequestMatcher[] URLS_AUTHENTICATED = {
+				new AntPathRequestMatcher("/duplicatasSorted/**"),
+				new AntPathRequestMatcher("/duplicatas/**"),
+				new AntPathRequestMatcher("/duplicatas**"),
+				//new AntPathRequestMatcher("/flushCacheDuplicatas/**"),
+		};
+	
+		//Configuration de la SecurityFilterChain de Spring
+		@Bean
+		SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		   return  http.authorizeHttpRequests(auth -> auth
+					.requestMatchers(WHITE_LIST_URLS)
+					.permitAll()
+					.requestMatchers(URLS_ADMIN)
+					 .hasRole("ADMIN")
+					.requestMatchers(URLS_AUTHENTICATED).authenticated()
+					.anyRequest().denyAll()
+					)
+			.headers((headers) -> headers.frameOptions((frame) -> frame.disable())) // necessaire pour H2
+			.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+			.cors(cors -> cors.disable())
+			.httpBasic(Customizer.withDefaults())
+			.build();
+		
+		}
+		
+		// permet de définir la classse qui fera l"encodage des mots de passe
+		@Bean
+		public static PasswordEncoder passwordEncoder() {
+			return new BCryptPasswordEncoder();
+		}
+		
+		
+		// UserDetailsService est un bean impliqué dans le processus d'authentification
+		// Si l'application connait gére elle même les utilisateurs (login et mot de passe)
+		// Il suffit d'implémenter cette classe qui contiendra le mécanisme pour récuperer
+		// le user en base de données avec ses informations
+		// InMemoryUserDetailsManager est une implémentation fournie par spring pour 
+		// des utilsateurs en mémoire
+		
+		@Bean
+		public UserDetailsService userDetailsService() {
+			UserDetails user = User.builder().username("user").password(passwordEncoder().encode("user"))
+					.roles("USER").build();
+			UserDetails admin = User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN")
+					.build();
+			return new InMemoryUserDetailsManager(user, admin);
+		}
+	}
+
+
+Configurer les urls batchs pour être accessible uniquement avec le role ADMIN
+COnfigurer les urls de création de duplicatas pour être accessible en étant connecté
+Whitelister les urls de recherche des duplicatas
+	
+Tester
+	
+	
+	
+	
+	
