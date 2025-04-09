@@ -1,0 +1,77 @@
+
+//////////////////// Spring batch exemples de readers, processors et writers natifs //////////////////////////
+
+Readers
+
+		FlatFileItemReader
+			Utilisé pour lire des fichiers CSV ou TXT ligne par ligne
+			Exemple :
+			  FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
+			  reader.setResource(new ClassPathResource("people.csv")); // Spécifie le fichier source
+			  reader.setLineMapper(new DefaultLineMapper<>() {{
+				  setLineTokenizer(new DelimitedLineTokenizer() {{
+					  setNames("firstName", "lastName"); // Colonnes attendues
+				  }});
+				  setFieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
+					  setTargetType(Person.class); // Objet cible
+				  }});
+			  }});
+
+		JdbcCursorItemReader
+			Lit des lignes depuis une base de données via une requête SQL
+			Exemple :
+			  JdbcCursorItemReader<Person> reader = new JdbcCursorItemReader<>();
+			  reader.setDataSource(dataSource); // Source JDBC
+			  reader.setSql("SELECT * FROM people"); // Requête SQL
+			  reader.setRowMapper((rs, rowNum) -> new Person(rs.getString("first_name"), rs.getString("last_name")));
+
+		JpaPagingItemReader
+			Utilise JPA pour récupérer des entités via pagination.
+			Exemple :
+			  JpaPagingItemReader<Person> reader = new JpaPagingItemReader<>();
+			  reader.setEntityManagerFactory(emf); // Injecte EntityManager
+			  reader.setQueryString("SELECT p FROM Person p"); // JPQL
+			  reader.setPageSize(10); // Taille des pages
+
+Writers
+		FlatFileItemWriter
+			Écrit dans un fichier CSV ou texte
+			Exemple :
+			  FlatFileItemWriter<Person> writer = new FlatFileItemWriter<>();
+			  writer.setResource(new FileSystemResource("output.csv"));
+			  writer.setLineAggregator(new DelimitedLineAggregator<>() {{
+				  setDelimiter(","); // Délimiteur CSV
+				  setFieldExtractor(new BeanWrapperFieldExtractor<>() {{
+					  setNames(new String[]{"firstName", "lastName"}); // Champs à écrire
+				  }});
+			  }});
+
+		JdbcBatchItemWriter
+			Écriture en lot dans une table SQL
+			Exemple :
+			  JdbcBatchItemWriter<Person> writer = new JdbcBatchItemWriter<>();
+			  writer.setDataSource(dataSource); // Connexion JDBC
+			  writer.setSql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)");
+			  writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
+
+		JpaItemWriter
+			Persiste les objets dans une base via JPA
+			Exemple :
+			  JpaItemWriter<Person> writer = new JpaItemWriter<>();
+			  writer.setEntityManagerFactory(emf); // EntityManager injecté automatiquement
+
+processors
+
+	ItemProcessor<T, R>
+	  Transforme les objets entre la lecture et l’écriture
+	  Exemple : convertir les noms en majuscule
+
+	CompositeItemProcessor
+	  Permet de chaîner plusieurs processors
+	  Exemple : transformer puis filtrer un objet
+
+	ValidatingItemProcessor
+	  Valide les objets à l’aide d’un validateur
+	  Exemple : ignorer les objets invalides ou lever une exception
+
+

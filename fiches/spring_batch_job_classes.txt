@@ -1,0 +1,51 @@
+
+///////////////// spring batch principales classes/interfaces /////////////////
+
+JobLauncher
+	Permet de démarrer un Job avec des paramètres
+	Méthode principale :
+		JobExecution run(Job job, JobParameters jobParameters);
+
+Job
+	Représente un processus batch.
+	Typiquement construit avec JobBuilderFactory
+	Peut contenir une ou plusieurs étapes (Step)
+
+JobInstance
+	Une instance unique d’un job avec un ensemble spécifique de paramètres
+	Ne change pas si on relance le job avec les mêmes paramètres
+
+JobExecution
+	Représente l'exécution d’une JobInstance
+	Contient les statuts (COMPLETED, FAILED, STOPPED, etc.)
+
+Step
+	Une unité de travail dans un job
+	Peut contenir des composants : ItemReader, ItemProcessor, ItemWriter
+
+JobOperator
+	Interface haut niveau pour contrôler les jobs au runtime
+	Méthodes principales :
+		long start(String jobName, String parameters);
+		void stop(long executionId);
+		long restart(long executionId);
+		String getJobParameters(long executionId);
+		Set<String> getJobNames();
+		List<Long> getRunningExecutions(String jobName);
+		
+	JobOperator est utile dans des contextes comme une interface d’administration ou des scripts externes
+
+JobRegistry
+	Interface permettant de retrouver des instances de jobs par leur nom
+	Méthodes principales :
+	Job getJob(String name);
+		void register(JobFactory jobFactory);
+		void unregister(String jobName);
+
+JobExplorer
+	Fournit un accès en lecture seule aux métadonnées des jobs et étapes
+	Permet de récupérer les exécutions passées sans affecter l’état
+
+JobRepository
+	Stocke toutes les métadonnées des jobs (exécutions, statuts, etc.)
+	Utilisé en interne par JobLauncher et autres composants

@@ -1,0 +1,163 @@
+
+/////////////// spring batch /////////////////////
+
+Objectif : créer un batch d'import de duplicatas en base de données, à partir d'un fichier; le batch n'importera que les duplicatas dont le montant est supérieur à 4500 euros
+
+///////////// configuration préalable //////////////
+
+Ajouter la dépendance spring-boot-starter-batch :
+
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-batch</artifactId>
+	</dependency>
+	
+Copier le fichier duplicatas.csv (dans le dossier ressources de github) dans src/main/resources
+
+Ajouter dans le fichier application.properties :
+
+	spring.batch.jdbc.initialize-schema=always
+	spring.batch.job.enabled=false
+
+/////////////// Configuration ItemReader, ItemProcessor, ItemWriter, Step et Job ///////////
+
+Créer un package com.formation.batch
+
+Créer une classe DuplicataBatchConfig annotée avec @Configuration dans package com.formation.batch, avec les attributs suivants : 
+	private JobRepository jobRepository;
+	private PlatformTransactionManager transactionManager;
+	private EntityManagerFactory entityManagerFactory;
+	
+Ajouter un constructeur dans DuplicataBatchConfig :
+
+	public DuplicataBatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+			EntityManagerFactory entityManagerFactory) {
+		this.jobRepository = jobRepository;
+		this.transactionManager = transactionManager;
+		this.entityManagerFactory = entityManagerFactory;
+	}
+	
+Ajouter le bean de type ItemReader (en charge de la lecture du flux d'entrée et du mapping en objet): 
+
+	@Bean
+	public FlatFileItemReader<Duplicata> reader() {
+		FlatFileItemReader<Duplicata> itemReader = new FlatFileItemReader<>();
+		itemReader.setResource(new FileSystemResource("src/main/resources/duplicatas.csv"));
+		itemReader.setName("csvReader");
+		itemReader.setLinesToSkip(1);
+		itemReader.setLineMapper(lineMapper());
+		return itemReader;
+	}
+	
+	Ajouter la méthode lineMapper() : 
+
+		private LineMapper<Duplicata> lineMapper() {
+			DefaultLineMapper<Duplicata> lineMapper = new DefaultLineMapper<>();
+
+			DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
+			lineTokenizer.setDelimiter(",");
+			lineTokenizer.setStrict(false);
+			lineTokenizer.setNames("id", "userId", "montant", "pdfurl");
+
+			BeanWrapperFieldSetMapper<Duplicata> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+			fieldSetMapper.setTargetType(Duplicata.class);
+
+			lineMapper.setLineTokenizer(lineTokenizer);
+			lineMapper.setFieldSetMapper(fieldSetMapper);
+			return lineMapper;
+
+		}
+	
+Ajouter le bean de type ItemProcessor (en charge d'appliquer les régles métiers du batch) :
+
+	@Bean
+	public ItemProcessor<Duplicata,Duplicata> processorMoreThan4500(){
+		return ((duplicata) -> {
+			if(duplicata.getMontant()> 4500) {
+	            return duplicata;
+	        }else{
+	            return null;
+	        }
+		});
+	}
+	
+Ajouter le bean de type ItemWriter (en charge de l'écriture du resulat issu de l'ItemProcessor ou ItemReader): 
+
+	@Bean
+	public JpaItemWriter<Duplicata> writer() {
+		 // ItemWriter adapté à JPA
+		 JpaItemWriter<Duplicata> jpaItemWriter = new JpaItemWriter<>();
+		    jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+		    return jpaItemWriter;
+	}
+	
+Ajouter le bean de type Step :
+
+	@Bean
+	public Step stepImportMoreThan4500() {
+		return new StepBuilder("step-csv-import", jobRepository)
+				.<Duplicata, Duplicata>chunk(10, transactionManager)
+				.reader(reader())
+				.processor(processorMoreThan4500())
+				.writer(writer())
+				.build();
+	}
+
+Ajouter le bean de type Job : 
+
+	@Bean("jobFilterMoreThan4500")
+	public Job jobFilterMoreThan4500() {
+		return new JobBuilder("importDuplicatasMoreThan4500", jobRepository)
+				.flow(stepImportMoreThan4500())
+				.end()
+				.build();
+	}
+
+	
+//////////////// Configuration du controlleur pour les jobs ////////////////////////////
+
+Ajouter la classe DuplicataBatchControlleur dans le package com.formation.web
+
+Annoter la classe DuplicataBatchControlleur avec :
+	@RestController
+	@RequestMapping("/jobs")
+	
+Ajouter dans la classe DuplicataBatchControlleur les attributs :
+
+	@Autowired
+	private JobLauncher jobLauncher;
+	
+	@Autowired
+	private Job jobFilterMoreThan4500;
+	
+	
+Ajouter un nouveau endpoint de type GET pour déclencher l'exécution du job :
+
+	@GetMapping("/importDuplicatasMoreThan4500")
+	public void importDuplicatasMoreThan4500() {
+		JobParameters jobParameters = new JobParametersBuilder().addLong("Debut", System.currentTimeMillis())
+				.toJobParameters();
+		try {
+			jobLauncher.run(jobFilterMoreThan4500, jobParameters);
+		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
+				| JobParametersInvalidException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
