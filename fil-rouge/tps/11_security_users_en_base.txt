@@ -1,0 +1,127 @@
+ 
+///////// l'application a accès à la base des users ///////////////
+ 
+Les utilisateurs (login + mot de passe + role) se trouvent en base de données à laquelle a accès l'application (accès aux logins et mots de passe des users). Voici comment procéder
+
+ 
+copier le précédent projet et renommer le en 11_security_users_en_base
+
+supprimer les lignes suivantes dans WebSecurityConfig:
+
+		@Bean
+		public UserDetailsService userDetailsService() {
+			UserDetails user = User.builder().username("user").password(passwordEncoder().encode("user"))
+					.roles("USER").build();
+			UserDetails admin = User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN")
+					.build();
+			return new InMemoryUserDetailsManager(user, admin);
+		}
+ 
+Créer classe users dans le package com.formation.domain : 
+
+	package com.formation.domain;
+
+	import jakarta.persistence.Column;
+	import jakarta.persistence.Entity;
+	import jakarta.persistence.Id;
+
+	@Entity
+	public class Users {
+
+		@Id
+		private String id;
+		@Column(name = "username")
+		private String username;
+		@Column(name = "password")
+		private String password;
+		@Column(name = "authorities")
+		private String authorities;
+		@Column(name = "enabled")
+		private int enabled;
+		public String getId() {
+
+		// générer les getters/setters et toString
+		
+	}
+
+Ajouter une classe UsersRepository dans le package com.formation.repository
+	@Repository
+	public interface UsersRepository extends JpaRepository<Users, Integer> {
+		Users findByUsername(String username);
+	}
+	
+Créer une classe CustomDatabaseUserDetailsService dans le package com.formation.service qui implémente l'interface UserDetailsService
+
+On va implémenter dans la classe CustomDatabaseUserDetailsService la logique de récupération d'un utilisateur en base : implémenter la méthode UserDetails loadUserByUsername(String username) 
+		Dans l'implémentation, il faut extraire de la base le user avec le username passé en paramètre de la méthode. Il faut retourner un objet de type UserDetails avec les infos username, password et roles (colonne authorities)
+		
+	package com.formation.config;
+
+	import java.util.Arrays;
+	import java.util.List;
+	import java.util.stream.Collectors;
+
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.security.core.authority.SimpleGrantedAuthority;
+	import org.springframework.security.core.userdetails.UserDetails;
+	import org.springframework.security.core.userdetails.UserDetailsService;
+	import org.springframework.security.core.userdetails.UsernameNotFoundException;
+	import org.springframework.stereotype.Service;
+
+	import com.formation.domain.Users;
+	import com.formation.repository.UsersRepository;
+
+	@Service
+	public class CustomDatabaseUserDetailsService implements UserDetailsService {
+	
+		@Autowired
+		UsersRepository userRepository;
+
+		@Override
+		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+			// récuperer les infos du user en base de données (avec uniquement le username)
+			Users user = userRepository.findByUsername(username);
+			
+			// récuppération des roles
+			List<String> roles = Arrays.asList(user.getAuthorities());
+			List<SimpleGrantedAuthority> grantedAuthorities = roles.stream()
+					.map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
+			
+			// retourner un objet de type User
+			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+					grantedAuthorities);
+		}
+	}
+
+Définir les beans suivants dans WebSecurityConfig :
+
+	@Bean
+	public static PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+		return customDatabaseUserDetailsService; 
+	}
+
+	@Bean
+    public DaoAuthenticationProvider authenticationProvider(CustomDatabaseUserDetailsService customDBUserDetailsService) {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(bean_CustomDBUserDetailsService); 
+        auth.setPasswordEncoder(bean_passwordEncoder); 
+        return auth;
+    }
+	
+	
+Ajouter dans le fichier data.sql dans src/main/resources le contenu :
+ 
+	insert into users (id, username, password, enabled, authorities) values('11111','admin', '$2y$10$34Kwd1MEnwBKQc9dLng4de1DaaqNxPqbpefyiPWQvYEFGsoH/kiAa', 1, 'ROLE_ADMIN');
+insert into users (id, username, password, enabled, authorities) values('2222','user', '$2y$10$mrGKOvK8f/PykCV6eKTd.efJoBaWzeQvsc6rDgkiRoidjwmuP5azq', 1, 'ROLE_USER');
+
+Ajouter dans le fichier application.properties :
+	spring.jpa.hibernate.ddl-auto=create
+	spring.jpa.defer-datasource-initialization=true
+	
+	
+Tester
