@@ -1,0 +1,151 @@
+
+
+//////////////////// SPRING CACHE exemple avec app BIBLIOTHÈQUE DE LIVRES //////////////////////////////
+
+Configuration de base
+
+	@Configuration
+	@EnableCaching
+	public class CacheConfig {
+		// Si vous utilisez un fournisseur comme Redis, Caffeine, etc., configurez ici les beans 
+	}
+
+ Annotations de Cache
+
+	@Cacheable
+		- Met en cache le résultat d'une méthode.
+		- La méthode n’est appelée que si la valeur n’est pas déjà dans le cache.
+
+		Attributs :
+		- value / cacheNames : noms de cache
+		- key : SpEL pour la clé
+		- condition : mise en cache seulement si condition true
+		- unless : exclut du cache si true
+		- sync : évite double appel (4.3+)
+
+	@CachePut
+		- Met à jour le cache avec le résultat, méthode TOUJOURS appelée.
+
+	@CacheEvict
+		- Supprime une entrée du cache
+		- allEntries = true → vide tout le cache
+		- beforeInvocation = true → supprime avant exécution
+
+	@Caching
+		- Combine plusieurs annotations
+
+Exemple Complet – App Bibliothèque
+
+		@Service
+		public class LivreService {
+
+			@Autowired
+			private LivreRepository livreRepository;
+
+			// Lire depuis le cache ou DB
+			@Cacheable(value = "livres", key = "#id")
+			public Livre getLivreById(Long id) {
+				return livreRepository.findById(id).orElse(null);
+			}
+
+			// Ajouter ou mettre à jour un livre et le mettre en cache
+			@CachePut(value = "livres", key = "#livre.id")
+			public Livre enregistrerLivre(Livre livre) {
+				return livreRepository.save(livre);
+			}
+
+			// Supprimer un livre et l’evincer du cache
+			@CacheEvict(value = "livres", key = "#id")
+			public void supprimerLivre(Long id) {
+				livreRepository.deleteById(id);
+			}
+
+			// Vider tout le cache des livres
+			@CacheEvict(value = "livres", allEntries = true)
+			public void viderCacheLivres() {}
+
+			private void simulateSlowService() {
+				try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
+			}
+		}
+
+Astuces
+
+	Utilisation SpEL : 
+	  key = "#livre.titre + '-' + #livre.auteur"
+
+	Pour éviter de cacher les null :
+	  unless = "#result == null"
+
+	Combinaison des annotations avec @Caching :
+	  utile si vous voulez mettre en cache sur deux noms, ou évincer un et mettre à jour un autre ...
+
+
+	Ne pas cachez les méthodes modifiant l’état (ex : save, delete) avec @Cacheable
+
+	Ne cachez pas les données sensibles sans TTL ou invalidation régulière
+
+	Pour les clés complexes, créez votre propre KeyGenerator :
+		@Bean
+		public KeyGenerator customKeyGen() {
+			return (target, method, params) -> Arrays.stream(params).map(Object::toString).collect(Collectors.joining("-"));
+		}
+
+		Et l'utiliser comme ça => keyGenerator = "customKeyGen"
+
+////////////////// types de cache ///////////////////////////////
+
+Cache par défaut de Spring
+	avec @EnableCaching sans config explicite => Spring Boot utilise ConcurrentMapCacheManager (cache en mémoire) avec ces caractéristiques :
+		Basé sur `ConcurrentHashMap`
+		Simple, rapide pour dev/test
+		Pas de TTL
+		Pas distribué
+		Clés gérées automatiquement
+		
+On peut intégrer un fournisseur de cache plus robuste comme Redis
+
+Intégration d’un cache Redis dans Spring Boot
+
+	Ajouter dépendence 
+		<dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		
+	Installer Redis
+		Exemple avec docker : docker run --name redis-cache -p 6379:6379 -d redis
+		
+	Configurer spring avec redis (application.properties ou application.yml)
+		spring:
+		  cache:
+			type: redis
+		  redis:
+			host: localhost
+			port: 6379
+			
+	Configurer le bean pour définir par exemple le TTL ...
+		@Configuration
+		@EnableCaching
+		public class RedisCacheConfig {
+
+			@Bean
+			public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+				RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
+					.entryTtl(Duration.ofMinutes(10))
+					.disableCachingNullValues();
+
+				Map<String, RedisCacheConfiguration> cacheConfigs = new HashMap<>();
+				cacheConfigs.put("livres", defaultConfig.entryTtl(Duration.ofMinutes(5)));
+				cacheConfigs.put("auteurs", defaultConfig.entryTtl(Duration.ofHours(1)));
+
+				return RedisCacheManager.builder(connectionFactory)
+					.cacheDefaults(defaultConfig)
+					.withInitialCacheConfigurations(cacheConfigs)
+					.build();
+			}
+		}
+
+
+
+
