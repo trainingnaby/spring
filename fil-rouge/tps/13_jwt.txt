@@ -5,7 +5,7 @@ copier le tp 11_security_users_en_base et renommer le en 13_security_jwt
 
 On va utiliser une authentification stateless avec un jeton JWT
 Les clients se connectent d'abord sur un endpoint avec leur username et leur password pour récupérer un token JWT. ce endpoint
-authentifie le client avec la classe AuthenticationManager (interface implémenté par ProviderManager) et génére un jwt avec dans les claims le username et le role du user. Ensuite il envoievce token au client
+authentifie le client avec le composant AuthenticationManager (interface implémentée par ProviderManager) et génére un jwt avec dans les claims le username et le role du user. Ensuite il envoievce token au client
 
 Le client va utiliser ce token pour appeler les différents endpoints de l'application, en ajoutant dans le header Authorization :
 Bearer valeur_du_token_généré
