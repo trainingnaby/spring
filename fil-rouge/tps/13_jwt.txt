@@ -13,7 +13,7 @@ Bearer valeur_du_token_généré
 Lorsque Spring recoit la requête, un filtre spéciale, qu'on va coder, va intercepter la requête et en extraire la valeur du header Authorization et le decoder; 
 il va d'abord vérifier la validité du token (points de vérification : vérifier la signature, verifier le date n'est pas expiré ...) et si tout est ok, 
 en extraire le username et le role; il va ensuite instancier un objet Authentication (avec isAuthenticated=true) dans le contexte spring security pour 
-donner l'information au reste des composants de spring security que le processus de login est ok et complète : à partir de là, laucun filtre spring 
+donner l'information au reste des composants de spring security que le processus de login est ok et complète : à partir de là, aucun filtre spring 
 ne cherchera à authentifier la requete. Et enfin la vérification de l'accès aux ressources ou non sera avec le role qui a été extraite du token 
 
 
