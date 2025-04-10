@@ -16,6 +16,7 @@ en extraire le username et le role; il va ensuite instancier un objet Authentica
 donner l'information au reste des composants de spring security que le processus de login est ok et complète : à partir de là, aucun filtre spring 
 ne cherchera à authentifier la requete. Et enfin la vérification de l'accès aux ressources ou non sera avec le role qui a été extraite du token 
 
+Schéma classique : requête sur une ressource (/jobs par exemple) => filtre => AuthenticationManager => (itére sur la liste des providers enregistrées pour essayer d'authentifier le user) => un provider match avec le type d'authentification => appel de la méthode authenticate => appel du userDetailsService pour charger le user en base => croisement des infos en base avec celles rentrées lors du login => si ok, création d'un objet Authentication avec isAuthenticated=true
 
 ///////////////// Ajouter des librairies utilitaires pour JWT ////////////////////////
 		<dependency>
