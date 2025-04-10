@@ -1,0 +1,29 @@
+
+/////////////////// Spring Cache ////////////////////////
+
+COpier et renommer le projet précédent en  15_cache
+
+Objectif : Créer un cache sur le service listeDuplicatas
+
+1 - activer le cache avec Spring
+	Ajouter dans la classe Application, l'annotation @EnableCaching
+	
+2 - Ajouter sur la méthode listDuplicatas de la classe DuplicataService :
+	@Cacheable("duplicatas")
+	
+3 - Ajouter sur la méthode getDuplicata de la classe DuplicataService :
+	@Cacheable("duplicata")
+	
+4 - Créer une méthode pour vider le cache "duplicatas" :
+
+
+	@CacheEvict(value = "duplicatas", allEntries = true)
+	public void flushCacheDuplicatas() {}
+	
+	
+5 - Ajouter dans le controlleur un endpoint pour vider le cache "duplicatas"
+
+	
+Tester
+		
+	

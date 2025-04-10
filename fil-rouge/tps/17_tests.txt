@@ -1,0 +1,343 @@
+ 
+//////////////// tests unitaires /////////////////
+
+On va bypasser spring security lors des tests. Pour ce faire, on va définir un nouveau bean de type FilterChainProxy qui autorisera tous les appels; vce bean ne sera chargé que pour les tests
+
+Créer un package com.formation.config dans src/test/java
+
+Créer dans ce package la classe suivante :
+
+	@TestConfiguration
+	public class WebSecurityConfigTest {
+		
+		@Bean("securityFilterChainTests")
+		SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		   return  http.authorizeHttpRequests(auth -> auth
+					.anyRequest().permitAll()
+					)
+			.headers((headers) -> headers.frameOptions((frame) -> frame.disable())) // necessaire pour H2
+			.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+			.cors(cors -> cors.disable())
+			.build();
+		
+		}
+
+	}
+	
+////////////// tests unitaires couche controller ////////////////
+
+Créer un package com.formation.web dans src/test/java
+
+Créer dans ce package la classe :
+
+		package com.formation.web;
+
+		import static org.hamcrest.CoreMatchers.is;
+		import static org.mockito.ArgumentMatchers.anyInt;
+		import static org.mockito.ArgumentMatchers.anyString;
+		import static org.mockito.Mockito.when;
+		import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+		import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+		import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+		import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+		import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+		import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+		import java.util.ArrayList;
+		import java.util.Arrays;
+		import java.util.List;
+
+		import org.junit.jupiter.api.Test;
+		import org.junit.jupiter.api.extension.ExtendWith;
+		import org.springframework.beans.factory.annotation.Autowired;
+		import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+		import org.springframework.boot.test.mock.mockito.MockBean;
+		import org.springframework.context.annotation.Import;
+		import org.springframework.http.MediaType;
+		import org.springframework.test.context.junit.jupiter.SpringExtension;
+		import org.springframework.test.web.servlet.MockMvc;
+
+		import com.fasterxml.jackson.databind.ObjectMapper;
+		import com.formation.config.WebSecurityConfigTest;
+		import com.formation.domain.Duplicata;
+		import com.formation.dto.DuplicataDto;
+		import com.formation.service.DuplicataService;
+
+		@Import(WebSecurityConfigTest.class)
+		@ExtendWith(SpringExtension.class)
+		@WebMvcTest(DuplicataControlleur.class) // permet d’initialiser un contexte partiel
+		public class DuplicataControlleurTest {
+
+			@Autowired
+			private MockMvc mockMvc;
+
+			@MockBean
+			private DuplicataService duplicataService;
+
+			@Autowired
+			private ObjectMapper objectMapper;
+
+			@Test
+			public void testListDuplicatas() throws Exception {
+				
+				Duplicata duplicata1 = new Duplicata();
+				duplicata1.setId("AA");
+				duplicata1.setMontant(3000);
+				duplicata1.setPdfurl("https://pdf.url");
+				duplicata1.setUserId("AAB");
+				
+				Duplicata duplicata2 = new Duplicata();
+				duplicata2.setId("AA");
+				duplicata2.setMontant(3000);
+				duplicata2.setPdfurl("https://pdf.url");
+				duplicata2.setUserId("AAB");
+				
+				List<Duplicata> duplicatas = new ArrayList<Duplicata>();
+				duplicatas.add(duplicata1);
+				duplicatas.add(duplicata2);
+				
+				when(duplicataService.listDuplicatas()).thenReturn(Arrays.asList(duplicata1, duplicata2));
+				
+				mockMvc.perform(get("/duplicatas"))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$").isArray());
+				
+			}
+		}	
+
+Tester
+
+AJouter les méthodes pour tester les endpoints : 
+	POST /duplicatas?user_id=toto&montant=2000
+	POST /duplicatas_dto
+	
+Tester 
+
+////////////// tests couche service ////////////////
+
+Créer un package com.formation.service dans src/test/java
+
+Ajouter y la classe suivante :
+		
+		package com.formation.service;
+		import static org.junit.jupiter.api.Assertions.assertEquals;
+		import static org.mockito.ArgumentMatchers.any;
+		import static org.mockito.Mockito.when;
+
+		import java.util.Arrays;
+		import java.util.List;
+
+		import org.junit.jupiter.api.Test;
+		import org.junit.jupiter.api.extension.ExtendWith;
+		import org.mockito.InjectMocks;
+		import org.mockito.Mock;
+		import org.mockito.junit.jupiter.MockitoExtension;
+
+		import com.formation.domain.Duplicata;
+		import com.formation.repository.DuplicataRepository;
+
+		@ExtendWith(MockitoExtension.class)
+		public class DuplicataServiceTest {
+			
+			@Mock
+			DuplicataRepository duplicataRepository;
+			
+			@InjectMocks
+			DuplicataService duplicataService ;
+			
+			@Test
+			public void testListDuplicatas() throws Exception {
+				
+				Duplicata duplicata1 = new Duplicata();
+				duplicata1.setId("luc");
+				duplicata1.setMontant(2000);
+				duplicata1.setPdfurl("https://pdf.url");
+				duplicata1.setUserId("luc");
+				
+				Duplicata duplicata2 = new Duplicata();
+				duplicata2.setId("andre");
+				duplicata2.setMontant(3000);
+				duplicata2.setPdfurl("https://pdf.url");
+				duplicata2.setUserId("andre");
+				
+				
+				when(duplicataRepository.findAll()).thenReturn(Arrays.asList(duplicata1, duplicata2));
+				List<Duplicata> listDuplicatas = duplicataService.listDuplicatas();
+				
+				assertEquals(listDuplicatas.size(), 2);
+				assertEquals(listDuplicatas.get(0).getId(), "luc");
+				assertEquals(listDuplicatas.get(1).getId(), "andre");
+				assertEquals(listDuplicatas.get(0).getMontant(), 2000);
+				assertEquals(listDuplicatas.get(1).getMontant(), 3000);
+				
+			}
+
+		}
+
+Tester
+
+Compléter cette classe avec un test unitaire sur la méthode :
+	duplicataService.createDuplicata("toto", 2000)
+	
+Tester
+	
+////////////// tests couche repository ////////////////
+
+Créer un package com.formation.repository dans src/test/java
+
+Ajouter y la classe suivante :
+
+			package com.formation.repository;
+
+			import static org.assertj.core.api.Assertions.assertThat;
+
+			import java.util.List;
+
+			import org.junit.jupiter.api.AfterEach;
+			import org.junit.jupiter.api.Assertions;
+			import org.junit.jupiter.api.BeforeEach;
+			import org.junit.jupiter.api.Test;
+			import org.junit.jupiter.api.extension.ExtendWith;
+			import org.springframework.beans.factory.annotation.Autowired;
+			import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+			import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+			import com.formation.domain.Duplicata;
+
+			@DataJpaTest
+			@ExtendWith(SpringExtension.class)
+			public class DuplicataRepositoryTest {
+				
+				@Autowired
+				DuplicataRepository duplicataRepository;
+				
+				@BeforeEach
+				public void setUp() {
+					
+
+					Duplicata duplicata1 = new Duplicata();
+					duplicata1.setId("naby");
+					duplicata1.setMontant(3000);
+					duplicata1.setPdfurl("https://pdf.url");
+					duplicata1.setUserId("naby");
+					
+					Duplicata duplicata2 = new Duplicata();
+					duplicata2.setId("alain");
+					duplicata2.setMontant(3000);
+					duplicata2.setPdfurl("https://pdf.url");
+					duplicata2.setUserId("alain");
+					
+					duplicataRepository.save(duplicata1);
+					duplicataRepository.save(duplicata2);
+				}
+				
+				@AfterEach
+				public void destroy() {
+					duplicataRepository.deleteAll();
+				}
+				
+
+			}
+
+Tester 
+
+Compléter cette classe avec un test sur la méthode :
+	duplicataRepository.findAll()
+	
+Tester
+////////////////////// tests d'intégration ///////////////////////
+
+Créer un package com.formation.integration dans src/test/java
+
+Ajouter y la classe suivante :
+
+			package com.formation.integration;
+
+			import static org.junit.jupiter.api.Assertions.assertEquals;
+
+			import java.util.List;
+			import java.util.Objects;
+
+			import org.junit.jupiter.api.BeforeAll;
+			import org.junit.jupiter.api.Test;
+			import org.springframework.beans.factory.annotation.Autowired;
+			import org.springframework.boot.test.context.SpringBootTest;
+			import org.springframework.boot.test.web.client.TestRestTemplate;
+			import org.springframework.boot.test.web.server.LocalServerPort;
+			import org.springframework.context.annotation.Import;
+			import org.springframework.core.ParameterizedTypeReference;
+			import org.springframework.http.HttpEntity;
+			import org.springframework.http.HttpHeaders;
+			import org.springframework.http.HttpMethod;
+			import org.springframework.http.MediaType;
+			import org.springframework.http.ResponseEntity;
+			import org.springframework.test.context.jdbc.Sql;
+
+			import com.fasterxml.jackson.core.JsonProcessingException;
+			import com.fasterxml.jackson.databind.ObjectMapper;
+			import com.formation.config.WebSecurityConfigTest;
+			import com.formation.domain.Duplicata;
+			import com.formation.dto.DuplicataDto;
+			import com.formation.repository.DuplicataRepository;
+			import com.formation.service.DuplicataService;
+
+			@Import(WebSecurityConfigTest.class)
+			@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+			public class DuplicataEndpointsIntegrationTest {
+
+				@LocalServerPort
+				private int port;
+
+				@Autowired
+				private TestRestTemplate restTemplate;
+
+				@Autowired
+				private DuplicataRepository duplicataRepository;
+
+				@Autowired
+				private DuplicataService duplicataService;
+
+				private static HttpHeaders headers;
+
+				private final ObjectMapper objectMapper = new ObjectMapper();
+
+				@BeforeAll
+				public static void init() {
+					headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_JSON);
+				}
+				private String generateUrl() {
+					return "http://localhost:" + port;
+				}
+				
+				@Test
+				@Sql(statements = "INSERT INTO duplicata(id, user_id, montant, pdfurl) VALUES ('1110', 'Leonidas', 7500, 'https://pdf.com')", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+				@Sql(statements = "DELETE FROM duplicata WHERE user_id='Leonidas'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+				public void testListDuplicatas() {
+					
+					HttpEntity<String> entity = new HttpEntity<>(null, headers);
+					ResponseEntity<List<Duplicata>> response = restTemplate.exchange(
+							generateUrl()+"/duplicatas", HttpMethod.GET, entity, new ParameterizedTypeReference<List<Duplicata>>(){});
+					List<Duplicata> duplicatasLit = response.getBody();
+					
+					assert duplicatasLit != null;
+					assertEquals(response.getStatusCodeValue(), 200);
+					assertEquals(duplicatasLit.size(), duplicataService.listDuplicatas().size());
+					assertEquals(duplicatasLit.size(), duplicataRepository.findAll().size());
+				}
+				
+				@Test
+				@Sql(statements = "DELETE FROM duplicata WHERE user_id='Leonidas'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+				public void testCreateDuplicata() throws JsonProcessingException {
+					
+					// A compléter 
+				}
+			}
+			
+Tester
+
+Compléter la méthode testCreateDuplicata
+
+Tester
