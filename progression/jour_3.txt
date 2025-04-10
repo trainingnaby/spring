@@ -1,0 +1,15 @@
+
+
+/////////////// jour 3 //////////////////
+
+Spring Data Jpa
+	configuration de repository
+	auto génération de méthodes
+
+Spring Batch
+	
+Spring security
+	configuration des routes sécurisées
+	referentiel de users en mémoire
+	referentiel de users en base de données accessible
+	referentiel de users via ws

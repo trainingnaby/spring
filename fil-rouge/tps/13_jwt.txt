@@ -1,0 +1,214 @@
+
+////////// Authentification avec JWT ////////////////
+
+copier le tp 11_security_users_en_base et renommer le en 13_security_jwt
+
+On va utiliser une authentification stateless avec un jeton JWT
+Les clients se connectent d'abord sur un endpoint avec leur username et leur password pour récupérer un token JWT. ce endpoint
+authentifie le client avec la classe AuthenticationManager et génére un jwt avec dans les claims le username et le role du user. Ensuite il envoievce token au client
+
+Le client va utiliser ce token pour appeler les différents endpoints de l'application, en ajoutant dans le header Authorization :
+Bearer valeur_du_token_généré
+
+Lorsque Spring recoit la requête, un filtre spéciale, qu'on va coder, va intercepter la requête et en extraire la valeur du header Authorization et le decoder; il va d'abord vérifier la validité du token (points de vérification : vérifier la signature, verifier le date n'est pas expiré ...) et si tout est ok, en extraire le username et le role; il va ensuite instancier un objet Authentication (avec isAuthenticated=true) dans le contexte spring security pour donner l'information au reste des composants de spring security que le processus de login est ok et complète : à partir de là, laucun filtre spring ne cherchera à authentifier la requete. Et enfin la vérification de l'accès aux ressources ou non sera avec le role qui a été extraite du token 
+
+
+///////////////// Ajouter des librairies utilitaires pour JWT ////////////////////////
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.4.0</version>
+		</dependency>
+
+
+/////////////////////// Ajouter la classe utilitaire pour générer/verifier/extraire pour le JWT ///////////////////////
+
+package com.formation.service;
+
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+
+@Component
+public class JwtServiceAsym {
+	
+	private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(20);
+
+    private final Algorithm hmac512;
+    private final JWTVerifier verifier;
+
+    public JwtServiceAsym(@Value("${jwt.secret}") final String secret) {
+        this.hmac512 = Algorithm.HMAC512(secret);
+        this.verifier = JWT.require(this.hmac512).build();
+    }
+
+    public String generateToken(final String username, final List<String> roles) {
+        final Instant now = Instant.now();
+        return JWT.create()
+                .withSubject(username)
+                .withIssuer("app")
+                .withIssuedAt(now)
+                .withExpiresAt(now.plusMillis(JWT_TOKEN_VALIDITY.toMillis()))
+                .withClaim("roles", roles) // 👈 Ajouter les rôles ici
+                .sign(this.hmac512);
+    }
+
+    public String validateTokenAndGetUsername(final String token) {
+        try {
+            return verifier.verify(token).getSubject();
+        } catch (final JWTVerificationException verificationEx) {
+            System.out.println("token invalid: " + verificationEx.getMessage());
+            return null;
+        }
+    }
+    
+    public List<String> getRoles(String token) {
+        try {
+            return verifier.verify(token).getClaim("roles").asList(String.class);
+        } catch (Exception e) {
+            return List.of(); 
+        }
+    }
+
+
+
+}
+
+/////////////////////////// Ajouter dans application.properties la clé pour signer le jwt /////////////////////////////
+
+jwt.secret=5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+
+
+///////////////////// AJouter le filtre JWT qui va intercepter la requête, extraire et valider le JWT  ///////////////////////////////
+
+package com.formation.filter;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.formation.service.CustomDatabaseUserDetailsService;
+import com.formation.service.JwtServiceAsym;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class FiltreJwt extends OncePerRequestFilter {
+
+	@Autowired
+	private JwtServiceAsym jwtServiceAsym;
+
+	@Autowired
+	private CustomDatabaseUserDetailsService userDetailsService;
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+	        throws ServletException, IOException {
+
+	    final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+	    if (header == null || !header.startsWith("Bearer ")) {
+	        chain.doFilter(request, response);
+	        return;
+	    }
+
+	    final String token = header.substring(7);
+	    final String username = jwtServiceAsym.validateTokenAndGetUsername(token);
+	    if (username == null || SecurityContextHolder.getContext().getAuthentication() != null) {
+	        chain.doFilter(request, response);
+	        return;
+	    }
+
+	    List<String> roles = jwtServiceAsym.getRoles(token);
+
+	    List<SimpleGrantedAuthority> authorities = roles.stream()
+	            .map(SimpleGrantedAuthority::new)
+	            .collect(Collectors.toList());
+
+	    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+	            username, null, authorities);
+	    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+	    SecurityContextHolder.getContext().setAuthentication(authToken);
+
+	    chain.doFilter(request, response);
+	}
+
+}
+
+
+///////////////////////////// modifications dans WebSecurityConfig /////////////////////////////
+
+Dans WebSecurityConfig.java, on va activer l'authentification stateless et brancher notre filtre FiltreJwt dans la chaine SecurityFilterChain :
+
+	 .sessionManagement(session ->
+		 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // gestion de session statelesss : JWT
+			.addFilterBefore(filtreJwt, UsernamePasswordAuthenticationFilter.class) // ajouter un nouveau filtre qui se chargera de l'interception du jwt
+		// enregistrer le provider
+		.authenticationProvider(authenticationProvider())
+		
+		
+On va aussi exposer le bean AuthenticationManager qui permettra de déclencher une authentification dans le controlleur : 
+
+@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+	
+	
+////////////////////////// Ajout du endpoint pour générer un token //////////////////////////////////
+
+Dans DuplicataControlleur, Ajouter un endpoint qui permettra de générer un token JWT :
+	ce endpoint recevra un username et un password
+	va tenter de loguer le user avec ces paramètres via AuthenticationManager
+	Et si le login se passe bien, va générer un jeton JWT via la classe utilaire et le renvoyer à l'utilisateur
+
+
+/////////////////////////////////// Tests //////////////////////////////////
+
+Tester que ça fonctionne bien
+
+///////////////////// Tests avec @PreAuthorize //////////////////////////////
+
+Activer la sécurité sur les méthodes avec  @EnableMethodSecurity sur une classe configuration ou la classe démarrage Spring
+
+Ajouter dans les méthodes de lancement de jobs de la classe service @PreAuthorize("hasRole('ROLE_ADMIN')")
+
+Mettre en Authenticated les urls correspondants
+
+Tester
