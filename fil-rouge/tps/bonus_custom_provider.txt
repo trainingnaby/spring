@@ -1,0 +1,37 @@
+
+/////////////////// Authentification par header custom /////////////////////////
+
+L'objetctif est de permettre à un administrfateur de s'authentifier via un header custom nommé X-Custom-klee.
+Si la valeur de ce header est YO!, l'authentification est ok et on attribue le role admin automatiquement à ce user 7
+
+
+/////////////////// Créer un nouveau type de token d'authentification //////////////////////////
+
+Créer une classe étendant AbstractAuthenticationToken et définir un attribut de type String headerValue
+
+Créer un constructeur prenant en arguement un String et mettant à jour l'attribut headerValue avec la valeur de cette argument
+
+
+Créer un constructeur prenant en arguement un string et une collection de GrantedAutorities. Mettre à jour l'attribut
+headerValue et les authorities 
+
+
+/////////////////// Provider /////////////////////////
+
+Créer un nouveau Provider qui gérera cette nouvelle maniére de s'authentifier
+
+
+////////////////// filtre ////////////////////////
+
+Créer un nouveau filtre qui interceptera la requeête et vérifiera la présence du header X-Custom-klee et et
+déclenchera l'authentification 
+
+
+////////////////////// Mise à jour de la sécurityFilter ////////////////////
+
+Mettre à jour la securityFilter pour enregistrer le filtre (on peut le placer avant le filtre JWT)
+Il faudra aussi enregistrer le nouveau provider
+
+
+
+
