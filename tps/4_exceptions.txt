@@ -1,0 +1,14 @@
+/////////// Gestion des exceptions ////////////////
+
+Copier le projet  3_validation et renommer le en 4_exceptions
+
+Ajouter un gestionnaire d'exceptions annoté avec @RestControllerAdvice
+
+Y traiter les exceptions de type :
+
+	MethodArgumentNotValidException
+	ConstraintViolationException
+	UserException
+	
+	
+	

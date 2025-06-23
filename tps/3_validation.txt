@@ -1,0 +1,43 @@
+
+/////////// Utilisation des validation ////////////////
+
+Copier le projet  2_rest et renommer le en 3_validation
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 3_validation
+
+Ajouter les librairies suivantes dans le fichier pom.xml :
+
+	<dependency>
+		<groupId>org.hibernate.validator</groupId>
+		<artifactId>hibernate-validator</artifactId>
+		<version>8.0.0.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish.expressly</groupId>
+		<artifactId>expressly</artifactId>
+		<version>5.0.0</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-validation</artifactId>
+	</dependency>
+
+
+Ajouter dans les classes DuplicataDto et UserDto les annotations pour valider les attributs
+
+	  @NotBlank
+      @Min(10)
+      @Max(50) 
+	  ...
+	  
+Ajouter @Valid avant le paramètre associé à la payload sur les endpoints concernés :
+	public Duplicata createDuplicata_dto(@RequestBody @Valid DuplicataDto duplicataDto) {
+	
+/////////////// validation sur les paramètres (@RequestParam et @PathVariable) /////////////
+
+Ajouter sur DuplicataControlleur et UserControlleur l'annotation @Validated
+
+Utiliser les annotations de validation sur les paramétres @RequestParam et @PathVariable : 
+	@RequestParam @NotBlank String numeroFiscal ...
+	
