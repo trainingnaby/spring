@@ -1,0 +1,97 @@
+
+/////////// Objectif du projet : application de génération de duplicatas d'impots ////////////
+
+Créer un projet spring boot 1_init
+
+Créer les packages suivantes : 
+	com.formation.domain
+	com.formation.service
+	com.formation.repository
+	com.formation.web
+	com.formation.config
+	com.formation.exception
+	com.formation.dto
+
+
+Créer les classes suivantes avec leurs attributs dans le package com.formation.domain :
+
+	Addresse
+		String idAddresse;
+		String ville;
+		int codePostal;
+		String rue;
+		int numero;
+		
+	Duplicata
+		String id;
+		String numeroFiscal;
+		Integer montant;
+		String pdfUrl;
+		Year annee:
+
+		
+	AppUser
+		String id;
+		String numeroFiscal;
+		String username;
+		String password;
+		String authorities;
+		int enabled;
+		Addresse addresse;
+	
+Ajouter les getters/setters/toString pour chacune des classes créés
+
+Pour la premiere étape, on utilisera des listes en mémoire pour les objets créés
+
+Créer les classes suivantes avec leurs attributs et méthodes (à implementer) dans le package com.formation.service : 
+
+	UserService
+	
+		public AppUser findByNumeroFiscal(String numeroFiscal) => cherche un user en base de données à partir du numeroFiscal. Pour le moment, instancier simplement un objet avec un id random et retourner ce user 
+		
+		List<AppUser> findAllUsers()
+		
+		AppUser createUser(String numeroFiscal, String username, String password)
+
+	DuplicataService
+	
+		public List<Duplicata> listDuplicatas()
+		
+		public void supprimerDuplicata(Duplicata duplicata)
+		
+		public Duplicata getDuplicata(String id) 
+		
+		public List<Duplicata> getDuplicatas() => retourne la liste des duplicatas créés
+		
+		public Duplicata createDuplicata(String numeroFiscal, int montant, int annee) => crée un duplicata et le sauvergarde. Avant de créer le duplicata, il faut vérifier si un user associé au numeroFiscal en paramètre existe; lever une exception de type UserException dans le cas contraire
+		
+
+Metter les bonnes annotations dans les classes et leurs dépendances et vérifier que l'app démarre bien
+
+Ajouter la dépendance suivante (pour avoir notamment les annotations @PostConstruct et @PreDestroy):
+
+	<dependency>
+		<groupId>jakarta.annotation</groupId>
+		<artifactId>jakarta.annotation-api</artifactId>
+		<version>2.1.1</version>
+	</dependency>
+
+Créer une classe DummyDuplicatas dans le package com.formation.service. La déclarer comme bean
+
+Créer une méthode dans DummyDuplicatas pour y initialiser quelques duplicatas au démarrage de l'application si le profil est "dev"
+
+Tester
+
+
+
+
+
+
+
+
+
+
+
+
+
+

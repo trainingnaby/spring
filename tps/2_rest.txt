@@ -1,0 +1,45 @@
+
+/////////////// intégration de services REST ///////////////
+
+Copier le projet  1_init et renommer le en 2_rest
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 2_rest
+
+Créer une classe DuplicataControlleur dans le package com.formation.web 
+Annoter la classe DuplicataControlleur avec @RequestMapping("/api")
+
+Exposer dans cette classe les endpoints REST suivantes :
+
+	GET /duplicatas => retourne l'ensemble des duplicatas
+	
+	GET /duplicata/{id} => retourne un duplicata via son id
+	
+	POST /duplicata => crée un duplicata en récupérant les éléments du duplicata à créer 
+		dans les paramètres de requête
+		
+	POST /duplicata/{numeroFiscal}/{montant}/{annee}  => crée un duplicata en récupérant 
+		les éléments du duplicata à créer dans les paths de l'url
+		
+	POST /duplicata/dto => crée un duplicata en prenant les éléments dans un payload json
+		Créer une classe DuplicataDto qui servira de modele pour le payload json
+		dans le package com.formation.dto
+
+	
+	POST /user/dto => crée un user en prenant les éléments du user dans un payload json
+		Créer une classe UserDto qui servira de modele pour le payload json
+		dans le package com.formation.dto
+	
+Tester avec Postman 
+
+//////////// Négociation de contenu /////////////////////
+
+Ajouter la librairie suivante dans le fichier pom.xml :
+	<dependency>
+		<groupId>com.fasterxml.jackson.dataformat</groupId>
+		<artifactId>jackson-dataformat-xml</artifactId>
+		<version>2.15.0</version>
+	</dependency>
+	
+Tester avec Postman en récupérant/envoyant du json ou xml via les headers Accept et Content-Type
+
+
