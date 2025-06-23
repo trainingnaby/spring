@@ -1,0 +1,117 @@
+
+/////////// Ajout de Spring data jpa ////////////////
+
+Copier le projet  4_exceptions et renommer le en 5_data_jpa
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 5_data_jpa
+
+Ajouter dans le fichier pom.xml :
+
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
+	</dependency>
+
+	<dependency>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+		<scope>runtime</scope>
+	</dependency>
+		
+JPA est la spécification Java pour le mapping objet/relationnel. Hibernate en est l'implémentation de référence. Il existe d'autres implémentations comme EclipseLink ou TopLink
+
+Spring Data JPA n'est pas une implémentation de JPA; Il rend plus simple l'utilisation de JPA. Spring Data JPA utilise en interne Hibernate
+
+/////////// définition des entités //////////////////
+
+Annoter les classes Duplicata, AppUser et Addresse avec @Entity (package jakarta.persistence)
+
+Annoter les ids des classes avec @Id
+
+Ajouter une relation one to one unidirectionnel à l'attribut addresse de la classe AppUser
+
+Créer une interface DuplicataRepository de type JpaRepository dans le package com.formation.repository : 
+
+	public interface DuplicataRepository extends JpaRepository<Duplicata,String>
+	
+Declarer DuplicataRepository comme bean
+
+Créer avec la même méthode les repositories AddresseRepository et AppUserRepository
+
+///////////// Mise à jour de la couche service ///////////////
+
+Modifier les classes DuplicataService, AppUserService pour utiliser les repositories à la place des listes
+
+/////////////// configuration de la base et hibernate ///////////////
+
+Ajouter dans le fichier application.properties le contenu : 
+
+	spring.datasource.driver-class-name=org.h2.Driver
+	spring.datasource.url=jdbc:h2:mem:dbduplicata
+	spring.datasource.username=sa
+	spring.datasource.password=sa
+
+	spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+	spring.jpa.show-sql=true
+	#spring.jpa.properties.hibernate.format_sql=true
+	spring.jpa.hibernate.ddl-auto=create
+
+Tester les endpoints
+
+
+/////////////// pagination et tri /////////////////////
+
+Ajouter dans la classe DuplicataService la méthode :
+
+	public Page<Duplicata> findAllByPaging(Pageable paging) {
+		return duplicataRepository.findAll(paging);
+	}
+	
+	
+Ajouter un endpoint pour récupérer les duplicatas par lots. En paramètre de la requête, on fournira le numero de page et le total de pages que le consommateur du service voudra. Instancier un objet de type Pageable avec ces deux paramètres, que l'on passera en paramètre de findAll. Voir documentation : 
+	https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html
+	https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/PageRequest.html
+
+
+	GET /duplicatas/paging
+
+Ajouter un 	endpoint pour récupérer tous les duplicatas triés sur le montant :  utiliser la méthode findAll(Sort sort) de DuplicataRepository
+
+Tester
+
+//////////////// Utilisation des méthodes dérivées ///////////////
+
+Ajouter dans DuplicataRepository les méthodes suivantes :
+
+	public int countByMontantGreaterThan(int value); 
+	
+	public List<Duplicata> findAllByMontantLessThan(int montantMinimum); 
+
+	public List<Duplicata> findFirst10ByOrderByMontantDesc(); 
+
+	public List<Duplicata> findByNumeroFiscalContaining(String partialNumeroFiscal); 
+
+	boolean existsByMontantGreaterThan(int maxValue); 
+	
+	
+Ajouter les endpoints correspondants
+
+Tester
+
+/////////////// utilisation des query /////////////////////
+
+Ajouter les méthodes suivantes dans DuplicataRepository :
+
+	@Query("SELECT d FROM Duplicata d")
+	Page<Duplicata> findAllWithPagination(Pageable pageable);
+	
+	@Query(value = "SELECT * FROM duplicata", nativeQuery = true)
+	Page<Duplicata> findAllWithPaginationNative(Pageable pageable);
+	
+Tester avec des endpoints dédiés
+
+
+
+		
+
+	

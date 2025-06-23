@@ -1,0 +1,62 @@
+/////////// Utilisation des projections ////////////////
+
+Copier le projet  5_data_jpa et renommer le en 6_data_jpa_projections
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 6_data_jpa_projections
+
+////////// projection simple par interface ////////////
+Documentation
+	https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html
+
+Créer une interface AppUserProjection dans un package com.formation.projection 
+	Y déclarer les accesseurs des attributs numeroFiscal, userName et authorities de la classe AppUser
+
+Ajouter une méthode dans AppUserRepository pour récupérer tous les users avec la projection AppUserProjection
+
+Tester en exposant un endpoint dédié dans UserControlleur
+
+//////////// projection imbriquées par interface //////////////
+
+Créer une interface UserAddresseProjection dans com.formation.projection
+
+Implémenter cette interface comme une projection uniquement les attributs numeroFiscal, userName, authorities et addresse 
+
+Tester cette projection sur une méthode de l'interface AppUserRepository avec du sql pour récupérer tous les users
+
+Ajouter dans la couche service et controlleur
+
+Tester en exposant un endpoint dédié dans UserControlleur
+
+
+/////////////// projection par classe ///////////////////
+
+Créer une classe UserProjectionDto dans le package com.formation.projection. Y ajouter les attributs :
+
+	private String numeroFiscal;
+	private String username;
+	private String authorities;
+	
+Ajouter un constructeur prenant en argument numeroFiscal, un userName et authorities et y initialiser chaque attribut correspondant
+
+Ajouter les getters/setters, equals et hashcode
+
+Utiliser UserProjectionDto comme projection dans la classe AppUserRepository sur la méthodes pour lister les users
+
+
+/////////////////// projection dynamique ////////////////////////
+
+Ajouter la méthode suivante dans AppUserRepository : 
+
+	<T> T findByNumeroFiscal(String userName, Class<T> type);
+	
+Tester cette projection dynamique via la AppUserService
+
+
+
+
+
+
+
+
+ 
+
