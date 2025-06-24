@@ -15,6 +15,8 @@ public interface AppUserRepository extends JpaRepository<AppUser,Long>{
 	//select * from app_users where numero_fiscal = 'numero_fiscal'
 	Optional<AppUser> findByNumeroFiscal(String numeroFiscal);
 	
+	AppUser findByUsername(String username);
+	
 	List<UserProjectionDto> findAllProjectedBy();
 	
 	AppUserProjection findByNumeroFiscalContaining(String numeroFiscal);

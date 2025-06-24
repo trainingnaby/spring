@@ -22,15 +22,13 @@ public class UserControlleur {
 	@Autowired
 	UserService userService;
 	
-	@PostMapping("/user/dto")
-	public AppUser createDuplicataDto(@RequestBody @Valid UserDto userDto) throws UserException {
+	@PostMapping("/createuser")
+	public AppUser createDuplicataDto(@RequestBody UserDto userDto) throws UserException {
 		return userService.createUser(userDto.getNumeroFiscal(), 
 				userDto.getUsername(), userDto.getPassword());
 	}
 	
-	
-
-	@GetMapping("/users/projection")
+	@GetMapping("/usersprojection")
 	public List<UserProjectionDto> listUsersProjected(){
 		return userService.listUserProjection();
 	}
