@@ -1,0 +1,84 @@
+/////////// Spring data elasticsearch ////////////////
+
+Copier le projet  6_data_jpa_projections et renommer le en 7_data_elasticsearch
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 7_data_elasticsearch
+
+Ajouter dans le fichier pom.xml :
+
+		dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+		
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-docker-compose</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+
+Créer à la racine du projet un fichier docker-compose.yml avec le contenu :
+
+
+	version: '3.8'
+	services:
+	  elasticsearch:
+	    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+	    container_name: duplicata_elastic_container
+	    environment:
+	      - discovery.type=single-node
+	      - xpack.security.enabled=false
+	    ports:
+	      - 9200:9200
+	    networks:
+	      - es-net
+
+	  kibana:
+	    image: docker.elastic.co/kibana/kibana:8.11.0
+	    container_name: kibana
+	    environment:
+	      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+	    ports:
+	      - 5601:5601
+	    networks:
+	      - es-net
+
+	networks:
+	  es-net:
+	    driver: bridge
+	
+	
+
+//////////// création des documents //////////////////
+
+Créer une classe DuplicataDocument dans le package com.formation.domain avec les attributs :
+
+	private String id;
+	private String numeroFiscal;
+	private Integer montant;
+	private String pdfUrl;
+	private Year annee;
+	
+	Annoter l'attribut id avec @Id (du package org.springframework.data.annotation.Id). Annoter la classe avec @Document(indexName = "duplicatas")
+
+	Ajouter les getters/setters/toString de la classe DuplicataDocument
+
+Ajouter une classe DuplicataElasticRepository dans le package com.formation.repository
+	public interface DuplicataElasticRepository extends ElasticsearchRepository<DuplicataDocument, String> 
+
+	
+Ajouter les méthodes auto générées
+	findById
+	findByNumeroFiscal
+	
+Ajouter dans la classe DuplicataService, dans la méthode createDuplicata, le code pour persister aussi dans l'index ElasticSearch le duplicata 
+
+Ajouter dans DuplicataControlleur deux nouveaux endpoints pour récupérer un document ou tous les documents
+	
+	GET /duplicata/document/{id}
+	GET /duplicata/documents
+	
+
+Tester

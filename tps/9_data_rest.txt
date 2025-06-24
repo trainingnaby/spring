@@ -1,0 +1,40 @@
+
+/////////// spring data rest ////////////////
+
+Copier le projet  7_hateoas et renommer le en 8_data_rest
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 8_data_rest
+
+Supprimer tous les packages, sauf :
+	com.formation.domain
+	com.formation.repository
+	
+	
+Supprimer la classe DuplicataElasticRepository
+
+supprimer le fichier docker-compose.yml
+
+supprimer les dépendence maven spring-boot-docker-compose et spring-boot-starter-data-elasticsearch
+
+Ajouter les dépendences suivantes (spring-boot-starter-data-jpa est déja présente normalement) :
+
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
+	</dependency>
+
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-rest</artifactId>
+	</dependency>
+
+
+Remplacer l'annotation @Repository par @RepositoryRestResource sur toutes les classes du package com.formation.repository
+
+Supprimer le contenu de toutes les interfaces du package com.formation.repository (ne laisser que la définition des interfaces)
+
+Lancer l'application et afficher les endpoints sur http://localhost:8080
+
+Tester les endpoints 
+
+Tester les endpoints avec pagination
