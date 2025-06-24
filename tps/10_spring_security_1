@@ -1,3 +1,9 @@
+Ajouter la dépendence spring security :
+    <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 Créer les rules spring security suivantes :
 
   Les pagess "/genererDuplicata", "/api/duplicata/dto" sont accessibles uniquement par le role ADMIN
