@@ -7,7 +7,7 @@ Ajouter la dépendence spring security :
 Créer les rules spring security suivantes :
 
   Les pagess "/genererDuplicata", "/api/duplicata/dto" sont accessibles uniquement par le role ADMIN
-  Les pages "/", "/css/**", "/js/**, "h2-console/**, "/actuator/**" sont accessibles à tous
+  Les pages "/", "/css/**", "/js/**, "h2-console/**, "/actuator/**", "/user/dto" sont accessibles à tous
   Tous le reste des pages doivent être authentifiés
 
 Implementer l'interface UserDetailsService pour rechercher le user associé au username connecté et le retourner l'objet approprié
