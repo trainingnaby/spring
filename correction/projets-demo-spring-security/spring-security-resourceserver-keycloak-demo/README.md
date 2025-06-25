@@ -1,0 +1,18 @@
+
+Projet pour démontrer l'utilisation d'une application comme client JWT 
+
+Préalable : créer un client sur keycloack et des users
+	Le client sur client doit avoir ces attributs (laisser le reste par défaut):
+		Client authentication : off
+		Standard flow non coché
+		Direct access grants coché
+		
+///////////// flow ////////////////
+
+Le client demande un token jwt à keycloak, exemple (à importer sur postman) : 
+	curl -X POST "http://localhost:8080/realms/spring-avancee-23-juin-2025/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "client_id=spring-resource-client" -d "grant_type=password" -d "username=ng-user" -d "password=user"
+	
+Ensuite il utilise la valeur du token (à extraire de la réponse) pour appeler les endpoints sécurisés (à importer sur postman):
+	curl --location 'http://localhost:8082/private' \
+	--header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpUG5HeEszS20tVmd3U0JqSnJ1c24yVU56cUlhNTNzTGJLLTNEVmZPMi13In0.eyJleHAiOjE3NTA4MzEyODQsImlhdCI6MTc1MDgzMDk4NCwianRpIjoiM2E5ZmM4N2MtODNkNi00YTc5LWJjZTQtMTY0MmVkMjNhN2U2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zcHJpbmctYXZhbmNlZS0yMy1qdWluLTIwMjUiLCJhdWQiOlsic3ByaW5nLWlkMiIsImFjY291bnQiXSwic3ViIjoiZTVlZjMyNTctMGFjOC00YzhiLWI3YWUtZmJiZjk4MWExMTRlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic3ByaW5nLXJlc291cmNlLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJmNjU5YzYwYS04Yzk3LTQyNTMtOGMyNy0yMmM4MzIwYzUxNzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLXNwcmluZy1hdmFuY2VlLTIzLWp1aW4tMjAyNSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJzcHJpbmctaWQyIjp7InJvbGVzIjpbIlJPTEVfVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiZjY1OWM2MGEtOGM5Ny00MjUzLThjMjctMjJjODMyMGM1MTc2IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJuZy11c2VyLWZpcnN0bmFtZSBuZy11c2VyLWxhc3RuYW1lIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibmctdXNlciIsImdpdmVuX25hbWUiOiJuZy11c2VyLWZpcnN0bmFtZSIsImZhbWlseV9uYW1lIjoibmctdXNlci1sYXN0bmFtZSIsImVtYWlsIjoibmctdXNlckB0ZXN0LmNvbSJ9.A3_EFAYCdv6L2BgMI6_IyvsEs6cfO_Xfn5a_3awDrIh6epUmr_Ys9cZFSxKHVs5GAvbINiZad52IFxB_FtFRgHiN5IKxfa0xC3eo4yM7gj3nlktUTGl65EFoybYJdYALQ3hLcldbmyzYclIU2RhMiXNKXkd5i_R3_6hdZAFiDJXJB4DHIflCn5Df4VO8ONyyYq954w6n0-gqEBukubxE0iC6WV_kH-n8wVwyIbkgecJfWT8MhjBS0NeSIE8ybhyRAmrjoMFsbgKQmtXV0z83YYoFKtVJRwOr--WaEs2uL_RGvxfnTUwLtoLqr5EbFcf-GYXo6CvYObEd8RgP7LOnAA' \
+	--header 'Cookie: JSESSIONID=886E658E94FB79C6B6B746EC36AADE60'
