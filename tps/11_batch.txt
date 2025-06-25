@@ -1,0 +1,9 @@
+
+/////////////// spring batch /////////////////////
+
+Objectif : créer un batch d'import de duplicatas en base de données, à partir d'un fichier; le batch n'importera que les duplicatas dont le montant est supérieur à 4500 euros
+
+
+
+
+
