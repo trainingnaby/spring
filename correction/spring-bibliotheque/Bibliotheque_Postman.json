@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "Bibliotheque API Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Livres",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/livres"
+        }
+      }
+    },
+    {
+      "name": "Create Livre",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"titre\": \"Nouveau Livre\", \"isbn\": \"1234567890123\", \"emprunte\": false, \"archive\": false}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/livres"
+        }
+      }
+    },
+    {
+      "name": "Archiver Livre",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:8080/api/livres/1/archiver"
+        }
+      }
+    },
+    {
+      "name": "Search Livre",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/livres/search?keyword=java"
+        }
+      }
+    },
+    {
+      "name": "Get All Critiques",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/critiques"
+        }
+      }
+    },
+    {
+      "name": "Create Critique",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"resume\": \"Tr\\u00e8s bon livre.\", \"score\": 5}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/critiques"
+        }
+      }
+    }
+  ]
+}

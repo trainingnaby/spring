@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body>
+<h1>Accueil - Bibliothèque</h1>
+
+<h2>Gestion des Livres</h2>
+<ul>
+  <li><a th:href="@{/web/livres}">Liste des Livres</a></li>
+  <li><a th:href="@{/web/livres/new}">Ajouter un Livre</a></li>
+</ul>
+
+<h2>Gestion des Critiques</h2>
+<ul>
+  <li><a th:href="@{/web/critiques}">Liste des Critiques</a></li>
+  <li><a th:href="@{/web/critiques/new}">Ajouter une Critique</a></li>
+  <li><a th:href="@{/web/critiques/view}">Visualiser les Critiques</a></li>
+</ul>
+
+<h2>Auteurs</h2>
+<ul>
+  <li><a th:href="@{/web/auteurs}">Liste des Auteurs</a></li>
+</ul>
+<h2>Elasticsearch & Kibana</h2>
+<ul>
+  <li><a href="http://localhost:9200/_cat/indices?v" target="_blank">Voir les indices Elasticsearch</a></li>
+  <li><a href="http://localhost:5601" target="_blank">Accéder à Kibana</a></li>
+</ul>
+
+<h2>Services REST</h2>
+<ul>
+  <li><a href="http://localhost:8080/api/livres" target="_blank">API Livres</a></li>
+  <li><a href="http://localhost:8080/api/critiques" target="_blank">API Critiques</a></li>
+  <li><a href="http://localhost:8080/api/auteurs" target="_blank">API Auteurs</a></li>
+  <li><a href="http://localhost:8080/api/livres/search?keyword=motclef" target="_blank">API livre ElasticSearch</a></li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body>
+<a th:href="@{/}">Accueil</a><br/>
+<h1 th:text="${critique.id} != null ? 'Modifier Critique' : 'Nouvelle Critique'"></h1>
+<form th:action="@{/web/critiques/save}" th:object="${critique}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <p>Résumé: <input type="text" th:field="*{resume}" /></p>
+    <p>Score: <input type="number" th:field="*{score}" /></p>
+    <p>Livre:
+        <select th:field="*{livre.id}">
+            <option th:each="livre : ${livres}" th:value="${livre.id}" th:text="${livre.titre}"></option>
+        </select>
+    </p>
+    <p><button type="submit">Enregistrer</button></p>
+</form>
+<a th:href="@{/web/critiques}">Retour à la liste des critiques</a>
+</body>
+</html>

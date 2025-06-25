@@ -1,0 +1,21 @@
+titre,isbn,datePublication,auteur,categorie
+Les Misérables,978-1234567890,1862-01-01,Victor Hugo,Roman
+Notre-Dame de Paris,978-1234567891,1831-01-01,Victor Hugo,Roman
+Germinal,978-1234567892,1885-01-01,Emile Zola,Roman
+L'Assommoir,978-1234567893,1877-01-01,Emile Zola,Roman
+Vingt mille lieues sous les mers,978-1234567894,1870-01-01,Jules Verne,Science-Fiction
+De la Terre à la Lune,978-1234567895,1865-01-01,Jules Verne,Science-Fiction
+Autre Livre 1,978-1234567896,2000-01-01,Auteur A,Poésie
+Autre Livre 2,978-1234567897,2001-01-01,Auteur A,Poésie
+Autre Livre 3,978-1234567898,2002-01-01,Auteur B,Essai
+Autre Livre 4,978-1234567899,2003-01-01,Auteur B,Essai
+Autre Livre 5,978-1234567810,2004-01-01,Victor Hugo,Roman
+Autre Livre 6,978-1234567811,2005-01-01,Emile Zola,Roman
+Autre Livre 7,978-1234567812,2006-01-01,Jules Verne,Science-Fiction
+Autre Livre 8,978-1234567813,2007-01-01,Auteur C,Poésie
+Autre Livre 9,978-1234567814,2008-01-01,Auteur D,Essai
+Autre Livre 10,978-1234567815,2009-01-01,Auteur D,Essai
+Autre Livre 11,978-1234567816,2010-01-01,Auteur E,Histoire
+Autre Livre 12,978-1234567817,2011-01-01,Auteur F,Biographie
+Autre Livre 13,978-1234567818,2012-01-01,Auteur G,Biographie
+Autre Livre 14,978-1234567819,2013-01-01,Auteur G,Biographie

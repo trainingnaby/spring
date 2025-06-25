@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body>
+<a th:href="@{/}">Accueil</a><br/>
+
+<h1>Liste des Livres</h1>
+
+<!-- Liens de tri -->
+<p>
+  Trier par :
+  <a th:href="@{/web/livres/sort/auteur}">Auteur</a> |
+  <a th:href="@{/web/livres/sort/date}">Date de Publication</a> |
+  <a th:href="@{/web/livres/sort/categorie}">Catégorie</a>
+</p>
+
+<a th:href="@{/web/livres/new}">Ajouter un Livre</a>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Titre</th>
+    <th>ISBN</th>
+    <th>Auteur</th>
+    <th>Catégorie</th>
+    <th>Actions</th>
+  </tr>
+  <tr th:each="livre : ${livres}">
+    <td th:text="${livre.id}">1</td>
+    <td th:text="${livre.titre}">Titre</td>
+    <td th:text="${livre.isbn}">ISBN</td>
+    <td>
+      <span th:text="${livre.auteur != null ? livre.auteur.nom : 'N/A'}"></span> <br/>
+      <a th:if="${livre.auteur != null}"
+         th:href="@{'/web/auteurs/' + ${livre.auteur.id} + '/livres'}">Voir Livres de cet auteur</a>
+    </td>
+    <td th:text="${livre.categorie != null ? livre.categorie.nom : 'N/A'}">Catégorie</td>
+    <td>
+      <a th:href="@{'/web/livres/detail/' + ${livre.id}}">Afficher</a> |
+      <a th:href="@{'/web/livres/edit/' + ${livre.id}}">Modifier</a> |
+      <a th:href="@{'/web/livres/delete/' + ${livre.id}}" onclick="return confirm('Confirmer ?');">Supprimer</a>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

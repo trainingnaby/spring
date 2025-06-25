@@ -1,0 +1,58 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: #f9f9f9;
+  color: #333;
+}
+
+h1, h2 {
+  color: #0073e6;
+}
+
+a {
+  color: #0073e6;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background: #0073e6;
+  color: white;
+}
+
+button, input[type="submit"] {
+  background: #0073e6;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover, input[type="submit"]:hover {
+  background: #005bb5;
+}
+
+form input, form select {
+  padding: 8px;
+  margin: 5px 0;
+  width: 100%;
+  box-sizing: border-box;
+}

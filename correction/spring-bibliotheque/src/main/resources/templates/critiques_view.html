@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body>
+<a th:href="@{/}">Accueil</a><br/>
+<h1>Visualisation des Critiques</h1>
+<table border="1">
+    <tr>
+        <th>ID</th><th>Résumé</th><th>Score</th><th>Livre</th>
+    </tr>
+    <tr th:each="critique : ${critiques}">
+        <td th:text="${critique.id}">1</td>
+        <td th:text="${critique.resume}">Résumé</td>
+        <td th:text="${critique.score}">5</td>
+        <td th:text="${critique.livre != null ? critique.livre.titre : 'N/A'}">Livre</td>
+    </tr>
+</table>
+<a th:href="@{/}">Retour Accueil</a>
+</body>
+</html>

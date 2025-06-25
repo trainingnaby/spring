@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body>
+<a th:href="@{/}">Accueil</a><br/>
+<h1 th:text="${livre.id} != null ? 'Modifier Livre' : 'Nouveau Livre'"></h1>
+<form th:action="@{/web/livres/save}" th:object="${livre}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <p>Titre: <input type="text" th:field="*{titre}" /></p>
+    <p>ISBN: <input type="text" th:field="*{isbn}" /></p>
+    <p>Date Publication: <input type="date" th:field="*{datePublication}" /></p>
+
+    <p>Auteur:
+        <select th:field="*{auteur.id}">
+            <option th:each="auteur : ${auteurs}" th:value="${auteur.id}" th:text="${auteur.nom}"></option>
+        </select>
+    </p>
+
+    <p>Catégorie:
+        <select th:field="*{categorie.id}">
+            <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
+        </select>
+    </p>
+
+    <p><button type="submit">Enregistrer</button></p>
+</form>
+<a th:href="@{/web/livres}">Retour à la liste des livres</a>
+</body>
+</html>

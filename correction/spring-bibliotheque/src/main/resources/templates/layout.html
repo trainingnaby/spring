@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <link rel="stylesheet" th:href="@{/style.css}" />
+  <title th:text="${title}">Bibliothèque</title>
+</head>
+<body>
+<nav>
+  <a th:href="@{/}">Accueil</a> |
+  <a th:href="@{/web/livres}">Livres</a> |
+  <a th:href="@{/web/critiques}">Critiques</a>
+</nav>
+<hr/>
+<div th:fragment="layout(content)">
+  <div th:insert="${content}"></div>
+</div>
+</body>
+</html>

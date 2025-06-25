@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body>
+<a th:href="@{/}">Accueil</a><br/>
+
+<h1>Détail du Livre</h1>
+
+<p><strong>ID :</strong> <span th:text="${livre.id}"></span></p>
+<p><strong>Titre :</strong> <span th:text="${livre.titre}"></span></p>
+<p><strong>ISBN :</strong> <span th:text="${livre.isbn}"></span></p>
+<p><strong>Date de publication :</strong> <span th:text="${livre.datePublication}"></span></p>
+
+<p><strong>Auteur :</strong>
+    <span th:text="${livre.auteur != null ? livre.auteur.nom : 'N/A'}"></span> <br/>
+    <a th:if="${livre.auteur != null}"
+       th:href="@{'/web/auteurs/' + ${livre.auteur.id} + '/livres'}">
+        Voir tous les livres de cet auteur
+    </a>
+</p>
+
+<p><strong>Catégorie :</strong>
+    <span th:text="${livre.categorie != null ? livre.categorie.nom : 'N/A'}"></span> <br/>
+    <a th:if="${livre.categorie != null}"
+       th:href="@{'/web/categories/' + ${livre.categorie.id} + '/livres'}">
+        Voir tous les livres de cette catégorie
+    </a>
+</p>
+
+<h2>Critiques associées</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Résumé</th>
+        <th>Score</th>
+    </tr>
+    <tr th:each="critique : ${critiques}">
+        <td th:text="${critique.id}">1</td>
+        <td th:text="${critique.resume}">Résumé</td>
+        <td th:text="${critique.score}">5</td>
+    </tr>
+</table>
+
+<a th:href="@{/web/livres}">Retour à la liste des livres</a>
+</body>
+</html>
