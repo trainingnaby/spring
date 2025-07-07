@@ -4,6 +4,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 
 import basics.beans.annotationconfig.Bateau;
+import basics.beans.factoryconfig.Batiment;
 import basics.beans.factoryconfig.Train;
 import basics.beans.xmlconfig.Avion;
 import basics.beans.xmlconfig.Voiture;
@@ -23,6 +24,9 @@ public class Main {
 		
 		Voiture voiture = (Voiture) context.getBean("ma_voiture");
 		voiture.bouger();
+		
+		Batiment batiment = (Batiment) context.getBean("batiment");
+		batiment.DonneesCoursBatiment();
 		
 		
 		context.close();

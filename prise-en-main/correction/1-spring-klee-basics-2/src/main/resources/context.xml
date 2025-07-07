@@ -12,10 +12,20 @@
 	<bean id="mon_moteur_diesel"
 		class="basics.beans.xmlconfig.MoteurDiesel" />
 
+	<bean id="mon_immatriculation"
+		class="basics.beans.xmlconfig.IleDeFranceImmatriculation" />
+
 	<bean id="ma_voiture" class="basics.beans.xmlconfig.Voiture">
+	
 		<property name="moteur">
 			<ref bean="mon_moteur_diesel" />
 		</property>
+		
+		<constructor-arg >
+			<ref bean="mon_immatriculation" />
+		</constructor-arg>
 	</bean>
+
+
 
 </beans> 
