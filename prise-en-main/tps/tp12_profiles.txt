@@ -1,0 +1,32 @@
+////////////// TP12 Profiles  ////////////////
+
+Créer un package basics.beans.annotationconfig.universite; ; les classes suivantes seront toutes créées dans ce package
+
+Créer une classe DonneesCours avec les attributs urlCours, responsable, salleCours : tous de type String
+	Ajouter les getters/Setters pour tous les attributs 
+	générer la méthode toString de classe DonneesCours
+	
+Créer une interface CursusConfig avec la méthode : 
+	public DonneesCours getDonneesCoursCursus();
+	
+Créer une classe MasterConfig implémentant CursusConfig
+	Annoter la classe MasterConfig avec @Profile("master") et @Configuration
+	Implémenter la méthode getDonneesCoursCursus de MasterConfig en créant un objet de type DonneesCours et en initialisant ses attributs 
+		(ex : DonneesCoursmaster.setResponsable("Responsable du master");
+	Annoter la méthode getDonneesCoursCursus avec @Bean("dataCursus")
+	
+Créer une classe LicenceConfig implémentant CursusConfig
+	Annoter la classe LicenceConfig avec @Profile("licence") et @Configuration
+	Implémenter la méthode getDonneesCoursCursus de LicenceConfig en créant un objet de type DonneesCours et en initialisant ses attributs 
+		(ex : DonneesCoursLicence.setResponsable("Responsable de la licence");
+	Annoter la méthode getDonneesCoursCursus avec @Bean("dataCursus")
+	
+Dans la classe App, recupérer le bean de nom dataCursus (et de type DonneesCours) et l'afficher
+
+
+Démarrer la classe avec le profil master ou licence	:
+	Utiliser l'argument -Dspring.profiles.active=master
+	
+Ajouter une configuration pour ne charger les beans déclarés dans le fichier XML que dans le profil master 
+
+NB :  pour définir un profile avec XML, il faut utiliser l'attribut profile de la balise beans
