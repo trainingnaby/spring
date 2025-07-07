@@ -1,0 +1,58 @@
+
+//////////////// création projet spring ////////////////
+
+Créer un projet Maven sur Eclipse (ou intellij)
+	File => new => other ... => Maven project => cocher "create a simple project (skip archetype selection) =>
+		group id => com.formation
+		archetype id  => 1-spring-klee-basics
+	=> finish
+
+Ajouter dans le fichier pom.xml la dépendance Spring context : 
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>6.0.9</version>
+			</dependency>	
+		</dependencies>
+
+Créer un package basics.beans.xmlconfig
+Créer un package basics.beans.annotationconfig
+Créer un package basics.beans.factoryconfig
+Créer un package basics.configuration
+Créer un package basics.main
+
+/////////////// TP1 configuration de beans avec xml //////////////
+
+Créer une interface Vehicule (dans package basics.beans.xmlconfig) avec une méthode :
+	public void bouger();
+	
+Créer une implémentation Avion (dans package basics.beans.xmlconfig) de l'interface Vehicule avec comme contenu pour la méthode bouger :
+	System.out.println ("je bouge en avion");
+
+Créer un fichier context.xml dans le dossier src/main/resources avec comme contenu :
+	
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:util="http://www.springframework.org/schema/util">
+
+		<bean id="avionBean" class="basics.beans.xmlconfig.Avion" />
+	
+
+	</beans> 
+
+Classe de test 
+	Créer une classe App (package basics.main) avec le contenu suivant :
+	
+		public static void main(String args[]) {
+			AbstractApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+			Avion avion = (Avion) context.getBean("avionBean");
+			avion.bouger();
+			context.close();
+		}
+		
+Tester
