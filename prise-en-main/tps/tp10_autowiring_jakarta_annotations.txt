@@ -1,0 +1,31 @@
+////////////// TP10 Autowiring avec les annotations @Resource, @Inject ////////////////	
+
+Dans le fichier pom.xml du projet, ajouter :
+
+	<dependency>
+		<groupId>jakarta.annotation</groupId>
+		<artifactId>jakarta.annotation-api</artifactId>
+		<version>2.1.1</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>jakarta.inject</groupId>
+		<artifactId>jakarta.inject-api</artifactId>
+		<version>2.0.1</version>
+	</dependency>
+
+Commenter l'annotation @Autowired sur l'attribut ville de la classe Pays :
+	// @Autowired
+	
+Ajouter sur l'attribut ville de la classe Pays l'annotation : 
+	@Resource(name = "ma_ville")
+	
+Tester 
+
+Commenter l'annotation @Resource(name = "ma_ville") sur l'attribut ville de la classe Pays :
+	// @Resource(name = "ma_ville")
+	
+Ajouter sur l'attribut ville de la classe Pays l'annotation : 
+	@Inject
+	
+Tester
