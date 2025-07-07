@@ -4,10 +4,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 
 import basics.beans.annotationconfig.Bateau;
+import basics.beans.annotationconfig.lieux.Pays;
 import basics.beans.factoryconfig.Batiment;
 import basics.beans.factoryconfig.Train;
 import basics.beans.xmlconfig.Avion;
 import basics.beans.xmlconfig.Voiture;
+import basics.beans.xmlconfig.jeu.Etudiant;
+import basics.beans.xmlconfig.jeu.Jeu;
 import basics.configuration.FactoryConfig;
 
 public class Main {
@@ -28,6 +31,14 @@ public class Main {
 		Batiment batiment = (Batiment) context.getBean("batiment");
 		batiment.DonneesCoursBatiment();
 		
+		Jeu jeu = (Jeu) context.getBean("mon_jeu");
+		System.out.println(jeu);
+		
+		Etudiant etudiant = (Etudiant) context.getBean("etudiant");
+		System.out.println(etudiant);
+		
+		Pays pays = (Pays) context.getBean("mon_pays");
+		System.out.println(pays);
 		
 		context.close();
 	}
