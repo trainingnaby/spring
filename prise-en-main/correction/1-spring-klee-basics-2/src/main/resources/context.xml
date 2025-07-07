@@ -1,4 +1,4 @@
-	<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
@@ -8,5 +8,14 @@
 
 	<bean id="avionBean" class="basics.beans.xmlconfig.Avion" />
 
+
+	<bean id="mon_moteur_diesel"
+		class="basics.beans.xmlconfig.MoteurDiesel" />
+
+	<bean id="ma_voiture" class="basics.beans.xmlconfig.Voiture">
+		<property name="moteur">
+			<ref bean="mon_moteur_diesel" />
+		</property>
+	</bean>
 
 </beans> 

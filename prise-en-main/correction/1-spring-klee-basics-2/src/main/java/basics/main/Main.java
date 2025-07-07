@@ -3,34 +3,28 @@ package basics.main;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import basics.beans.annotationconfig.Bateau;
 import basics.beans.factoryconfig.Train;
+import basics.beans.xmlconfig.Avion;
+import basics.beans.xmlconfig.Voiture;
 import basics.configuration.FactoryConfig;
 
 public class Main {
 	
 	public static void main(String args[]) {
-//		// crée l'application context à partir du fichier XML de configuration
-//		AbstractApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
-//		//Avion avion = (Avion) context.getBean("avionBean");
-//		Avion avion = context.getBean("avionBean", Avion.class);
-//		avion.bouger();
-//		//context.close();
-		
 		AbstractApplicationContext context = new AnnotationConfigApplicationContext(FactoryConfig.class);
-		Train train = context.getBean(Train.class); // Récupération du bean de type Train
-		System.out.println("Train bean recuperation 1: " + train);
-		Train train2 = context.getBean(Train.class);
-		System.out.println("Train bean recuperation 2: " + train2);
-		
-		// afficher tous les beans du contexte
-		String[] beanNames = context.getBeanDefinitionNames();
-		System.out.println("Beans dans le contexte :");
-		for (String beanName : beanNames) {
-			System.out.println(beanName);
-		}
-		
-		
+		Train train = (Train) context.getBean("trainBean");
 		train.bouger();
+		Avion avion = (Avion) context.getBean("avionBean");
+		avion.bouger();
+		
+		Bateau bateau = (Bateau) context.getBean("bateau");
+		bateau.bouger();
+		
+		Voiture voiture = (Voiture) context.getBean("ma_voiture");
+		voiture.bouger();
+		
+		
 		context.close();
 	}
 	
