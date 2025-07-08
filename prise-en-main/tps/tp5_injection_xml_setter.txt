@@ -1,0 +1,33 @@
+////////////// TP5 injection de dépendance via xml et setter ////////////////
+
+Créer une interface Moteur (package basics.beans.xmlconfig) avec la méthode : 
+	public void rouler();
+	
+Créer une implémentation MoteurDiesel (package basics.beans.xmlconfig) de l'interface Moteur avec le contenu suivant pour la méthode rouler :
+	System.out.println ("je roule au diesel ");
+	
+Créer une classe Voiture (package basics.beans.xmlconfig)
+	Ajouter un attribut moteur de type Moteur dans la classe Voiture
+	Ajouter un setter pour l'attribut moteur
+	Ajouter une méthode bouger dans la classe Voiture, avec le contenu suivant :
+		public void bouger(){
+			System.out.println (" Je suis une voiture et ...");
+			moteur.rouler();
+		}
+		
+Ajouter dans le fichier context.xml le contenu suivant (entre les balises <beans>) :
+
+	<bean id="mon_moteur_diesel" class="basics.beans.xmlconfig.MoteurDiesel" />
+ 
+	<bean id="ma_voiture" class="basics.beans.xmlconfig.Voiture">
+		<property name="moteur">
+			<ref bean="mon_moteur_diesel" />
+		</property>
+	</bean>
+	
+Dans la classe App, ajouter le contenu suivant (avant la fermeture du contexte) :
+
+	Voiture voiture = (Voiture) context.getBean("ma_voiture");
+	voiture.bouger();
+	
+Tester

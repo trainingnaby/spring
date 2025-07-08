@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util">
+
+	<bean id="avionBean" class="basics.beans.xmlconfig.Avion" />
+
+
+	<bean id="mon_moteur_diesel"
+		class="basics.beans.xmlconfig.MoteurDiesel" />
+
+	<bean id="mon_immatriculation"
+		class="basics.beans.xmlconfig.IleDeFranceImmatriculation" />
+
+	<bean id="ma_voiture" class="basics.beans.xmlconfig.Voiture">
+
+		<property name="moteur">
+			<ref bean="mon_moteur_diesel" />
+		</property>
+
+		<constructor-arg>
+			<ref bean="mon_immatriculation" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="joueur" class="basics.beans.xmlconfig.jeu.Joueur">
+		<property name="nom" value="Naby" />
+	</bean>
+
+	<bean id="mon_jeu" class="basics.beans.xmlconfig.jeu.Jeu"
+		autowire="byName" />
+
+	<bean id="addresse" class="basics.beans.xmlconfig.jeu.Addresse">
+		<property name="rue" value="rue de la Paix" />
+		<property name="ville" value="Paris" />
+	</bean>
+	
+	<bean id="etudiant" class="basics.beans.xmlconfig.jeu.Etudiant" autowire="byType"/>
+
+</beans> 
