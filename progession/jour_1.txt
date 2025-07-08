@@ -1,0 +1,45 @@
+
+Inversion de controle & Injection de dépendances
+    démonstration de l'intêret d'utiliser l'injection de dépendances dans un projet Java
+
+Spring Ioc (module de base de Spring fournissant l'injection de dépendances)
+
+    configuration du contexte Spring avec du XML
+
+    Configurationn du contexte Spring avec une classe de Java annotée avec @Configuration et des méthodes "usines" de beans : @Configuration, 
+    @Bean
+
+    Utilisation du scanning automatique pour les classes annotées avec @Component
+        Activation du scanning automatique avec la configuration Java avec @ComponentScan("com.formation")
+            equivalent en XML avec  <context:component-scan base-package="com.formation" />
+
+    Injection de dépendances explicites dans le contexte Spring
+
+        Pour la configuration XML :
+            Injection via constructeur, utilisation de :
+                <constructor-arg>
+                    <ref bean="mon_moteur_diesel" />
+                </constructor-arg>
+
+            Injection via setter, utilisation de :
+
+                <property name="moteur">
+                    <ref bean="mon_moteur_diesel" />
+                </property>
+
+        Pour la configuration avec une classe Java  :
+            Utilisation des méthodes usines de beans pour injecter explicitement les dépendances
+
+    Injection implicite de beans par Spring 
+        Par type,
+            Pour la configuration XML, utilisation de l'attribut autowire="ByType" de la balise bean
+	          Pour la configuration Java @Autowired
+	     Par nom
+	          Pour la configuration XML, utilisation de l'attribut autowire="ByName" de la balise bean
+	          Pour la configuration Java @Resource(name="nom_du_bean")
+	
+Autowiring avec les annotations Jakarta @Inject et @Resource
+
+Chargement de fichiers de properties : annotations @PropertySource, @Value, classe Environment
+
+Profiles : @Profile
