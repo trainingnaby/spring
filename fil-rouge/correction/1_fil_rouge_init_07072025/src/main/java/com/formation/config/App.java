@@ -11,10 +11,8 @@ public class App {
 		
 		AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 		DuplicataService duplicataService = context.getBean(DuplicataService.class);
-		duplicataService.createDuplicata("AAA", 2000);
-		duplicataService.createDuplicata("BBB", 3000);
-		duplicataService.createDuplicata("CCC", 4000);
 		
+		duplicataService.createDuplicata("WWWW", 1000);
 		System.out.println(duplicataService.getDuplicatas());
 	}
 

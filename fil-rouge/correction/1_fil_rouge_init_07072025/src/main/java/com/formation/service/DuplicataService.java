@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.formation.domain.Duplicata;
@@ -14,20 +15,22 @@ public class DuplicataService {
 	
 	private List<Duplicata> duplicatas = new ArrayList<>();
 	
-	@Autowired
 	private UserService userService;
+	
+	private String cdnUrl;
+	
+	public DuplicataService(UserService userService, @Value("${cdn.url}") String cdnUrl) {
+		this.cdnUrl = cdnUrl;
+		this.userService = userService;
+	}
 	
 	public List<Duplicata> getDuplicatas() {
 		return duplicatas;
 	}
 	
-	public DuplicataService(UserService userService) {
-		this.userService = userService;
-	}
-	
 	public Duplicata createDuplicata(String userId, int montant) {
 		// Simulate PDF generation and upload
-		String pdfUrl = "https://zzz/pdfs/dummy.pdf";
+		String pdfUrl = cdnUrl + "/pdfs/dummy.pdf";
 		
 		User user = userService.findById(userId);
 		if(user == null) {
