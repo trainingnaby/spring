@@ -1,0 +1,37 @@
+////////////////// TP15 @Lazy ////////////////////
+
+Créer un package basics.beans.annotationconfig.lazy; ; Toutes les nouvelles classes qui suivent seront créés dans ce package
+
+Créer une classe LazyClasse annotée avec @Component et @Lazy
+
+	Ajouter dans la classe LazyClasse un constructeur par défaut avec le contenu suivant : 
+		System.out.println("creation du bean lazy ...");
+		
+	Ajouter dans la classe LazyClasse la méthode suivante:
+		public void methodeLazy() {
+			System.out.println("Appel d'une méthode du bean lazy ...");
+		}
+	
+Créer une classe EagerClasse annotée avec @Component
+
+	Ajouter dans la classe EagerClasse un constructeur par défaut avec comme contenu :
+		System.out.println("Creation du bean EagerClasse aprés le chargement du contexte ...");
+
+	Ajouter dans la classe EagerClasse une méthode :
+
+		public void methodeEager() {
+			System.out.println("Appel d'une méthode du bean eager ...");
+		}
+	
+	
+Dans la classe App récupérer le bean de type LazyClasse et appeler la méthode methodeLazy
+
+Verifier le comportement entre les deux beans eager et lazy
+
+///////////////////// scope des beans @Scope ////////////////////
+
+Récupérer encore 2 fois le bean de type LazyClasse dans le contexte spring et appeler la méthode methodeLazy
+Tester 
+
+Annoter la classe LazyClasse avec @Scope("prototype")
+Retester et observer le resulat
