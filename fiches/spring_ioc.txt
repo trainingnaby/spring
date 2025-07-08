@@ -1,0 +1,56 @@
+
+==============================
+   SPRING IoC - pense-bête
+==============================
+
+1. Déclaration de Beans
+------------------------
+@Component           - Marque une classe comme composant Spring
+@Service             - Composant spécifique à la couche service
+@Repository          - Composant DAO, avec gestion des exceptions Spring
+
+2. Injection de Dépendances
+----------------------------
+@Autowired           - Injection automatique par type
+@Qualifier("name")   - Spécifie le nom du bean à injecter
+@Inject              - Alternative JSR-330 à @Autowired
+@Resource(name="..") - Injection par nom (JSR-250)
+@Value("${...}")     - Injection depuis un fichier de propriétés
+
+3. Portée des Beans
+--------------------
+@Scope("singleton")  - Un seul bean (par défaut)
+@Scope("prototype")  - Un nouveau bean à chaque injection
+@Scope("request")    - Un bean par requête HTTP
+@Scope("session")    - Un bean par session HTTP
+
+4. Cycle de Vie des Beans
+--------------------------
+@PostConstruct       - Méthode appelée après initialisation
+@PreDestroy          - Méthode appelée avant destruction
+
+5. Configuration Java-based
+----------------------------
+@Configuration        - Classe de configuration Spring
+@Bean                 - Déclare un bean dans @Configuration
+@ComponentScan(...)   - Spécifie les packages à scanner
+@Import(...)          - Importe une autre configuration Java
+@ImportResource(...)  - Importe un fichier XML de configuration
+
+6. Gestion de Propriétés
+-------------------------
+@PropertySource(...)         - Charge un fichier .properties
+@PropertySources({...})      - Plusieurs fichiers .properties
+
+7. Ordre et Conditions
+-----------------------
+@Order(value)                - Priorité entre composants ou aspects
+@Primary                     - Bean par défaut en cas de conflit
+@Lazy                        - Création différée du bean
+
+8. Divers
+----------
+@Lookup              - Injection dynamique d'un prototype
+@AliasFor            - Alias pour une autre annotation
+@Order               - Ordre d'exécution des beans ou aspects
+@Bean(initMethod=..., destroyMethod=...) - Cycle de vie personnalisé
