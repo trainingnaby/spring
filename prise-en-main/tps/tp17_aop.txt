@@ -1,0 +1,91 @@
+///////////////// TP13 Spring AOP /////////////////////
+
+Créer un nouveau projet maven 2-spring-basics-aop
+
+Ajouter dans le fichier pom.xml, les dépendances :
+
+	 <dependencies>
+		  <dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>6.0.9</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jakarta.annotation</groupId>
+				<artifactId>jakarta.annotation-api</artifactId>
+				<version>2.1.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jakarta.inject</groupId>
+				<artifactId>jakarta.inject-api</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>1.9.6</version>
+			</dependency>
+	</dependencies>
+
+Créer les packages suivantes :
+com.formation.aspects
+com.formation.service
+com.formation.config
+com.formation.main
+
+Créer une interface EnvoiService dans le package com.formation.service
+	public void envoyer(String msg);
+	
+Créer une classe EmailService implementant l'interface EnvoiService; voici le code de la méthode envoyer :
+
+	@Override
+	public void envoyer(String msg) {
+		System.out.println("Début envoi message par mail, details : ");
+		System.out.println("message : "+msg);
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Fin envoi message par mail");
+		
+	}
+	
+Créer une classe JmsService implementant l'interface EnvoiService; voici le code de la méthode envoyer :
+
+@Override
+	public void envoyer(String msg) {
+		System.out.println("Début envoi message par Jms, details : ");
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Fin envoi message par Jms");
+	}
+
+Ajouter les bonnes annotations et créer une classe de configuration (dans le package com.formation.config) afin de laisser Spring scanner et gérer les beans de type EmailService et JmsService
+
+Ajouter l'annotation @EnableAspectJAutoProxy sur la classe de configuration 
+
+Créer une classe MonAspect dans le package com.formation.aspects
+
+Annoter la classe MonAspect avec @Component et @Aspect
+
+Créer une méthode loguerTempsExecMethodeEnvoyer dans la classe MonAspect pour tracer le temps d"execution de la méthode envoyer() des beans de type EnvoiService : 
+
+	@Around("execution(* com.formation.*.*.envoyer(..))") // pointcut pour selectionner les méthodes qui seront interceptées par l'aspect
+	public Object loguerTempsExecMethodeEnvoyer(ProceedingJoinPoint joinPoint) throws Throwable {
+	
+		// Utiliser la classe StopWatch de Spring pour tracer la durée d'execution
+		// En faisant joinPoint.proceed(), on appelle la vraie méthode interceptée par l'aspect
+		
+		// implementer la logique pour tracer le temps d"execution
+	}
+
+Créer une classe de test App dans le package com.formation.main
+
+	Y créer le contexte Spring et tester la bonne marche de l'aspect en récupérant des beans de noms emailService et jmsService (utiliser des variables du type de l'interface EnvoiService lors de la récupération de ces deux beans)
