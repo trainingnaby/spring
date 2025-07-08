@@ -1,0 +1,79 @@
+
+/////////////// Exempes de pointcuts //////////////////////
+
+Un pointcut est une expression définissant les endroits où un aspect doit s’appliquer
+
+Syntaxe 
+	execution(modificateur-retour nom-package.nom-classe.nom-methode(paramètres))
+	
+@Pointcut("execution(* com.formation.service.*.*(..))")
+	toutes les méthodes de toutes les classes dans le package com.formation.service, peu importe les paramètres ou le type de retour
+	
+	
+execution(public void com.formation.DuplicataService.creerDuplicata())
+	cible la méthode creerDuplicata de DuplicataService
+
+execution(* com.formation.DuplicataService.*(..))
+	Toutes les méthodes de la classe DuplicataService
+	
+execution(* com.formation..*(String))
+	Toutes les méthodes prenant une chaîne de caractères
+	
+execution(* com.formation.service..*(..))
+	Toutes les méthodes de toutes les classes dans com.formation.service et ses sous-packages
+	
+execution(* com.formation.repository.UserRepository+.*(..))
+	Toutes les méthodes de l’interface UserRepository et de ses implémentations (le + signifie les sous-classes ou implémentations)
+	
+execution(* get*(..))
+	Toutes les méthodes dont le nom commence par get, peu importe leur classe, package ou arguments
+	
+execution(* com.formation.controller.UserController.*(..))
+	Toutes les méthodes de la classe UserController
+
+
+execution(* *(String))
+	Toutes les méthodes qui prennent un seul paramètre de type String
+	
+execution(* *.saveUser(..))
+	Toutes les méthodes nommées saveUser, peu importe la classe
+
+@within(org.springframework.stereotype.Service)
+	Toutes les méthodes dans les classes annotées avec @Service
+	
+@annotation(org.springframework.transaction.annotation.Transactional)
+	Méthodes annotées avec @Transactional
+
+@Pointcut("execution(* com.formation.service..*(..)) && @annotation(org.springframework.transaction.annotation.Transactional)")
+
+	Intercepte les méthodes dans com.formation.service qui ont aussi l’annotation @Transactional
+	
+@Pointcut("execution(* save*(..)) || execution(* update*(..))")
+	Cible les méthodes dont le nom commence par save ou update
+	
+@Pointcut("@within(org.springframework.stereotype.Service) && args(java.lang.Long)")
+	Méthodes dans des @Service et qui reçoivent un Long
+	
+	
+Utilisation de pointcuts nommés 
+
+	@Pointcut("execution(* com.formation.service.*.*(..))")
+    public void loguer() {}
+
+    @Before("loguer()")
+    public void journaliser(JoinPoint joinPoint) {
+        System.out.println("Méthode appelée : " + joinPoint.getSignature().getName());
+    }
+	
+	
+	@Pointcut("execution(* com.formation.service.*.*(..))")
+	public void inService() {}
+
+	@Pointcut("@annotation(org.springframework.transaction.annotation.Transactional)")
+	public void transactionalMethod() {}
+
+	@Pointcut("inService() && transactionalMethod()")
+	public void transactionalServiceMethod() {}
+
+
+
