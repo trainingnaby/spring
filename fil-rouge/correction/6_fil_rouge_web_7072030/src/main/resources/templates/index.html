@@ -1,15 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Titre</title>
+	<meta charset="UTF-8">
+	<title>Titre</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
 </head>
+
 <body>
-	<p>
-		Bonjour <span th:text="${prenom}" th:remove="tag">[prenom]</span>,
-		Voici la date actuelle <span
-			th:text="${#temporals.format(dateActuelle, 'dd-MM-yyyy HH:mm')}">[dateActuelle]</span>
-	</p>
-	<div th:if="${prenom.startsWith('n')}">Votre nom commence par n!</div>
+	<div class="container">
+		<div class="row">
+			<p class="lead">Bonjour
+				<span th:text="${prenom}" th:remove="tag">[prenom]</span>,
+				<br />
+				Voici la date actuelle
+				<span th:text="${#temporals.format(dateActuelle, 'dd-MM-yyyy HH:mm')}">[dateActuelle]</span>
+			</p>
+		</div>
+		<div class="row text-center text-lg-left">
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="listeDuplicatas">Afficher la liste des duplicatas</a>
+			</div>
+			
+			<br />
+
+			<div class="col-lg-3 col-md-4 col-6">
+				<div><a href="genererDuplicata">Créer duplicata</a></div>
+			</div>
+		</div>
+	</div>
+
+	<script th:href="@{/js/bootstrap.js}"></script>
 </body>
+
 </html>
