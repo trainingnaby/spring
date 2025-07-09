@@ -1,0 +1,27 @@
+ 
+//////////// gestionnaire d'exceptions ///////////////////////
+
+Copier le projet  4_fil_rouge_aop et renommer le en 5_fil_rouge_exceptions
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 5_fil_rouge_exceptions
+
+Ajouter une classe qui écoutera les exceptions lancées par les controlleurs et fera des actions 
+
+	@RestControllerAdvice
+	// Ce gestionnaire d'exceptions s'appliquera pour toutes les classes annotées avec  @Controllers ou @RestControllers 
+	public class GestionnaireExceptionsGlobal {
+
+		@ResponseStatus(HttpStatus.BAD_REQUEST)
+		@ExceptionHandler(MethodArgumentNotValidException.class)
+		public String handlemethodArgumentNotValid(MethodArgumentNotValidException exception) { // 
+			// TODO vous pouvez retourner un objet custom qui sera transformée en json ou xml
+			return "La requête n'a pas les bonnes paramètres ! " + exception.getMessage();
+		}
+
+		@ResponseStatus(HttpStatus.BAD_REQUEST)
+		@ExceptionHandler(ConstraintViolationException.class)
+		public String handleConstraintViolation(ConstraintViolationException exception) { // 
+			// TODO vous pouvez retourner un objet custom qui sera transformée en json ou xml
+			return "La requête n'a pas les bonnes paramètres !" + exception.getMessage();
+		}
+	}
