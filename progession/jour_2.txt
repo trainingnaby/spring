@@ -1,0 +1,26 @@
+
+Plusieurs beans candidats à une injection 
+  @Qualifier, @Primary, @Named
+
+Spring Exepression Language (Spel)
+
+Chargement de bean différé à la demande
+  @Lazy
+
+Programmation orienté Aspects avec Spring AOP
+  Notion de AOP
+  Implémentation avec Spring AOP (s'appuie sur la librairie AspectJ, standard pour faire de l'AOP avec Java)
+  Aspect => préoccupation transverse qu'on ne veut pas mélanger avec le code métier
+  Pointcut => expression désignant les parties du code ou un aspect s'applique
+      Types de pointcuts : Before, AfterReturning, AfterThrowing, Around ...
+
+spring REST
+  Installation d'un serveur web :  permet à Spring de recevoir les appels HTTP
+  DispatcherServlet => servlet frontal de Spring qui dispatche les requêtes aux controlleurs : Configuration de tomcat pour lui indiquer la dispatcherServlet
+	Notion de controller : composant capable de traiter des requêtes HTTP (de type GET, POST, PUT, DELETE ...)
+  Annotations courantes, gestion des paramétres en requêtes, path ou payload de type dto
+      @RestController, @GetMapping, @PostMapping, @RequestParam, @PathVariable, @RequestBody
+      @RestController => adapté au controlleurs REST : on envoie la réponse brute en JSON sans passer par un template html
+  Notion de négociation de contenu
+      Entête Accept et Content-Type
+
