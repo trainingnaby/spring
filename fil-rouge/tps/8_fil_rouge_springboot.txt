@@ -1,0 +1,54 @@
+
+/////////////// Objectif transformer le projet en spring boot /////////////
+
+ Générer un projet spring boot sur https://start.spring.io/
+	groupId : com.formation
+	artifactId : 9_springboot
+	package name : com.formation
+	
+	Java 17 , Maven, packagin Jar
+ 
+importer ce projet sur eclipse/intellij
+ 
+Créer ces packages suivants et y copier les classes du projet précédent : ne pas copier la classe de configuration et la classe contenant la méthode main du projet précédent
+
+ com.formation
+ com.formation.domain
+ com.formation.service
+ com.formation.repository
+ com.formation.dto
+ com.formation.web
+ com.formation.config
+ com.formation.aspect
+ 
+Ajouter les dépendances starter requises :
+
+       <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+Copier le fichier schema.sql aussi dans src/main/resources
+
+Ajouter dans le fichier application.properties, la configuration pour la base H2 :
+
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.url=jdbc:h2:mem:
+spring.datasource.username=sa
+spring.datasource.password=sa
+
+Ajouter la clé cdn.url du projet précédent dans le fichier application.properties
+
+Copier les fichiers html dans le dossier templates et le contenu du dossier static du projet précédent dans celui du nouveau projet
+
+Tester
