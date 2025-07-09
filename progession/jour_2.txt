@@ -16,11 +16,16 @@ Programmation orienté Aspects avec Spring AOP
 
 spring REST
   Installation d'un serveur web :  permet à Spring de recevoir les appels HTTP
+
+  Configuration de Maven avec le plugin shade pour les paramètres du jar executable (inclusion des dépendances, classe principale)
+
   DispatcherServlet => servlet frontal de Spring qui dispatche les requêtes aux controlleurs : Configuration de tomcat pour lui indiquer la dispatcherServlet
-	Notion de controller : composant capable de traiter des requêtes HTTP (de type GET, POST, PUT, DELETE ...)
-  Annotations courantes, gestion des paramétres en requêtes, path ou payload de type dto
+
+Notion de controller : composant capable de traiter des requêtes HTTP (de type GET, POST, PUT, DELETE ...)
+
+Annotations courantes, gestion des paramétres en requêtes, path ou payload de type dto
       @RestController, @GetMapping, @PostMapping, @RequestParam, @PathVariable, @RequestBody
       @RestController => adapté au controlleurs REST : on envoie la réponse brute en JSON sans passer par un template html
-  Notion de négociation de contenu
+Notion de négociation de contenu
       Entête Accept et Content-Type
 
