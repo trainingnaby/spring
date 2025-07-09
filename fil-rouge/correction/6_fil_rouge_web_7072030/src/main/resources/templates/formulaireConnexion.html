@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+	<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<title>Se connecter</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+	<body>
+		<div th:if="${interdit}" style="background-color: red;">
+			Désolé, <span th:text="${formulaireConnexion.login}">[login]</span>, pas assez de droits!
+		</div>
+
+		<form th:action="@{/seconnecter}" th:object="${formulaireConnexion}" method="post">
+			<p>login : <input type="text" th:field="*{login}" /></p>
+			<p>mot de passe : <input type="password" th:field="*{pwd}" /></p>
+			<p><input type="submit" value="se connecter" /></p>
+		</form>
+	</body>
+	</html>

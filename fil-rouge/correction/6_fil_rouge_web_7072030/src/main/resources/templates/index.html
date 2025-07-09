@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Titre</title>
+</head>
+<body>
+	<p>
+		Bonjour <span th:text="${prenom}" th:remove="tag">[prenom]</span>,
+		Voici la date actuelle <span
+			th:text="${#temporals.format(dateActuelle, 'dd-MM-yyyy HH:mm')}">[dateActuelle]</span>
+	</p>
+	<div th:if="${prenom.startsWith('n')}">Votre nom commence par n!</div>
+</body>
+</html>
