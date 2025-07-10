@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Titre</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<p class="lead"><span th:text="#{app.welcome}" th:remove="tag"></span>
+			<br/>
+			<p th:text="#{dates.format(today)}"></p>
+			<br/>
+				<span th:text="${prenom}" th:remove="tag">[prenom]</span>,
+				<br />
+				<span th:text="#{app.date}" th:remove="tag"></span>
+				<span th:text="${#temporals.format(dateActuelle, 'dd-MM-yyyy HH:mm')}">[dateActuelle]</span>
+			</p>
+		</div>
+		<div class="row text-center text-lg-left">
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="listeDuplicatas"><span th:text="#{app.display.duplicatas}" th:remove="tag"></span></a>
+			</div>
+			
+			<br />
+
+			<div class="col-lg-3 col-md-4 col-6">
+				<div><a href="genererDuplicata"><span th:text="#{app.create.duplicata}" th:remove="tag"></span></a></div>
+			</div>
+		</div>
+	</div>
+
+	<script th:href="@{/js/bootstrap.js}"></script>
+</body>
+
+</html>
