@@ -1,0 +1,60 @@
+
+/////////////// intégération de spring data japa /////////////
+
+copier le projet précédent et le renommer en 8_data_jpa
+renommer dans pom.xml l'artifactId en 8_data_jpa
+
+Ajouter la dépendance 
+
+
+	<dependency>
+	    <groupId>org.springframework.data</groupId>
+	    <artifactId>spring-data-jpa</artifactId>
+	    <version>3.3.4</version>
+	</dependency>
+
+		
+JPA est la spécification Java pour le mapping objet/relationnel. Hibernate en est l'implémentation de référence. Il existe d'autres implémentations comme EclipseLink ou TopLink
+
+Spring Data JPA n'est pas une implémentation de JPA; Il rend plus simple l'utilisation de JPA. Spring Data JPA utilise en interne Hibernate
+
+////////////// définition des entités //////////////////
+
+Une classe annotée avec @Entity sera matérialisé par une table en base de données
+
+Annoter la classe Duplicata avec @Entity et l'attribut id avec @Id (du package 
+import jakarta.persistence.Id;)
+
+///////////// Configuration du repository /////////////////
+
+Créer une interface DuplicataRepository dans le package com.formation.repository : 
+
+	package com.formation.repository;
+
+	import org.springframework.data.jpa.repository.JpaRepository;
+	import org.springframework.stereotype.Repository;
+
+	import com.formation.domain.Duplicata;
+
+	@Repository
+	public interface DuplicataRepository extends JpaRepository<Duplicata,Integer>{
+		
+		Duplicata findById(String id);
+		
+	}
+
+//////////////// Mise à jour de DuplicataService ////////////////
+
+Modifier la classe DuplicataService pour utiliser DuplicataRepository à la place de JdbcTemplate pour les opérations en base de données
+
+////////////// configuration de hibernate /////////////////
+
+Ajouter dans le fichier application.properties
+
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=create
+#spring.sql.init.mode=never
+
+Tester
