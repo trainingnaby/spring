@@ -1,0 +1,117 @@
+
+///////////////// SPRING DATA - EXEMPLE APPLICATION BIBLIOTHÈQUE /////////////////////////
+
+Interfaces :
+    CrudRepository<Book, Long>
+    JpaRepository<Book, Long>
+    PagingAndSortingRepository<Book, Long>
+
+Exemples simples :
+    List<Book> findByTitle(String title);
+
+AND / OR :
+    List<Book> findByAuthorAndGenre(String author, String genre);
+    List<Book> findByAuthorOrGenre(String author, String genre);
+
+Comparaisons :
+    List<Book> findByPriceLessThan(Double price);
+    List<Book> findByPriceGreaterThanEqual(Double price);
+    List<Book> findByPageCountBetween(Integer min, Integer max);
+
+Null & Not Null :
+    List<Book> findByPublishedDateIsNull();
+    List<Book> findByPublishedDateIsNotNull();
+
+Booléens :
+    List<Book> findByAvailableTrue();
+    List<Book> findByAvailableFalse();
+
+Strings :
+    List<Book> findByTitleLike(String pattern);
+    List<Book> findByTitleStartingWith(String prefix);
+    List<Book> findByTitleEndingWith(String suffix);
+    List<Book> findByTitleContaining(String infix);
+    List<Book> findByTitleIgnoreCase(String title);
+
+List :
+    List<Book> findByIdIn(List<Long> ids);
+    List<Book> findByGenreNotIn(List<String> excludedGenres);
+
+Ordre et limit :
+    List<Book> findTop5ByOrderByRatingDesc();
+    Book findFirstByOrderByPublishedDateAsc();
+
+Suppression / vérification :
+    void deleteByTitle(String title);
+    boolean existsByIsbn(String isbn);
+    long countByAvailableTrue();
+
+@Query :
+    @Query("SELECT b FROM Book b WHERE b.title LIKE %:keyword%")
+    List<Book> searchByTitleLike(@Param("keyword") String keyword);
+
+Pagination et Tri :
+    Page<Book> findByAvailableTrue(Pageable pageable);
+    List<Book> findByGenre(String genre, Sort sort);
+
+Pageable => infos de pagination (page, taille, tri)
+Page<T> => résultats paginés + infos supplémentaires
+
+Utilisation de Pageable :
+    PageRequest.of(0, 10, Sort.by("publishedDate").descending());
+
+    Côté Repository :
+        Page<Book> findByAvailableTrue(Pageable pageable);
+
+    Côté Service :
+        public Page<Book> getAvailableBooks(int page, int size) {
+            Pageable pageable = PageRequest.of(page, size, Sort.by("publishedDate").descending());
+            return bookRepository.findByAvailableTrue(pageable);
+        }
+
+    Côté Contrôleur :
+        @GetMapping("/books")
+        public Page<Book> getAvailableBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+            return bookService.getAvailableBooks(page, size);
+        }
+
+    App REST ou Web :
+        GET /books?page=0&size=10
+
+        Réponse :
+        {
+            "content": [
+                { "id": 1, "title": "Le Petit Prince", "available": true },
+                { "id": 2, "title": "1984", "available": true }
+            ],
+            "pageable": {
+                "pageNumber": 0,
+                "pageSize": 2
+            },
+            "totalElements": 50,
+            "totalPages": 25,
+            "last": false,
+            "first": true,
+            "numberOfElements": 2
+        }
+
+Tri dynamique dans le contrôleur :
+    @GetMapping("/books")
+    public Page<Book> getBooks(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "publishedDate") String sortBy,
+        @RequestParam(defaultValue = "desc") String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc") ?
+                    Sort.by(sortBy).descending() :
+                    Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return bookService.getAvailableBooks(pageable);
+    }
+
+    Exemple d'appel :
+        GET /books?page=0&size=5&sortBy=title&sortDir=asc
