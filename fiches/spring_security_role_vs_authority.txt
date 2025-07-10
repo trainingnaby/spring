@@ -1,0 +1,26 @@
+
+//////////////////// Spring Security ROLE vs AUTHORITY /////////////////////
+
+Différence entre les rôles (ROLE_) et les autorités (authorities)
+
+CONCEPTS CLÉS :
+	GrantedAuthority :
+	Interface commune pour représenter une autorité (role ou permission)
+	Méthode : getAuthority()
+
+
+	AUTHORITY est une permission générique => exemple READ_PRIVILEGES (fonctionnalité)
+	ROLE est une Authority avec le prefixe "ROLE_" => exemple : ROLE_ADMIN (profil métier)
+
+DANS LE CODE :
+
+ROLE :
+	@PreAuthorize("hasRole('ADMIN')")
+	=> Vérifie présence de l’autorité "ROLE_ADMIN"
+
+AUTHORITY :
+	@PreAuthorize("hasAuthority('READ_PRIVILEGES')")
+	=> Vérifie autorité "READ_PRIVILEGES"
+	
+hasRole("X") = hasAuthority("ROLE_X")
+
