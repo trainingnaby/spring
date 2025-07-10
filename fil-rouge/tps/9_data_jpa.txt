@@ -8,10 +8,9 @@ Ajouter la dépendance
 
 
 	<dependency>
-	    <groupId>org.springframework.data</groupId>
-	    <artifactId>spring-data-jpa</artifactId>
-	    <version>3.3.4</version>
-	</dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
 		
 JPA est la spécification Java pour le mapping objet/relationnel. Hibernate en est l'implémentation de référence. Il existe d'autres implémentations comme EclipseLink ou TopLink
@@ -37,9 +36,9 @@ Créer une interface DuplicataRepository dans le package com.formation.repositor
 	import com.formation.domain.Duplicata;
 
 	@Repository
-	public interface DuplicataRepository extends JpaRepository<Duplicata,Integer>{
+	public interface DuplicataRepository extends JpaRepository<Duplicata,String>{
 		
-		Duplicata findById(String id);
+		Optional<Duplicata> findById(String id);
 		
 	}
 
