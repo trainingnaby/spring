@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<title>Générer Duplicata</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<p class="lead">
+				Générer un duplicata
+			</p>
+		</div>
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6">
+				<form  th:action="@{/genererDuplicata}" th:object="${formulaireDuplicata}" method="post" >
+					<div class="form-group">
+						<p>
+							<label for="description"> Numero fiscal: </label>
+
+							 <input type="text" th:field="*{userId}" />
+
+						</p>
+						<p style="background-color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"> 
+						</p>
+					</div>
+					<div class="form-group">
+						<p>
+							<label for="description"> Montant: </label>
+
+							 <input type="text" th:field="*{montant}" />
+						</p>
+						<p style="background-color:red" th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}">
+						</p>
+					</div>
+
+					<p><input type="submit" value="Générer" class="btn btn-default" /></p>
+				</form>
+			</div>
+		</div>
+	</div>
+	<br />
+		<div>
+			<a href="/">Retour Page d'Accueil</a>
+		</div>
+		<br />
+		<div>
+			<a href="listeDuplicatas">Afficher la liste des duplicatas</a>
+		</div>
+	<script th:href="@{/js/bootstrap.js}"></script>
+</body>
+
+</html>
