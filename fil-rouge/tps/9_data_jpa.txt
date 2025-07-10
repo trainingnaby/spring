@@ -38,7 +38,7 @@ Créer une interface DuplicataRepository dans le package com.formation.repositor
 	@Repository
 	public interface DuplicataRepository extends JpaRepository<Duplicata,String>{
 		
-		Duplicata findById(String id);
+		Optional<Duplicata> findById(String id);
 		
 	}
 
