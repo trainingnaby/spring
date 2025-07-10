@@ -1,0 +1,24 @@
+Gestion des exceptions
+	@RestControllerAdvice
+	@ExceptionHandler
+	@ResponseStatus
+	
+Spring MVC Web
+	@Controlleur
+	@RequestMapping
+	@ModelAttribute
+	Validation avec JSR 303 et classe BindingResult
+	Integration avec Thymeleaf
+		Configuration des beans thymeleaf
+		Gestion des erreurs sur les pages
+		Gestion des formulaires avec les backing beans (@ModelAttribute)
+	
+Spring Jdbc
+	Notion de datasource
+	Configuration de la datasource et de JdbcTemplate
+	Utilisation des requêtes avec JdbcTemplate
+Gestion des transactions
+
+Spring boot
+	génération / autoconfiguration des beans et de serveur web
+
