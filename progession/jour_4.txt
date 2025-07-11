@@ -1,0 +1,18 @@
+Spring Data JPA 
+    Méthodes CRUD disponibles sans code
+    Auto génération des méthodes via un naming 
+    Pagination avec Pageable
+
+
+Spring Security
+    Configuration de la filterChain
+    Concepts principaux
+    Authentification par form, par basic
+    Scénario users en base de données, étapes :
+        Redéfinition de UserDetailsService pour implémenter la logique de recherche des infos d'un user en base
+        Déclaration d'un bean de type PasswordEncoder pour l'encodage des mots de passe
+i18n & l10n
+    fichiers de messages à créer avec clés et valeurs selon les locales
+    Utilisation de l'entete Accept-Language par Spring pour extraire la locale
+        Possibilité de l'extraire autrement (paramètre de requête ...) => Personaliser les beans créés par Spring 
+
