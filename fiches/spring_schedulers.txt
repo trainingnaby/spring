@@ -1,0 +1,94 @@
+////////////////// SPRING SCHEDULER //////////////////////////////////////////
+
+@Scheduled 
+	- Utilisée dans les composants Spring pour planifier des méthodes.
+
+Exemples 
+
+	@Scheduled(fixedRate = 5000)
+	public void executerChaque5Sec() {
+		// s'exécute toutes les 5 secondes après le début de l'invocation précédente
+	}
+
+	@Scheduled(fixedDelay = 5000)
+	public void executerAvecDelai() {
+		// s'exécute 5 secondes après la fin de l'invocation précédente
+	}
+
+	@Scheduled(cron = "0 0/15 * * * ?")
+	public void executerChaque15Min() {
+		// expression cron : toutes les 15 minutes
+	}
+
+NB :
+	- On peut des durées ISO-8601 comme `@Scheduled(fixedDelayString = "PT5S")`.
+	- Les méthodes doivent être `public` et retourner `void`.
+	- Ne gère pas automatiquement les exceptions — utiliser un try/catch.
+	- Ne fonctionne que si @EnableScheduling est déclaré dans une classe de config.
+
+Planification conditionnelle avec Spring Expression Language (SpEL)
+
+	@Scheduled(cron = "0 * * * * *", condition = "#{'${myapp.enabled}'} == 'true'")
+	public void executerSiActif() {
+		// La tâche ne s'exécute que si myapp.enabled=true dans application.properties
+	}
+
+
+	@Value("${scheduler.run}")
+	private boolean runScheduler;
+
+	@Scheduled(cron = "0 */10 * * * *", condition = "#{@monBean.runScheduler}")
+	public void executerSelonBean() {
+		// Ne s'exécute que si runScheduler vaut true
+	}
+
+
+Expressions Cron
+
+	┌───────────── seconde (0 - 59)
+	│ ┌───────────── minute (0 - 59)
+	│ │ ┌───────────── heure (0 - 23)
+	│ │ │ ┌───────────── jour du mois (1 - 31)
+	│ │ │ │ ┌───────────── mois (1 - 12 ou JAN-DEC)
+	│ │ │ │ │ ┌───────────── jour de la semaine (0 - 6 ou SUN-SAT)
+	│ │ │ │ │ │
+	│ │ │ │ │ │
+	* * * * * *
+
+
+	Exemples cron
+		0 0 12 * * ? => Tous les jours à midi
+		0 15 10 ? * MON-FRI => À 10h15 du lundi au vendredi
+		0 0/5 14 * * ? => Toutes les 5 minutes entre 14h et 15h
+		0 0 0 1 1 ? => Chaque 1er janvier à minuit
+		0 0 6 1/1 * ? => Tous les jours à 6h
+
+//////////////////////// ISO-8601 ///////////////////////////////
+
+ISO-8601 
+	norme internationale pour représenter les durées sous forme textuelle. Utilisée par défaut dans Java (`Duration`)
+	
+	P = Période
+	T = Temps (suivi d’heures, minutes, secondes)	
+	Exemples
+
+		PT10S =>10 secondes 
+		PT5M => 5 minutes
+		PT1H => 1 heure
+		PT1H30M => 1 heure et 30 minutes
+		P1D => 1 jour
+		P2DT3H4M => 2 jours, 3 heures, 4 minutes
+		
+	Exemples avec scheduler spring
+		
+		@Scheduled(fixedDelayString = "PT10S")
+		public void toutesLes10Secondes() {
+			// S'exécute toutes les 10 secondes
+		}
+		
+		@Scheduled(fixedRateString = "PT1H")
+		public void chaqueHeure() {
+			// S'exécute toutes les heures, même si la précédente n’est pas terminée
+		}
+
+
