@@ -1,0 +1,44 @@
+Navigateur/Client
+    |
+    | → (1) Envoie une requête HTTP (ex: login POST /login avec username/password)
+    |
+SecurityFilterChain (contient UsernamePasswordAuthenticationFilter)
+    |
+    | → (2) Intercepte la requête
+    | → (3) Crée un objet UsernamePasswordAuthenticationToken (non-authentifié)
+    |
+AuthenticationManager
+    |
+    | → (4) Appelé par le filtre avec le token
+    | → (5) Parcourt les AuthenticationProvider disponibles
+    |
+AuthenticationProvider (ex: DaoAuthenticationProvider)
+    |
+    | → (6) Vérifie si le provider supporte le type du token
+    | → (7) Appelle UserDetailsService.loadUserByUsername(username)
+    |
+UserDetailsService (implémentation personnalisée ou par défaut)
+    |
+    | → (8) Charge le UserDetails depuis la base de données ou autre source
+    | ← (9) Retourne UserDetails à l’AuthenticationProvider
+    |
+AuthenticationProvider
+    |
+    | → (10) Compare le mot de passe (via PasswordEncoder)
+    | → (11) Si valide, retourne un token authentifié (Authentication)
+    |
+AuthenticationManager
+    |
+    | ← (12) Retourne l’objet Authentication authentifié
+    |
+UsernamePasswordAuthenticationFilter
+    |
+    | → (13) Place l’objet Authentication dans le SecurityContext
+    |
+SecurityContextHolder
+    |
+    | ← (14) Stocke l’objet Authentication dans le contexte de sécurité
+    |
+Application
+    |
+    | → (15) L’utilisateur est maintenant authentifié, la requête continue
