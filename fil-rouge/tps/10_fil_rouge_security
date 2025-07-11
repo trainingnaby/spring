@@ -1,0 +1,9 @@
+/////////////////// Ajout de la sécurité sur l'app de duplicatas ///////////////////
+
+Ajouter ces règles suivantes pour gérer la sécurité dans l'application :
+    URLS accessibles à tous :
+         "/", "/css", "js", "/h2-console"
+
+     URLS nécessitant le role ADMIN :
+          "/genererDuplicata"
+

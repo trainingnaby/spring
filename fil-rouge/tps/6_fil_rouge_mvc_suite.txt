@@ -1,0 +1,20 @@
+///////////////////// Application dans le projet fil rouge //////////////////
+
+Ajouter une classe FormulaireDuplicata sur le package com.formation.web. Cette classe representera
+les données saisies lors de la création d'un formulaire
+
+
+Télécharger le fichier https://github.com/trainingnaby/spring/blob/main/fil-rouge/static.zip
+
+Dezipper le et copier le dossier static dans src/main/resources du projet 6_fil_rouge_mvc
+
+Ce fichier contient des css et js pour "rendre" plus jolies les interfaces 
+
+Copier tous les fichiers dans https://github.com/trainingnaby/spring/tree/main/fil-rouge/html
+les mettre dans le dossier templates du projet 6_fil_rouge_mvc
+
+Ajouter les endpoints nécessaires pour lister, générer des duplicatas
+
+Compléter les parties des fichiers html avec TODO
+
+

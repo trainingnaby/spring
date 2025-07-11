@@ -1,0 +1,20 @@
+
+//////////////// Ajout d'aspects ///////////////////
+
+Copier le projet  3_fil_rouge_validation et renommer le en 4_fil_rouge_aop
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 4_fil_rouge_aop
+
+Ajouter la dépendance 
+
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>1.9.6</version>
+	</dependency>
+	
+//////////////// Aspect qui ajoute un prefix FR_ sur userId ////////////////
+
+Ajouter un aspect qui "FR_" sur userId lors de l'appel à createDuplicate avant l'appel à la vraie méthode 
+	Utiliser un aspect de type Around
+	Utiliser en paramétre de l'aspect un objet de type ProceedingJoinPoint

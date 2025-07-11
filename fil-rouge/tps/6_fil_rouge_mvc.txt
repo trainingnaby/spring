@@ -1,0 +1,191 @@
+/////////////// Ajouter des écrans web /////////////////////
+
+
+copier le projet precedent et renommer le 6_fil_rouge_mvc
+changer dans le pom.xml le champ artifactId avec comme valeur 6_fil_rouge_mvc
+
+
+Créer une classe WebControlleur (package com.formation.web)
+	@Controller
+	public class WebControlleur {
+
+		@GetMapping("/")
+		public String homepage() {
+			return "index.html";
+		}
+	}
+	
+Tester 
+
+///////////// Ajout d'un moteur de templates ///////////////
+
+Pour créer des pages web dynamiques avec Spring, il faut utiliser un moteur
+de vues. Un moteur de vue permet de générer du html à partir d'un contenu
+dynamique Spring s'intégre avec plusieurs plusieurs moteurs (JSP, thymeleaf) ...
+
+On va utiliser le moteur Thymeleaf qui est la plus populaire
+
+1 -  Ajouter la dépendance Thymeleaf 
+
+	<dependency>
+		<groupId>org.thymeleaf</groupId>
+		<artifactId>thymeleaf-spring6</artifactId>
+		<version>3.1.1.RELEASE</version>
+	</dependency>
+
+	
+////////// configuration des beans pour thymeleaf ////////////////
+
+Il faut déclarer quelques beans pour permettre à Thymeleaf de bien marcher
+
+	// permet de rechercher une vue/template associé à la chaine de caractéres retournée
+	// par le controlleur
+	 @Bean
+    public ThymeleafViewResolver viewResolver() {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+
+        viewResolver.setOrder(1); // optionel
+        viewResolver.setViewNames(new String[] {"*.html", "*.xhtml"}); // optionel
+        return viewResolver;
+    }
+
+	//nécessaire au bean ThymeleafViewResolver, permet de régler plus finement 
+	// l'integration Spring et Thymeleaf
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        return templateEngine;
+    }
+
+	//permet de spécifier le chemin d'accés des templates
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setPrefix("classpath:/templates/");
+        templateResolver.setCacheable(false);
+        return templateResolver;
+    }
+	
+	
+//////////////// Création d'un template ////////////////
+
+Créer dans un dossier src/main/resources/templates, un fichier index.html
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>First Thymeleaf Template</title>
+	</head>
+	<body>
+	<h1>Bonjour</h1>
+
+	<p>Mon premier template Spring.</p>
+	</body>
+	</html>
+	
+Tester
+
+//////////////// Exemple de template dynamique /////////////// 
+
+1 - Dans la classe WebControlleur, remplacer le contenu de la méthode mappé sur / par :
+
+	@GetMapping("/")
+    public String homepage(Model model, @RequestParam(required = false, defaultValue = "Individu") String prenom) {
+        model.addAttribute("prenom", prenom);
+        model.addAttribute("dateActuelle", LocalDateTime.now());
+        return "index.html";
+    }
+	
+2 - Remplacer le contenu de index.html par :
+
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Titre</title>
+	</head>
+	<body>
+		<p>Bonjour
+			<span th:text="${prenom}" th:remove="tag">[prenom]</span>,
+			Voici la date actuelle
+			<span th:text="${#temporals.format(dateActuelle, 'dd-MM-yyyy HH:mm')}">[dateActuelle]</span>
+		</p>
+		<div th:if="${prenom.startsWith('n')}">Votre nom commence par n!</div>
+	</body>
+	</html>
+	
+3 - Tester
+
+//////////////////////// Démo utilisation des formulaires /////////////////
+
+Créer une classe FormulaireConnexion dans le package com.formation.web.formulaires
+	
+	package com.formation.web.formulaires;
+
+	public class FormulaireConnexion {
+
+		private String login, pwd;
+
+		public String getLogin() {
+			return login;
+		}
+
+		public void setLogin(String login) {
+			this.login = login;
+		}
+
+		public String getPwd() {
+			return pwd;
+		}
+
+		public void setPwd(String pwd) {
+			this.pwd = pwd;
+		}
+
+	}
+	
+Créer une page formulaireConnexion.html dans le dossier templates :
+
+	<!DOCTYPE HTML>
+	<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<title>Se connecter</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+	<body>
+		<div th:if="${interdit}" style="background-color: red;">
+			Désolé, <span th:text="${formulaireConnexion.login}">[login]</span>, pas assez de droits!
+		</div>
+
+		<form th:action="@{/seconnecter}" th:object="${formulaireConnexion}" method="post">
+			<p>login : <input type="text" th:field="*{login}" /></p>
+			<p>mot de passe : <input type="password" th:field="*{pwd}" /></p>
+			<p><input type="submit" value="se connecter" /></p>
+		</form>
+	</body>
+	</html>
+
+Ajouter deux nouvelles méthodes dans WebControlleur
+
+	@GetMapping("/seconnecter")
+    public String seconnecter(Model model){
+        model.addAttribute("formulaireConnexion", new FormulaireConnexion());
+        return "formulaireConnexion.html";
+    }
+	
+	@PostMapping("/seconnecter")
+    public String seconnecter(@ModelAttribute FormulaireConnexion formulaireSoumis, Model model){
+        if (formulaireSoumis.getLogin().equals(formulaireSoumis.getPwd())) {
+            return "redirect:/";
+        }
+        model.addAttribute("interdit", "true");
+        return "formulaireConnexion.html";
+    }
+
+Tester
+
+
+
+
