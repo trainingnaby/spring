@@ -4,7 +4,7 @@
 Créer un projet Maven sur Eclipse (ou intellij)
 	File => new => other ... => Maven project => cocher "create a simple project (skip archetype selection) =>
 		group id => com.formation
-		archetype id  => 1-spring-klee-basics
+		archetype id  => 1-spring-basics
 	=> finish
 
 Ajouter dans le fichier pom.xml la dépendance Spring context : 
