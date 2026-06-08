@@ -1,0 +1,53 @@
+////////////// TP13 @Qualifier, @Primary  ////////////////
+
+Créer un package basics.beans.annotationconfig.oiseau; ; Toutes les nouvelles classes qui suivent seront créés dans ce package
+
+Créer une interface Oiseau avec une méthode :
+	public void typeOiseau();
+	
+Créer une classe Aigle implémentant Oiseau. 
+	public void typeOiseau() {
+		System.out.println("Ici un Aigle");
+	}
+Annoter la classe Aigle avec @Component("aigle")
+
+Créer une classe Pigeon implémentant Oiseau. 
+	public void typeOiseau() {
+		System.out.println("Ici un Pigeon");
+	}
+Annoter la classe Pigeon avec @Component("pigeon")
+
+Créer une classe Nid
+Annoter la classe Nid avec @Component
+
+Ajouter un attribut oiseau de type Oiseau dans la classe Nid
+Annoter l'attribut oiseau avec @Autowired
+Générer les getters et les setters pour l'attribut oiseau
+
+Ajouter une méthode donnnesNid dans la classe Nid
+	public void donnnesNid() {
+		System.out.println("Un nid pour : ");
+		oiseau.typeOiseau();
+	}
+ 
+Dans la classe App, récupérer un bean de type Nid et tester (en erreur)
+
+Ajouter @Qualifier("aigle") sur l'attribut oiseau de la classe Nid
+
+tester
+
+Changer avec @Qualifier("pigeon") et tester
+
+Supprimer les annotations @Qualifier et @Autowired sur l'attribut oiseau de la classe Nid
+
+Ajouter les annotations suivantes sur l'attribut oiseau de la classe Nid :
+	@Inject
+	@Named("pigeon")
+
+Tester 
+
+Supprimer les annotations @Inject et @Named("pigeon")  sur l'attribut oiseau de la classe Nid
+
+Ajouter l'annotation @Primary sur la classe Pigeon et l'annotation @Autowired sur l'attribut oiseau de la classe Nid
+
+tester

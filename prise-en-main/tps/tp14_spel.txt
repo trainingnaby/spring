@@ -1,0 +1,36 @@
+//////////////// TP14 Spel ///////////////
+
+Créer un package basics.beans.annotationconfig.acteur; ; Toutes les nouvelles classes qui suivent seront créés dans ce package
+
+Créer une classe Acteur avec les attributs :
+	@Value("${acteur.nom:inconnu}")
+	private String nom;
+	@Value("${acteur.email:exemple@email.com}")
+    private String email;
+	@Value("${acteur.genre:M}")
+	private Character genre;
+
+Ajouter les getters/setters des attributs de la classe Acteur
+	
+Ajouter les entrées correspondantes dans le fichier application.properties pour les clés des annotations @Value
+
+Annoter la classe Acteur avec @Component
+
+Ajouter une classe ActeurService avec les attributs :
+
+	@Value("#{acteur.nom matches '[a-zA-Z\\s]{3,20}'}")
+    private boolean nomValide;
+    @Value("#{acteur.genre matches '[M|F]'}")
+    private boolean genreValide;
+    @Value("#{acteur.email matches '^[\\w!#$%&*+/=?`{|}~^-]+(?:\\.[\\w!#$%&*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$'}")
+    private boolean emailValide;
+	@Value("#{acteur.nom.toUpperCase()}")
+    private String nomActeur;
+	@Value("#{T(java.time.LocalDateTime).now().toString()}")
+    private String exempleDate;
+	
+Ajouter les getters des attributs de la classe ActeurService
+
+Annoter la classe ActeurService avec @Component
+
+Récupérer dans la classe App les beans Acteur et ActeurService et valider tous les champs de la classe Acteur et afficher la date et le nom de l'acteur via ActeurService
