@@ -1,0 +1,15 @@
+/////////////// TP3 importation de configuration avec @ImportResource //////////////
+
+Dans la classe FactoryConfig, ajouter juste en dessous (ou au dessus ...) de l'annotation @Configuration :
+	@ImportResource(locations = {"classpath:/context.xml"})
+	
+Dans la classe App, remplacer tout le contenu de la méthode main par :
+	AbstractApplicationContext context = new AnnotationConfigApplicationContext(FactoryConfig.class);
+	Train train = (Train) context.getBean("trainBean");
+	train.bouger();
+	Avion avion = (Avion) context.getBean("avionBean");
+	avion.bouger();
+	context.close();
+	
+Tester
+NB :  pour une conf, on peut importer des beans définis dans un autre fichier xml avec la balise import

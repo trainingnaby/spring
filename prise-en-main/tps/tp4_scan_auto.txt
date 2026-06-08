@@ -1,0 +1,23 @@
+//////////// TP4 configuration de beans avec le scan automatique //////////////////
+
+Créer une implémentation Bateau de l'interface Vehicule (dans package basics.beans.annotationconfig) avec comme contenu pour la méthode bouger :
+	System.out.println ("je bouge en bateau");
+	
+Ajouter l'annotation @Component au niveau de la classe Bateau :
+	@Component
+	public classe Bateau implements Vehicule {
+	
+Créer une classe AnnotationConfig (package basics.configuration). Annoter la avec :
+	@Configuration 
+	@ComponentScan("basics.beans.annotationconfig")
+	
+Ajouter dans la classe FactoryConfig l'annotation :
+	@Import(value = {AnnotationConfig.class})
+	
+Ajouter dans la classe App, dans le corps de la méthode main (avant la fermeture du contexte Spring), le contenu suivant :
+
+	Bateau bateau = (Bateau) context.getBean("bateau");
+	bateau.bouger();
+
+Tester
+	
