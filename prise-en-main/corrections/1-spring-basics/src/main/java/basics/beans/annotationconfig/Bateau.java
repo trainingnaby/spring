@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import basics.beans.xmlconfig.Vehicule;
 
-@Component // Cette annotation indique que cette classe est un composant Spring
+@Component// Cette annotation indique que cette classe est un composant Spring
 public class Bateau implements Vehicule {
 
 	@Override
