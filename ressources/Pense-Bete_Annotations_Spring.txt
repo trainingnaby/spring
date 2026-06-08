@@ -1,0 +1,64 @@
+//////////////// PENSE-BÊTE SPRING IOC - ANNOTATIONS ESSENTIELLES ///////////////
+
+@Configuration
+Déclare une classe de configuration Spring.
+
+@Bean
+Déclare explicitement un bean dans une classe @Configuration.
+
+@Component
+Déclare un composant Spring générique.
+
+@Service
+Spécialisation de @Component pour la couche métier.
+
+@Repository
+Spécialisation de @Component pour l'accès aux données.
+
+@Controller
+Déclare un contrôleur Spring MVC.
+
+@RestController
+Combinaison de @Controller et @ResponseBody pour les API REST.
+
+@ComponentScan
+Indique les packages à scanner pour détecter les composants Spring.
+
+@Import
+Importe une ou plusieurs classes de configuration Java.
+
+@ImportResource
+Importe une configuration Spring XML.
+
+@Autowired
+Injection automatique des dépendances par type.
+
+@Inject
+Équivalent standard Java (JSR-330) de @Autowired.
+
+@Resource
+Injection principalement basée sur le nom du bean.
+
+@Qualifier
+Précise le bean à injecter lorsqu'il existe plusieurs candidats.
+
+@Primary
+Définit le bean par défaut lorsqu'il existe plusieurs candidats.
+
+@Value
+Injecte une valeur ou une propriété de configuration.
+
+@PostConstruct
+Méthode exécutée après l'initialisation du bean.
+
+@PreDestroy
+Méthode exécutée avant la destruction du bean.
+
+@Scope
+Définit la portée (scope) d'un bean : singleton, prototype, etc.
+
+@Profile
+Active un bean ou une configuration selon le profil Spring actif.
+
+@PropertySource
+Charge un fichier de propriétés externe.
