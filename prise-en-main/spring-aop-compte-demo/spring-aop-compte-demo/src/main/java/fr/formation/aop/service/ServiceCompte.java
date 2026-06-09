@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import fr.formation.aop.domaine.Compte;
 
-@Service
+@Service // bean de type service, gère la logique métier
 public class ServiceCompte {
 
     private final Compte compte = new Compte("CPT-1001", 1000.0);

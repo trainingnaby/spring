@@ -6,7 +6,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @ComponentScan(basePackages = "fr.formation.aop")
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy // permet d'activer la prise en compte des aspects dans le projet
 public class ConfigurationSpring {
 
 }

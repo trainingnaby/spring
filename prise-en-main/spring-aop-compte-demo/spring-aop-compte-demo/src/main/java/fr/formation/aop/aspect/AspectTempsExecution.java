@@ -10,12 +10,16 @@ import org.springframework.stereotype.Component;
 public class AspectTempsExecution {
 
     @Around("execution(* fr.formation.aop.service.ServiceCompte.*(..))")
+    // cible : tous les méthodes de la classe ServiceCompte
+    // permet de mesurer le temps d'exécution de ces méthodes
     public Object mesurerTempsExecution(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long debut = System.nanoTime();
 
         System.out.println("[AOP @Around] Début autour de : " + proceedingJoinPoint.getSignature().getName());
 
         try {
+        	
+        	// appel de la méthode cible (la méthode de ServiceCompte) et récupération du résultat
             Object resultat = proceedingJoinPoint.proceed();
             return resultat;
         } finally {
