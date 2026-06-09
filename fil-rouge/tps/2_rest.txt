@@ -231,5 +231,67 @@ Créer un nouveau endpoint de création de duplicata mais en récupérant les pa
 	 @PostMapping("/duplicatas/{userId}/{montant}")
 	  public Duplicata createDuplicata_path(@PathVariable String userId, @PathVariable Integer montant) {
 			// à implementer
-	  
+
+//////////// Utilisation de DTOs (Data Transfer Object) /////////////
+
+Jusqu'a présent, on récuperait les paramètres du duplicata à créer soit dans les paramètres de la requête, soit le path 
+L'objectif est d'accepter comme payload un json en entrée
+
+Créer un package com.formation.dto
+
+Créer une classe DuplicataDto dans ce package
+	package com.formation.dto;
+	import com.fasterxml.jackson.annotation.JsonProperty;
+
+	public class DuplicataDto {
+
+		@JsonProperty("user_id")
+		private String userId;
+
+		private Integer montant;
+
+		public String getUserId() {
+			return userId;
+		}
+
+		public void setUserId(String userId) {
+			this.userId = userId;
+		}
+
+		public Integer getMontant() {
+			return montant;
+		}
+
+		public void setMontant(Integer montant) {
+			this.montant = montant;
+		}
+
+	}
+
+Créer un nouveau endpoint pour traiter les requêtes de création de duplicata avec un payload en json 
+
+	@PostMapping("/duplicatas")
+    public Duplicata createDuplicata_dto(@RequestBody DuplicataDto duplicataDto) {
+        // à implementer
+    }
+	
+////////////// Envoyer du XML en réponse ////////////////
+
+Ajouter cette dépendance qui permet la conversion objet<->xml :
+
+	<dependency>
+		<groupId>com.fasterxml.jackson.dataformat</groupId>
+		<artifactId>jackson-dataformat-xml</artifactId>
+		<version>2.15.0</version>
+	</dependency>
+	
+Retester la création et la récuperation de duplicata
+
+/////////////// négociation de contenu //////////////////
+
+Utiliser le header Accept dans postman pour récuperer de nouveau du json
+
+Utiliser le header Content-Type dans postman pour créer des duplicatas via xml ou json
+
+
 
