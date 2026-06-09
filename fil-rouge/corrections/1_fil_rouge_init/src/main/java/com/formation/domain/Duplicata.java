@@ -1,6 +1,10 @@
 package com.formation.domain;
 
+
+// classe du domaine => ne necessite pas d'annotation @Component, @Service, @Repository, etc.
+// c'est une classe simple qui représente une entité métier, elle n'est pas gérée par Spring
 public class Duplicata {
+	
 	
 	private String id;
 	private String userId;

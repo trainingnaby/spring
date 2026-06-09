@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.formation.domain.User;
 
+//classe du domaine => ne necessite pas d'annotation @Component, @Service, @Repository, etc.
+//c'est une classe simple qui représente une entité métier, elle n'est pas gérée par Spring
 @Service
 public class UserService {
 	
