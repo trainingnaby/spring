@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.domain.Duplicata;
+import com.formation.dto.DuplicataDto;
 import com.formation.service.DuplicataService;
 
 @RestController
@@ -23,7 +25,8 @@ public class DuplicataControlleur {
 	}
 
 	@GetMapping("/duplicatas")
-	// pareil que => @RequestMapping(value = "/duplicatas", method = RequestMethod.GET)
+	// pareil que => @RequestMapping(value = "/duplicatas", method =
+	// RequestMethod.GET)
 	public List<Duplicata> duplicatas() {
 		return duplicataService.getDuplicatas();
 	}
@@ -36,6 +39,11 @@ public class DuplicataControlleur {
 	@PostMapping("/duplicatas/{userId}/{montant}")
 	public Duplicata createDuplicata_path(@PathVariable String userId, @PathVariable Integer montant) {
 		return duplicataService.createDuplicata(userId, montant);
+	}
+	
+	@PostMapping("/duplicatas_dto")
+	public Duplicata createDuplicata_dto(@RequestBody DuplicataDto duplicataDto) {
+		return duplicataService.createDuplicata(duplicataDto.getUserId(), duplicataDto.getMontant());
 	}
 
 }
