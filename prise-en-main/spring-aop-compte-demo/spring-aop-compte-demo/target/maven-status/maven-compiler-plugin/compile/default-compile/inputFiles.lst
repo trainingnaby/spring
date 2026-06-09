@@ -1,0 +1,9 @@
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/aspect/AspectErreur.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/application/ApplicationDemoAop.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/domaine/Compte.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/aspect/AspectJournalisation.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/aspect/AspectTempsExecution.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/config/ConfigurationSpring.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/aspect/AspectFinTraitement.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/aspect/AspectResultat.java
+/Users/naby.gueye/Dropbox/formations/springnew/demo-aop/spring-aop-compte-demo/src/main/java/fr/formation/aop/service/ServiceCompte.java
