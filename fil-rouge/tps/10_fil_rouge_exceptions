@@ -1,0 +1,6 @@
+
+Objectif : comprendre la gestion des execeptions avec les RestControllerAdvice et ControllerAdvice
+
+Copier et importer le projet 10_fil_rouge_exceptions situé dans le dossier ressources du depot git
+
+Analyser les classes ResTExceptionHandler pour la gestion des exceptions
