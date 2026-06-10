@@ -87,5 +87,8 @@ spring.thymeleaf.cache=false
 logging.level.org.springframework.jdbc.core=DEBUG
 
 
+NB : Sur les templates, remplacer /static/css/application.css par /css/application.css (springboot s'attend à ce que le css soir dans le dossier static par convention)
+
+
 Tester
 	
