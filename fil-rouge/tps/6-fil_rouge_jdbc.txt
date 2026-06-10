@@ -1,0 +1,111 @@
+Objectif : intégration de jdbc avec jdbcTemplate
+
+1 - Importer le projet 6_fil_rouge_jdbctemplate situé  dans le dossier ressources sur github
+
+2 - Intégration de la base de données, ajouter les dépendances spring jdbc et H2 : 
+
+	<!-- Spring JDBC : JdbcTemplate, DataSourceUtils, exceptions JDBC traduites -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>6.0.9</version>
+			</dependency>
+
+			<!-- Base H2 embarquée, utilisée ici sans Spring Boot -->
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>2.2.224</version>
+			</dependency>
+			
+3 - Dans le fichier application.properties, ajouter les paramètres de connexion de la base :
+
+	# Configuration JDBC H2 sans Spring Boot
+	jdbc.driverClassName=org.h2.Driver
+	jdbc.url=jdbc:h2:mem:duplicatasdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+	jdbc.username=sa
+	jdbc.password=
+
+	# H2 console exposée par Tomcat embarqué
+	h2.console.path=/h2-console
+	
+3 - Configuration des beans nécessaires à H2 et jdbcTemplate : Ajouter dans le fichier AppConfig : 
+	
+	/**
+	     * DataSource H2 créé explicitement.
+	     *
+	     * En Spring Boot, ces propriétés seraient lues automatiquement depuis
+	     * application.properties et Boot créerait le DataSource pour nous.
+	     */
+	    @Bean
+	    public DataSource dataSource(
+	            @Value("${jdbc.driverClassName}") String driverClassName,
+	            @Value("${jdbc.url}") String url,
+	            @Value("${jdbc.username}") String username,
+	            @Value("${jdbc.password}") String password) {
+
+	        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+	        dataSource.setDriverClassName(driverClassName);
+	        dataSource.setUrl(url);
+	        dataSource.setUsername(username);
+	        dataSource.setPassword(password);
+	        return dataSource;
+	    }
+
+	    /**
+	     * JdbcTemplate créé à la main.
+	     *
+	     * Spring Boot le fournit automatiquement dès qu'un DataSource existe.
+	     */
+	    @Bean
+	    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+	        return new JdbcTemplate(dataSource);
+	    }
+
+	    /**
+	     * Initialisation de la base H2.
+	     *
+	     * Spring Boot exécuterait automatiquement schema.sql et data.sql selon
+	     * sa configuration. Ici, on le fait explicitement avec ResourceDatabasePopulator.
+	     */
+	    @Bean
+	    public ResourceDatabasePopulator databasePopulator(DataSource dataSource) {
+	        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+	        populator.setContinueOnError(true);
+	        populator.addScript(new ClassPathResource("schema.sql"));
+	        populator.addScript(new ClassPathResource("data.sql"));
+	        populator.execute(dataSource);
+	        return populator;
+	    }
+		
+4 - Exposition de la console H2
+
+	Dans le fichier AppMainWithTomcat, aprés la ligne :
+	
+		// création de l'application context de type web (voir méthode plus bas)
+		WebApplicationContext appCtx = creationApplicationContext(contexteTomcat.getServletContext());
+		
+	Ajouter :
+		
+				// Console H2 exposée explicitement.
+				// Spring Boot peut l'exposer avec spring.h2.console.enabled=true ;
+				// ici, comme nous sommes sans Boot, on enregistre la servlet H2 à la main.
+				Wrapper h2Console = Tomcat.addServlet(contexteTomcat, "h2Console", new JakartaWebServlet());
+				h2Console.setLoadOnStartup(1);
+				h2Console.addInitParameter("webAllowOthers", "false");
+				h2Console.addMapping("/h2-console/*");
+		
+5 - Etudier les méthodes dans la classe com.formation.repository.DuplicataRepository
+
+6 - Compléter les TODO dans le fichier com.formation.service.DuplicataService
+
+7 - Tester
+		
+		
+		
+		
+		
+		
+		
+		
+		
