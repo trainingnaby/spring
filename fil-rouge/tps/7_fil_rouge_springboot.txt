@@ -55,5 +55,37 @@ ne pas copier les classes :
 	
 Copier les fichiers et dossiers du dans src/main/resources
 
+Copier le contenu application.properties du projet précédent dans le nouveau
+
+Ajouter dans application.properties :
+
+# ============================================================================
+# Configuration H2 / JDBC
+# ============================================================================
+# Avec Spring Boot, il suffit de declarer ces proprietes : Boot cree le DataSource,
+# le JdbcTemplate et execute schema.sql puis data.sql.
+spring.datasource.url=jdbc:h2:mem:duplicatasdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+spring.sql.init.mode=always
+spring.sql.init.encoding=UTF-8
+
+# Console web H2 exposee automatiquement par Boot.
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# ============================================================================
+# Thymeleaf
+# ============================================================================
+# Boot configure automatiquement le prefixe classpath:/templates/ et le suffixe .html.
+# On desactive simplement le cache pour faciliter les modifications pendant le TP.
+spring.thymeleaf.cache=false
+
+# Logs utiles en formation.
+logging.level.org.springframework.jdbc.core=DEBUG
+
+
 Tester
 	
