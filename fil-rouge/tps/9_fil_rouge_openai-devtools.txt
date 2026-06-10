@@ -20,7 +20,7 @@ Objectif : intégration de openai et devtools
            </dependency>
 	
 	
-3 - Ajouter dans application.properties la config pour openai : 
+3 - Ajouter dans application.properties la config pour openapi : 
 
 	# ============================================================================
 	# OpenAPI / Swagger UI
