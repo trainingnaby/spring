@@ -20,3 +20,7 @@ Annotations courantes, gestion des paramétres en requêtes, path ou payload de 
       @RestController => adapté au controlleurs REST : on envoie la réponse brute en JSON sans passer par un template html
 Notion de négociation de contenu
       Entête Accept et Content-Type
+
+Validation des entrées lors de la création des duplicatas
+  JSR 303 => specification de validation en Java, implémentation Hibernate Validator
+@NotBlank, @Min ..
