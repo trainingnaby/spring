@@ -1,0 +1,59 @@
+
+
+Objectif : transformer tout le projet avec Spring Boot
+
+1 - Aller sur le site https://start.spring.io
+
+Créer un projet avec ces règlages :
+	Project: Maven
+	Language: Java
+	Spring Boot: 3.x
+	Group: com.formation
+	Artifact: 7_fil_rouge_springboot
+	Name: 7_fil_rouge_springboot
+	Packaging: Jar
+	Java: 17
+	
+	
+Ajouter les dépendances :
+	Spring Web
+	Thymeleaf
+	Validation
+	Spring JDBC
+	H2 Database
+	Spring AOP
+	
+2 - Télécharger et importer le projet sur eclipse
+
+3 - Création des packages 
+
+Créer les packages suivantes :
+	com.formation.aspect
+	com.formation.controlleur
+	com.formation.domain
+	com.formation.dto
+	com.formation.mvc
+	com.formation.repository
+	com.formation.service
+	com.formation.web
+	
+Copier les classes du projet précédent dans le bon emplacement :
+
+src/main/java/com/formation/aspect
+src/main/java/com/formation/controlleur
+src/main/java/com/formation/domain
+src/main/java/com/formation/dto
+src/main/java/com/formation/mvc
+src/main/java/com/formation/repository
+src/main/java/com/formation/service
+src/main/java/com/formation/web
+
+ne pas copier les classes :
+	com.formation.config.AppMainWithTomcat
+	com.formation.config.AppConfig
+	
+	
+Copier les fichiers et dossiers du dans src/main/resources
+
+Tester
+	
