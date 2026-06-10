@@ -1,0 +1,5 @@
+Objectif : comprendre le cache avec Spring 
+
+Copier et importer le projet 11_fil_rouge_cache situé dans le dossier ressources du depot git
+
+Lire le README.md sur la section cache et analyser le code sur les classes concernées
