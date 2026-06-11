@@ -1,0 +1,5 @@
+Objectif : tester les endpoints d'actuator et enrichir le enpoint /health avec une vérification métier
+
+Télécharger et importer sur eclipse le projet 12_fil_rouge_actuator
+
+Parcourir le readme et checker les differents exos et tests
