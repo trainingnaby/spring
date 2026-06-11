@@ -1,0 +1,6 @@
+Objectif : intégrer oauth2 dans le login
+
+Voir projet 16_fil_rouge_security_oauth2_github dans le dossier ressources
+
+NB : Github permet de tester oauth2 mais pas forcément openid connect :  on n'a pas d'ID token sur la réponse mais github expose bien les infos du user, ce qui ne refléte pas la surcouche openid connect
+
