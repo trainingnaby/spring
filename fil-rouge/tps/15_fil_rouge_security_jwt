@@ -1,0 +1,8 @@
+Objectif :  Comprendre l'authentification Staless avec JWT
+
+Voir projet 15_fil_rouge_security_jwt dans le dossier ressources (les instructions sont dans le README)
+
+NB : pour rester simple, on utilise pas un serveur d'autorisation pour générer les tokens JWT; on utilise un utilitaire diretement dans le projet pour la creation, 
+l'extraction, la verification des JWT com.formation.security.JwtService
+
+NB : On met en pratique la création d'un filtre custom qu'on branchera dans un des SecurityFilterChain
