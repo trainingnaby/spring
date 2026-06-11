@@ -1,0 +1,24 @@
+Spring web MVC
+  intégration de Thymeleaf
+  annotations web mvc
+
+Spring Jdbc
+  JdbcTemplate
+  Configuration des paramètres de la base et des beans datasource et jdbctemplate
+  Notion de datasource
+  Création des requêtes avec les méthodes de JdbcTemplate
+
+Spring boot
+  transformation du projet fil rouge en projet spring boot
+  nettoyage de la confuguration pour profiter de l'autoconfiguration de spring boot
+
+Spring avec la spec OpenAPI (swagger)
+  documentation des APIs
+  exposition de la doc sur web
+
+Gestion des exceptions
+  @RestControllerAdvice & @ControllerAdvice
+
+Gestion du cache 
+  @cacheable, @cacheput, @cacheEvict ...
+
