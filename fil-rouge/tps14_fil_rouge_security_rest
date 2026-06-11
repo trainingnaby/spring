@@ -1,0 +1,3 @@
+Objectif : avoir plusieurs securityFilterChain selon les urls et configuration de l'authentification de type BASIC
+
+Voir projet 14_fil_rouge_security_rest dans le dossier ressources
