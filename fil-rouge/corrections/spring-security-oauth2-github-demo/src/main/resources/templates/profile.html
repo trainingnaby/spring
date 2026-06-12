@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head><meta charset="UTF-8"><title>Profil</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body>
+<header class="topbar">
+    <a th:href="@{/}" class="brand">Spring Security OAuth2 GitHub</a>
+    <nav>
+        <a th:href="@{/me}">/me JSON</a>
+        <a th:href="@{/token-info}">Token info</a>
+        <form th:action="@{/logout}" method="post" class="inline-form"><button type="submit">Logout</button></form>
+    </nav>
+</header>
+<main class="container">
+    <h1>Profil GitHub</h1>
+    <div class="profile">
+        <img th:if="${avatarUrl}" th:src="${avatarUrl}" alt="Avatar GitHub">
+        <div>
+            <p><strong>Nom :</strong> <span th:text="${name}">Nom</span></p>
+            <p><strong>Login :</strong> <span th:text="${login}">login</span></p>
+            <p><strong>ID GitHub :</strong> <span th:text="${id}">id</span></p>
+            <p><strong>Provider :</strong> <span th:text="${clientRegistrationId}">github</span></p>
+            <p><strong>Scopes :</strong> <span th:text="${accessTokenScopes}">scopes</span></p>
+            <p><a th:if="${htmlUrl}" th:href="${htmlUrl}" target="_blank">Voir le profil GitHub</a></p>
+        </div>
+    </div>
+    <h2>Attributs retournés par GitHub</h2>
+    <pre th:text="${attributes}">attributes</pre>
+</main>
+</body>
+</html>

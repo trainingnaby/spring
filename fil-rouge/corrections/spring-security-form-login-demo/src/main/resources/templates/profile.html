@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Profil utilisateur</h1>
+    <p>Cette page est privée : il faut être authentifié.</p>
+
+    <div class="card">
+        <p><strong>Utilisateur connecté :</strong> <span th:text="${username}">username</span></p>
+        <p><strong>Authorities :</strong> <span th:text="${authorities}">ROLE_USER</span></p>
+        <p><strong>Affichage Thymeleaf Security :</strong> <span sec:authentication="name">name</span></p>
+    </div>
+
+    <nav>
+        <a th:href="@{/}">Accueil</a>
+        <a th:href="@{/admin}">Administration</a>
+        <form th:action="@{/logout}" method="post" class="inline-form">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+</div>
+</body>
+</html>

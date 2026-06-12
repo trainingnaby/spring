@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Spring Security Form Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Demo Spring Security : Form Login</h1>
+    <p>Cette page est publique. Elle est accessible sans authentification.</p>
+
+    <div class="card">
+        <h2>Parcours à tester</h2>
+        <ol>
+            <li>Ouvrir la page publique <code>/</code>.</li>
+            <li>Cliquer sur <strong>Mon profil</strong>.</li>
+            <li>Observer la redirection vers le formulaire de login.</li>
+            <li>Se connecter avec <code>user / password</code>.</li>
+            <li>Tester la page admin avec <code>user</code>, puis avec <code>admin / admin</code>.</li>
+        </ol>
+    </div>
+
+    <nav>
+        <a th:href="@{/profile}">Mon profil</a>
+        <a th:href="@{/admin}">Administration</a>
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Se connecter</a>
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="inline-form">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+</div>
+</body>
+</html>

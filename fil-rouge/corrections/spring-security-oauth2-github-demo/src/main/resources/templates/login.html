@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Login</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body>
+<header class="topbar"><a th:href="@{/}" class="brand">Spring Security OAuth2 GitHub</a></header>
+<main class="container small">
+    <h1>Connexion</h1>
+    <p>Dans cette démo, il n'y a pas de formulaire local. L'application délègue la connexion à GitHub.</p>
+    <a class="button github" th:href="@{/oauth2/authorization/github}">Se connecter avec GitHub</a>
+    <p class="hint">URL déclenchée : <code>/oauth2/authorization/github</code></p>
+</main>
+</body>
+</html>

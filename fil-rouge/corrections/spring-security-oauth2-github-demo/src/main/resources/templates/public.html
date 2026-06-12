@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Public</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body>
+<header class="topbar"><a th:href="@{/}" class="brand">Spring Security OAuth2 GitHub</a><nav><a th:href="@{/profile}">Profil</a><a th:href="@{/login}">Login</a></nav></header>
+<main class="container">
+    <h1>Page publique</h1>
+    <p>Cette page est déclarée avec <code>permitAll()</code>. Aucun login n'est nécessaire.</p>
+</main>
+</body>
+</html>

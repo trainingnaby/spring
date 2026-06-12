@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administration</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Zone administration</h1>
+    <p>Cette page nécessite le rôle <code>ROLE_ADMIN</code>.</p>
+
+    <div class="card">
+        <p>Bienvenue <strong th:text="${username}">admin</strong>.</p>
+        <p>Si tu vois cette page, Spring Security a validé ton authentification et ton autorisation.</p>
+    </div>
+
+    <nav>
+        <a th:href="@{/}">Accueil</a>
+        <a th:href="@{/profile}">Mon profil</a>
+        <form th:action="@{/logout}" method="post" class="inline-form">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+</div>
+</body>
+</html>

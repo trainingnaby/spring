@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a th:href="@{/}" class="brand">Spring Security OAuth2 GitHub</a>
+    <nav>
+        <a th:href="@{/public}">Public</a>
+        <a th:href="@{/profile}">Profil</a>
+        <a th:href="@{/me}">/me JSON</a>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="inline-form">
+            <button type="submit">Logout</button>
+        </form>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
+    </nav>
+</header>
+<main class="container">
+    <div th:if="${param.logout}" class="alert success">Vous êtes déconnecté de l'application Spring.</div>
+    <h1>Démo OAuth2 Login avec GitHub</h1>
+    <p>Cette application montre comment une application Spring Boot devient un <strong>client OAuth2</strong> et délègue l'authentification à GitHub.</p>
+    <div class="cards">
+        <div class="card">
+            <h2>Page publique</h2>
+            <p>Accessible sans authentification.</p>
+            <a class="button secondary" th:href="@{/public}">Ouvrir</a>
+        </div>
+        <div class="card">
+            <h2>Profil privé</h2>
+            <p>Protégé par Spring Security. Redirige vers GitHub si vous n'êtes pas connecté.</p>
+            <a class="button" th:href="@{/profile}">Voir mon profil</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

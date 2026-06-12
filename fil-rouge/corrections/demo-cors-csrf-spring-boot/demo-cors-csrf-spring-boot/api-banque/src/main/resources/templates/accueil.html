@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Banque démo</title>
+</head>
+
+<body>
+	<h1>Banque démo</h1>
+	<p>Connecté à l'application banque sur <strong>http://localhost:8080</strong>.</p>
+	<h2>Compte</h2>
+	<ul>
+		<li>Titulaire : <span th:text="${compte.titulaire}"></span></li>
+		<li>Solde : <span th:text="${compte.solde}"></span> €</li>
+	</ul>
+	<p><a href="/virement">Faire un virement légitime</a></p>
+	<form th:action="@{/logout}" method="post"><button type="submit">Se déconnecter</button></form>
+</body>
+
+</html>
