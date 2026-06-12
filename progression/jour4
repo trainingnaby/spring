@@ -1,0 +1,12 @@
+Spring security
+  Notions de securityFilterChain, AuthenticationManager, AuthenticationProvider, UserDetailsService, PasswordEncoder
+  projet demos sur la securité
+  Securisation avec un formulaire et des users en base de données sur le fil rouge
+  Securisation avec un fournisseur Oauth2 (github) sur le fil rouge
+  Securisation avec des jetons JWT sur le fil rouge
+    Création et insertion d'un filtre custom sur la securityFilterChain
+  Utilisation de plusieurs securityFilterChain
+
+Spring actuator
+  endpoints principaux
+  customisation du endpoint /health
