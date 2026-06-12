@@ -10,3 +10,5 @@ Spring security
 Spring actuator
   endpoints principaux
   customisation du endpoint /health
+
+Architecture et bonnes pratiques avec Spring
