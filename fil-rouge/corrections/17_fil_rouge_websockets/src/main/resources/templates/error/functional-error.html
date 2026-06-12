@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Erreur fonctionnelle</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+<body>
+<main class="container narrow">
+    <header class="page-header">
+        <div>
+            <p class="surtitle">Gestion globale d'exceptions MVC</p>
+            <h1 th:text="${titre}">Erreur</h1>
+            <p>Cette page est retournee par un <code>@ControllerAdvice</code>.</p>
+        </div>
+    </header>
+
+    <section class="card">
+        <p class="alert error" th:text="${message}">Message d'erreur</p>
+
+        <dl>
+            <div class="detail-row">
+                <dt>Statut HTTP</dt>
+                <dd th:text="${status}">404</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Chemin</dt>
+                <dd th:text="${path}">/ui/duplicatas/xxx</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Date</dt>
+                <dd th:text="${#temporals.format(timestamp, 'dd/MM/yyyy HH:mm:ss')}">10/06/2026 10:30:00</dd>
+            </div>
+        </dl>
+
+        <div class="actions">
+            <a class="button secondary" th:href="@{/ui/duplicatas}">Retour a la liste</a>
+            <a class="button" th:href="@{/ui/duplicatas/new}">Generer un duplicata</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>
