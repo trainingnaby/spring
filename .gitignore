@@ -1,0 +1,168 @@
+# ============================================================
+# Java
+# ============================================================
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+*.nar
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
+
+# Java / JVM logs
+*.log
+
+
+# ============================================================
+# Maven
+# ============================================================
+
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+
+# ============================================================
+# Gradle
+# ============================================================
+
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Gradle local configuration
+gradle-app.setting
+
+# Gradle cache
+.gradletasknamecache/
+
+
+# ============================================================
+# IntelliJ IDEA
+# ============================================================
+
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+
+# ============================================================
+# Eclipse
+# ============================================================
+
+.classpath
+.project
+.settings/
+.metadata/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+
+
+# ============================================================
+# Visual Studio Code
+# ============================================================
+
+.vscode/
+
+
+# ============================================================
+# macOS
+# ============================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon files
+Icon?
+
+# Spotlight
+.Spotlight-V100
+
+# Trash
+.Trashes
+
+# macOS resource forks
+._*
+
+
+# ============================================================
+# Windows
+# ============================================================
+
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Folder configuration
+Desktop.ini
+
+# Recycle Bin
+$RECYCLE.BIN/
+
+# Windows shortcuts
+*.lnk
+
+
+# ============================================================
+# Linux
+# ============================================================
+
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+
+# ============================================================
+# Temporary / editor files
+# ============================================================
+
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+
+*.swp
+*.swo
+
+*~
+~$*
+
+
+# ============================================================
+# Environment / local configuration
+# ============================================================
+
+.env
+.env.local
+.env.*.local
+
+
+# ============================================================
+# Project-specific generated directories
+# ============================================================
+
+logs/
+temp/
+tmp/
