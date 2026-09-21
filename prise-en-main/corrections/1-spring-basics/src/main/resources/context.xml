@@ -26,5 +26,19 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="joueur" class="basics.beans.xmlconfig.jeu.Joueur">
+		<property name="nom" value="Messi" />
+	</bean>
+
+	<bean id="jeu" class="basics.beans.xmlconfig.jeu.Jeu"
+		autowire="byName" />
+
+	<bean id="addresse" class="basics.beans.xmlconfig.jeu.Addresse">
+		<property name="rue" value="rue de la paix" />
+		<property name="ville" value="Paris" />
+	</bean>
+
+	<bean id="etudiant" class="basics.beans.xmlconfig.jeu.Etudiant"
+		autowire="byType" />
 
 </beans> 
