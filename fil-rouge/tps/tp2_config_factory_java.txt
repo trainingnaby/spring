@@ -1,0 +1,32 @@
+/////////////// TP2 configuration de beans avec factory Java //////////////
+
+Créer une implémentation Train de l'interface Vehicule (dans package basics.beans.factoryconfig) avec comme contenu pour la méthode bouger :
+	System.out.println ("je bouge en train");
+	
+Création du contexte de Spring : utilisation d'une factory Java
+	
+	Créer une classe FactoryConfig (package basics.configuration) avec le contenu suivant :
+		@Configuration
+		public class FactoryConfig {
+ 
+			@Bean(name="trainBean")
+			public Train nom_methode_arbitraire() {
+				return new Train();
+			}
+ 
+		}
+
+Dans classe App, commenter les lignes suivantes (dans la méthode main) :
+
+	// AbstractApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+	// Avion bean = (Avion) context.getBean("avionBean");
+	// bean.bouger();
+	// context.close();
+	
+Ajouter ce contenu dans la méthode main de la classe App
+	AbstractApplicationContext context = new AnnotationConfigApplicationContext(FactoryConfig.class);
+	Train train = (Train) context.getBean("trainBean");
+	train.bouger();
+	context.close();
+	
+Tester
