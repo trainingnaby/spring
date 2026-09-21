@@ -4,6 +4,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 
 import basics.beans.annotationconfig.Bateau;
+import basics.beans.annotationconfig.acteur.ActeurService;
+import basics.beans.annotationconfig.formation.FormationMetadata;
+import basics.beans.annotationconfig.lieux.Pays;
+import basics.beans.annotationconfig.oiseau.Nid;
+import basics.beans.annotationconfig.universite.DonneesCours;
 import basics.beans.factoryconfig.Batiment;
 import basics.beans.factoryconfig.Train;
 import basics.beans.xmlconfig.Avion;
@@ -39,12 +44,28 @@ public class App {
 		Etudiant etudiant = (Etudiant) context.getBean("etudiant");
 		System.out.println(etudiant);
 		
-//		System.out.println("====================================");
-//		for(String bean : context.getBeanDefinitionNames())
-//			System.out.println(bean);
-//		
-//		System.out.println("====================================");
-//		
+		Pays pays = (Pays) context.getBean("mon_pays");
+		System.out.println(pays);
+		
+		FormationMetadata formationMetadata = (FormationMetadata) context.getBean("formation_spring");
+		formationMetadata.lireMetadataFormation();
+		
+		DonneesCours donneesCours = (DonneesCours) context.getBean("dataCursus");
+		System.out.println(donneesCours);
+		
+		Nid nid = (Nid) context.getBean("nid");
+		nid.donnnesNid();
+		
+		System.out.println("================================");
+		ActeurService acteurService = (ActeurService) context.getBean("acteurService");
+		System.out.println("Nom en majuscules " + acteurService.getNomActeur());
+		System.out.println("Genre Valide : " + acteurService.isGenreValide());
+		System.out.println("Nom Valide : " + acteurService.isNomValide());
+		System.out.println("Email Valide : " + acteurService.isEmailValide());
+		System.out.println("Exemple Data : " + acteurService.getExempleDate());
+		
+		System.out.println("================================");
+		
 		context.close();
 
 	}
