@@ -1,0 +1,35 @@
+////////////// TP8 Autowiring avec xml  ////////////////
+
+Créer un package basics.beans.xmlconfig.jeu; les classes suivantes seront toutes créées dans ce package
+
+Créer une classe Joueur
+	Ajouter un attribut nom de type String dans la classe Joueur
+	Ajouter les getters/setters pour l'attribut nom
+	Générer la méthode toString de la classe Joueur
+	
+Créer une classe Jeu 
+	Ajouter un attribut joueur de type Joueur dans la classe Jeu
+	Ajouter les getters/setters pour l'attribut jeu
+	Générer la méthode toString de la classe Jeu
+	
+Dans le fichier context.xml
+	Déclarer les beans pour les classes Joueur et Jeu
+	Utiliser l'attribut autowire de la balise bean pour injecter le bean de type Joueur dans le bean de type Jeu (autowire="byName")
+
+Dans la classe App, récupérer et afficher le bean de type Jeu
+
+Créer une classe Addresse
+	Ajouter deux champs de type String : rue et ville
+	Ajouter les getters/setters sur ces champs
+	Générer la méthode toString
+	
+Créer une classe Etudiant
+	Ajouter un champ addresse de type Addresse 
+	Ajouter les getters/setters sur ce champ
+	Générer la méthode toString
+
+Dans le fichier context.xml
+	Déclarer les beans pour les classes Addresse et Etudiant
+	Utiliser l'attribut autowire de la balise bean pour injecter le champ addresse dans bean de type Etudiant (autowire="byType")
+	
+Dans la classe App, récupérer et afficher le bean de type Etudiant
