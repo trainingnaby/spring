@@ -1,0 +1,28 @@
+////////////// TP6 injection de dépendance via xml et constructeur ////////////////
+
+Créer une interface Immatriculation (package basics.beans.xmlconfig) avec la méthode : 
+	public void origineImmatriculation();
+
+Créer une implémentation IleDeFranceImmatriculation (package basics.beans.xmlconfig) de l'interface Immatriculation avec le contenu suivant pour la méthode origineImmatriculation :
+	System.out.println ("je suis immatriculée en ile de France ");
+	
+Ajouter dans la classe Voiture, un champ immatriculation de type Immatriculation
+
+Ajouter un constructeur dans la classe Voiture prenant en argument un paramètre de type Immatriculation; initialiser l'attribut immatriculation avec la valeur de ce paramètre
+
+Remplacer le contenu de la méthode bouger dans la classe Voiture, avec le contenu suivant :
+		public void bouger(){
+			System.out.println (" Je suis une voiture et ...");
+			moteur.rouler();
+			immatriculation.origineImmatriculation();
+		}
+
+Ajouter dans le fichier context.xml le bean suivant :
+	<bean id="mon_immatriculation" class="basics.beans.xmlconfig.IleDeFranceImmatriculation" />
+	
+Ajouter dans le fichier context.xml, dans la définition du bean ma_voiture, le contenu suivant :	
+	 <constructor-arg>
+		<ref bean="mon_immatriculation" />
+	 </constructor-arg>
+	 
+Tester
