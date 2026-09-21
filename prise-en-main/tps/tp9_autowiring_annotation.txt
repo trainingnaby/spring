@@ -1,0 +1,35 @@
+////////////// TP9 Autowiring avec les annotations @Autowired  ////////////////
+	
+Créer un package basics.beans.annotationconfig.lieux; les classes suivantes seront toutes créées dans ce package
+
+Créer une classe Ville
+	Annoter la classe Ville avec @Component("ma_ville")
+	Ajouter un attribut de type String nomVille et l'initialiser avec "Lille"
+	Ajouter les getters/setters sur cet attribut
+	Générer la méthode toString de la classe Ville
+	
+Créer une classe Pays
+	Annoter la classe Pays avec @Component("mon_pays")
+	Ajouter un attribut ville de type Ville
+	Annoter l'attribut ville avec @Autowired
+	Ajouter les getters/setters sur l'attribut ville
+	Générer la méthode toString de la classe Pays
+	
+Tester avec la classe App
+
+Enlever l'annotation @Autowired sur l'attribut ville de la classe Pays
+Créer un constructeur avec un argument de type Ville dans la classe Pays; initialiser l'attribut ville avec la valeur de cet argument
+
+Tester
+
+Ajouter un constructeur sans argument dans la classe Pays
+Tester
+
+Supprimer tous les constructeurs de la classe Pays et remettre l'annotation @Autowired sur l'attribut ville
+
+Vérifier que ça marche bien
+
+NB : on peut aussi déclencher le scan des beans à gérer par Spring et la prise en compte des annotations sur ces beans dans une config xml avec : 
+	<context:component-scan base-package="basics.beans" />
+	
+Avant on utilisait <context:annotation-config> : ne permet que le traitement des annotations (@Autowired ...) sur les beans DEJA créés (ne permet pas de scanner et créer des beans)
