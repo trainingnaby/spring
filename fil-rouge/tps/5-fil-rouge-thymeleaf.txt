@@ -1,7 +1,7 @@
 
 Objectif : faire l'intégration de thymeleaf, le moteur de vues et créer des écrans web
 
-1 - Copier le projet 5_fil_rouge_mvc_thymeleaf dans le dossier ressources et importer le sur eclipse
+1 - Copier le projet 5_fil_rouge_mvc_thymeleaf.zip dans le dossier ressources et importer le sur eclipse
 
 2 - Configuration de thymeleaf
 
