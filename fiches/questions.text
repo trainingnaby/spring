@@ -1,0 +1,6 @@
+ 1 - clarififer cas d'omission de @Autowired sur les derniéres vesions de Spring
+
+ https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired.html
+
+ 2 - Si @Primary sur un bean, à quoi servent les autres beans du même type ?
+  Voir projet demo dans prise-en-main/corrections/spring-primary-demo
