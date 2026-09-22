@@ -1,0 +1,78 @@
+
+Objectif : faire l'intégration de thymeleaf, le moteur de vues et créer des écrans web
+
+1 - Copier le projet 5_fil_rouge_mvc_thymeleaf dans le dossier ressources et importer le sur eclipse
+
+2 - Configuration de thymeleaf
+
+Dans le pom.xml, ajouter la dépendance thymeleaf :
+
+		<!-- Thymeleaf : moteur de templates HTML côté serveur -->
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf-spring6</artifactId>
+				<version>3.1.2.RELEASE</version>
+			</dependency>
+
+ Déclaration et configuration des beans nécessaires à Thymeleaf
+ Dans la classe AppConfig, ajouter ces beans thymeleaf : 
+ 		
+		/**
+	     * Résolveur de templates Thymeleaf.
+	     * Spring Boot le crée automatiquement ; ici on le déclare à la main pour montrer ce que Boot fait pour nous.
+	     */
+	    @Bean
+	    public SpringResourceTemplateResolver templateResolver() {
+	        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+	        templateResolver.setPrefix("classpath:/templates/");
+	        templateResolver.setSuffix(".html");
+	        templateResolver.setTemplateMode(TemplateMode.HTML);
+	        templateResolver.setCharacterEncoding("UTF-8");
+	        templateResolver.setCacheable(false); // pratique en formation pour voir les modifications sans redémarrage complet
+	        return templateResolver;
+	    }
+
+	    @Bean
+	    public SpringTemplateEngine templateEngine(SpringResourceTemplateResolver templateResolver) {
+	        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+	        templateEngine.setTemplateResolver(templateResolver);
+	        templateEngine.setEnableSpringELCompiler(true);
+	        return templateEngine;
+	    }
+
+	    @Bean
+	    public ViewResolver viewResolver(SpringTemplateEngine templateEngine) {
+	        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+	        viewResolver.setTemplateEngine(templateEngine);
+	        viewResolver.setCharacterEncoding("UTF-8");
+	        viewResolver.setOrder(1);
+	        return viewResolver;
+	    }
+		
+Ajouter dans la définition de la classe AppConfig : implements WebMvcConfigurer et ajouter cette méthode :
+	
+		/**
+	     * Permet de servir les fichiers placés dans src/main/resources/static.
+	     */
+	    @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	        registry.addResourceHandler("/static/**")
+	                .addResourceLocations("classpath:/static/");
+	    }
+		
+		
+3 - Renommer la classe MonPremierControlleurSpring en ControlleurHome
+
+4 - remplacer le handler "/" sur ControlleurHome de cette maniére :
+
+	   @GetMapping("/")
+	    public String index() {
+	        return "redirect:/ui/duplicatas";
+	    }
+	
+4 - Regarder et étudier le nouveau controlleur web com.formation.mvc.DuplicataMvcController
+
+5 - Etudier les vues sur le dossier /src/main/resources/templates
+
+6 - Tester
+	
