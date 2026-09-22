@@ -1,0 +1,78 @@
+
+///////////// Validation des champs de payloads /////////////////
+
+Copier le projet  2_fil_rouge_rest et renommer le en 3_fil_rouge_validation
+
+Modifier dans le fichier pom.xml la valeur de la balise artifactId et y mettre comme valeur 3_fil_rouge_validation
+
+On va appliquer des règles de validation sur les champs lors de la création de duplicata
+
+La spécification JSR 303 permet de définir comment faire de la validation avec Java. Des librairies implémement cette spécification
+
+On va utiliser l'implémentation suivante : 
+
+	<dependency>
+		<groupId>org.hibernate.validator</groupId>
+		<artifactId>hibernate-validator</artifactId>
+		<version>8.0.0.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish.expressly</groupId>
+		<artifactId>expressly</artifactId>
+		<version>5.0.0</version>
+	</dependency>
+
+
+Ajouter dans la classe DuplicataDto les annotations pour valider les attributs
+
+	  @NotBlank
+      @Min(10)
+      @Max(50) 
+	  ...
+	  
+Ajouter @Valid dans avant le paramètre de dto sur le endpoint associé :
+	public Duplicata createDuplicata_dto(@RequestBody @Valid DuplicataDto duplicataDto) {
+	
+/////////////// validation sur les paramètres (@PathVariable et @PathVariable) /////////////
+
+Un bean spécifique de spring est à configurer pour permettre la validation dans les 
+paramètres de type @PathVariable ou @RequestParam. Il faut en plus activer cette validation au niveau du controlleur
+
+Ajouter dans la classe de configuration :
+
+	@Bean 
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
+    }
+	
+Ajouter sur le controlleur DuplicataControlleur l'annotation @Validated
+
+Utiliser les annotations de la JSR 303 de cette manière :
+	@RequestParam("user_id") @NotBlank String userId7
+	
+	
+/////////////////// Annotations JSR 303 les plus utilisées //////////////////
+
+@AssertFalse / @AssertTrue 
+
+@DecimalMin / @DecimalMax 
+
+@Digits
+
+@Email
+
+@Min / @Max 
+
+@Negative / @NegativeOrZero 
+
+@NotBlank / @NotEmpty 
+
+@Null / @NotNull 
+
+@Past / @PastOrPresent 
+
+@Pattern 
+
+@Positive
+
+@Size 
