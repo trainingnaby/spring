@@ -1,0 +1,94 @@
+
+
+Objectif : transformer tout le projet avec Spring Boot
+
+1 - Aller sur le site https://start.spring.io
+
+Créer un projet avec ces règlages :
+	Project: Maven
+	Language: Java
+	Spring Boot: 3.x
+	Group: com.formation
+	Artifact: 7_fil_rouge_springboot
+	Name: 7_fil_rouge_springboot
+	Packaging: Jar
+	Java: 17
+	
+	
+Ajouter les dépendances :
+	Spring Web
+	Thymeleaf
+	Validation
+	Spring JDBC
+	H2 Database
+	Spring AOP
+	
+2 - Télécharger et importer le projet sur eclipse
+
+3 - Création des packages 
+
+Créer les packages suivantes :
+	com.formation.aspect
+	com.formation.controlleur
+	com.formation.domain
+	com.formation.dto
+	com.formation.mvc
+	com.formation.repository
+	com.formation.service
+	com.formation.web
+	
+Copier les classes du projet précédent dans le bon emplacement :
+
+src/main/java/com/formation/aspect
+src/main/java/com/formation/controlleur
+src/main/java/com/formation/domain
+src/main/java/com/formation/dto
+src/main/java/com/formation/mvc
+src/main/java/com/formation/repository
+src/main/java/com/formation/service
+src/main/java/com/formation/web
+
+ne pas copier les classes :
+	com.formation.config.AppMainWithTomcat
+	com.formation.config.AppConfig
+	
+	
+Copier les fichiers et dossiers du dans src/main/resources
+
+Copier le contenu application.properties du projet précédent dans le nouveau
+
+Ajouter dans application.properties :
+
+# ============================================================================
+# Configuration H2 / JDBC
+# ============================================================================
+# Avec Spring Boot, il suffit de declarer ces proprietes : Boot cree le DataSource,
+# le JdbcTemplate et execute schema.sql puis data.sql.
+spring.datasource.url=jdbc:h2:mem:duplicatasdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+spring.sql.init.mode=always
+spring.sql.init.encoding=UTF-8
+
+# Console web H2 exposee automatiquement par Boot.
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# ============================================================================
+# Thymeleaf
+# ============================================================================
+# Boot configure automatiquement le prefixe classpath:/templates/ et le suffixe .html.
+# On desactive simplement le cache pour faciliter les modifications pendant le TP.
+spring.thymeleaf.cache=false
+
+# Logs utiles en formation.
+logging.level.org.springframework.jdbc.core=DEBUG
+
+
+NB : Sur les templates, remplacer /static/css/application.css par /css/application.css (springboot s'attend à ce que le css soir dans le dossier static par convention)
+
+
+Tester
+	
