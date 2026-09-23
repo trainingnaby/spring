@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Duplicatas d'impôts</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+<body>
+<main class="container">
+    <header class="page-header">
+        <div>
+            <p class="surtitle">Spring MVC + Thymeleaf</p>
+            <h1>Duplicatas d'impôts</h1>
+            <p>Interface web de consultation des duplicatas générés par le service métier.</p>
+        </div>
+        <a class="button" th:href="@{/ui/duplicatas/new}">Générer un duplicata</a>
+    </header>
+
+    <section th:if="${message}" class="alert success" th:text="${message}"></section>
+    <section th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></section>
+
+    <section class="card">
+        <h2>Liste des duplicatas</h2>
+
+        <p th:if="${#lists.isEmpty(duplicatas)}" class="empty">
+            Aucun duplicata n'a encore été généré.
+        </p>
+
+        <table th:unless="${#lists.isEmpty(duplicatas)}">
+            <thead>
+            <tr>
+                <th>Identifiant</th>
+                <th>Utilisateur</th>
+                <th>Montant</th>
+                <th>PDF</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="duplicata : ${duplicatas}">
+                <td th:text="${duplicata.id}">dup-123</td>
+                <td th:text="${duplicata.userId}">FR_12345</td>
+                <td th:text="${duplicata.montant + ' €'}">2500 €</td>
+                <td><a th:href="${duplicata.pdfUrl}" th:text="${duplicata.pdfUrl}">PDF</a></td>
+                <td class="table-actions">
+                    <a class="button small secondary" th:href="@{/ui/duplicatas/{id}(id=${duplicata.id})}">Voir</a>
+                    <form th:action="@{/ui/duplicatas/{id}/delete(id=${duplicata.id})}" method="post" class="inline-form"
+                          onsubmit="return confirm('Confirmer la suppression de ce duplicata ?');">
+                        <button class="button small danger" type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="links">
+        <a th:href="@{/duplicatas}">Voir l'API REST JSON</a>
+    </section>
+</main>
+</body>
+</html>
