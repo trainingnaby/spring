@@ -36,6 +36,6 @@ Analyser la l'interface DuplicataRepository et comparer avec la version du TP pr
 
 Analyser la définition de l'interface DuplicataResumeProjection
 
-6 - Implémenter les méthodes avec TODO dans DuplicataService de la couche service
+6 - Implémenter les méthodes avec TODO dans DuplicataControlleur de la couche controlleur
 
 
