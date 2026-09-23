@@ -1,0 +1,7 @@
+
+1 - Copier le tp 9 et renommer le en 10_fil_rouge_cache; modifier l'artifactId sur le pom.xml avec cette valeur
+
+2 - Mettre en place place un mécanisme de cache pour la classe DuplicataService
+
+3 - Exposer un endpoint de flush de cache pour les admins
+
