@@ -1,0 +1,41 @@
+
+
+Objectif :  Integration de Spring Data JPA
+
+1 - copier et importer dans eclipse le projet 8_fil_rouge_spring_data_jpa situé dans le dossier ressources
+
+2 - Ajouter la dépendendance starter jpa dans le pom.xml
+
+    <!-- Spring Data JPA : Repository, EntityManager, Hibernate et transaction management. -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+	
+3 - Ajouter la configuration JPA/Hibernate dans application.properties 
+	
+	# ============================================================================
+	# Configuration JPA / Hibernate
+	# ============================================================================
+	# Pour le TP, Hibernate cree le schema a partir des annotations @Entity.
+	# En production, on prefererait Flyway ou Liquibase.
+	spring.jpa.hibernate.ddl-auto=create
+
+	# Affiche le SQL genere par Hibernate dans la console.
+	spring.jpa.show-sql=true
+	spring.jpa.properties.hibernate.format_sql=true
+
+	# Demande a Spring Boot d'executer data.sql apres la creation du schema JPA.
+	spring.jpa.defer-datasource-initialization=true
+	spring.sql.init.mode=always
+	spring.sql.init.encoding=UTF-8
+	
+5 - Utilisation des interfaces Repository
+
+Analyser la l'interface DuplicataRepository et comparer avec la version du TP précédent
+
+Analyser la définition de l'interface DuplicataResumeProjection
+
+6 - Implémenter les méthodes avec TODO dans DuplicataService de la couche service
+
+
