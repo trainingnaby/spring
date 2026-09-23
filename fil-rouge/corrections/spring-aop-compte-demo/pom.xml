@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.formation</groupId>
+    <artifactId>spring-aop-compte-demo</artifactId>
+    <version>1.0.0</version>
+    <name>spring-aop-compte-demo</name>
+    <description>Démo simple Spring IoC et Spring AOP sans Spring Boot</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring.version>6.1.14</spring.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- Spring IoC : conteneur, beans, injection de dépendances -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Spring AOP : support des aspects Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- AspectJ Weaver : nécessaire pour interpréter les expressions pointcut AspectJ utilisées par Spring AOP -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.22.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Permet de lancer facilement la classe main avec Maven -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <mainClass>fr.formation.aop.application.ApplicationDemoAop</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
