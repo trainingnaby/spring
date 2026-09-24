@@ -1,0 +1,45 @@
+# TP – Health Check métier avec Actuator
+
+Spring Boot Actuator permet d'enrichir le endpoint `/actuator/health` avec ses propres contrôles.
+
+Pour créer un Health Check personnalisé :
+
+* créer un composant Spring avec `@Component` ;
+* implémenter l'interface `HealthIndicator` ;
+* redéfinir la méthode `health()` ;
+* retourner un objet `Health` avec un état (`UP`, `DOWN`, etc.) et éventuellement des détails.
+
+Exemple de structure :
+
+```java
+@Component
+public class MonHealthIndicator implements HealthIndicator {
+
+    @Override
+    public Health health() {
+        // Effectuer le contrôle métier
+
+        return Health.up()
+                .withDetail("message", "Service opérationnel")
+                .build();
+    }
+}
+```
+
+## Travail demandé
+
+Créer un `DuplicataHealthIndicator` qui contrôle le nombre de duplicatas présents en base :
+
+* **UP** : entre 1 et 1000 duplicatas ;
+* **DOWN** : aucun duplicata ;
+* **DEGRADED** : plus de 1000 duplicatas ;
+* **DOWN** : en cas d'erreur d'accès à la base.
+
+Ajouter des informations utiles avec `withDetail(...)`.
+
+Tester ensuite :
+
+```text
+GET /actuator/health
+GET /actuator/health/duplicata
+```
