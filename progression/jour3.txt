@@ -1,6 +1,6 @@
 Spring boot
   transformation du projet fil rouge en projet spring boot
-  nettoyage de la confuguration pour profiter de l'autoconfiguration de spring boot
+  nettoyage de la configuration pour profiter de l'autoconfiguration de spring boot
 
   Exemple d'autoconfiguration de bean custom
 
