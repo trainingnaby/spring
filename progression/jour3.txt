@@ -1,0 +1,15 @@
+Spring boot
+  transformation du projet fil rouge en projet spring boot
+  nettoyage de la confuguration pour profiter de l'autoconfiguration de spring boot
+
+  Exemple d'autoconfiguration de bean custom
+
+Spring avec la spec OpenAPI (swagger)
+  documentation des APIs
+  exposition de la doc sur web
+
+Gestion des exceptions
+  @RestControllerAdvice & @ControllerAdvice
+
+Gestion du cache 
+  @cacheable, @cacheput, @cacheEvict ...
