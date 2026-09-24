@@ -1,0 +1,62 @@
+TP - Sécurisation des API REST avec HTTP Basic
+
+Objectif
+
+Sécuriser maintenant les endpoints REST qui avaient été laissés publics dans la première partie du TP.
+
+La partie Web MVC doit continuer à fonctionner comme précédemment avec le formulaire de connexion et la session HTTP.
+
+Pour les API REST, on utilisera une authentification HTTP Basic.
+
+Principes
+
+La sécurité REST sera gérée dans une SecurityFilterChain distincte de celle utilisée pour les pages Web.
+
+Pour cette chaîne REST :
+
+* utiliser HTTP Basic ;
+* ne pas utiliser de formulaire de login ;
+* fonctionner sans session HTTP (STATELESS) ;
+* désactiver CSRF ;
+* retourner des erreurs HTTP 401 ou 403 plutôt qu'une redirection vers la page de login.
+
+Les composants permettant de produire les réponses JSON d'erreur 401/403 vous sont déjà fournis.
+
+Règles d'accès
+
+Appliquer les règles suivantes :
+
+* GET /duplicatas et /duplicatas/** : USER ou ADMIN
+* POST /duplicatas et /duplicatas/** : ADMIN
+* POST /duplicatas_dto : ADMIN
+* DELETE /duplicatas/** : ADMIN
+* /api/cache et /api/cache/** : ADMIN
+
+Toute autre requête prise en charge par cette chaîne nécessite une authentification.
+
+Travail à réaliser
+
+Compléter la méthode apiSecurityFilterChain fournie.
+
+Il faudra notamment :
+
+* définir les URL prises en charge par cette chaîne ;
+* configurer HTTP Basic ;
+* configurer le fonctionnement sans session ;
+* compléter les règles d'autorisation selon les rôles USER et ADMIN.
+
+Attention : la chaîne REST doit être évaluée avant la chaîne MVC.
+
+Tests
+
+Tester les endpoints REST :
+
+* sans authentification ;
+* avec user / user ;
+* avec admin / admin.
+
+Vérifier notamment la différence entre :
+
+401 Unauthorized : utilisateur non authentifié
+
+403 Forbidden : utilisateur authentifié mais ne possédant pas le rôle nécessaire.

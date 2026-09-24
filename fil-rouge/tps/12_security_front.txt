@@ -1,0 +1,84 @@
+TP12 - Sécurisation de la partie Web avec Spring Security
+
+Objectif
+
+Mettre en place les règles de sécurité de la partie Web de l'application.
+
+Importer le projet 13_fil_rouge_security_front.zip dans le dossier ressources sur votre IDE et compléter la classe com.formation.config;.SecurityConfig
+
+
+Une partie de la configuration Spring Security est déjà fournie (CORS, CSRF, formulaire de connexion, logout et utilisateurs).
+
+Le travail demandé porte principalement sur la configuration des règles d'accès dans authorizeHttpRequests.
+
+Utilisateurs disponibles
+
+Deux utilisateurs sont configurés dans l'application :
+
+* user / user : rôle USER
+* admin / admin : rôles USER et ADMIN
+
+Règles à mettre en place
+
+Les ressources suivantes doivent rester accessibles sans authentification :
+
+* les ressources statiques : /css/**, /images/**, /js/**, etc.
+* /login
+* /access-denied
+* /error
+* Swagger / OpenAPI
+* la console H2
+* /actuator/health/**
+* /actuator/info
+
+Les autres endpoints /actuator/** doivent être réservés à l'administrateur.
+
+Endpoints REST
+
+Les endpoints REST suivants doivent rester accessibles sans authentification :
+
+/duplicatas/**
+/duplicatas_dto/**
+/cache/**
+
+Ces endpoints ne sont volontairement pas sécurisés dans ce TP. Leur sécurisation sera traitée plus tard dans la partie consacrée à la sécurité des API REST.
+
+Partie Web
+
+Appliquer les règles suivantes sur /ui/duplicatas :
+
+* consultation de la liste : USER ou ADMIN
+* consultation d'un duplicata : USER ou ADMIN
+* affichage du formulaire de création : ADMIN
+* création d'un duplicata : ADMIN
+* suppression d'un duplicata : ADMIN
+
+La page d'accueil "/" reste publique.
+
+Toutes les autres URL doivent nécessiter une authentification.
+
+Travail à réaliser
+
+Compléter la partie authorizeHttpRequests de la classe SecurityConfig fournie.
+
+Vous pourrez notamment utiliser :
+
+requestMatchers(...)
+permitAll()
+authenticated()
+hasRole(...)
+hasAnyRole(...)
+
+Certaines règles devront également prendre en compte la méthode HTTP (GET, POST...).
+
+Attention à l'ordre des règles : une règle spécifique doit être déclarée avant une règle plus générale pouvant correspondre à la même URL.
+
+Tests
+
+Tester les différents accès :
+
+* sans être authentifié
+* avec user / user
+* avec admin / admin
+
+Vérifier notamment que l'utilisateur USER peut consulter les duplicatas mais ne peut pas en créer ou en supprimer, contrairement à l'utilisateur ADMIN.
