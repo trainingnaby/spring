@@ -1,0 +1,217 @@
+# TP – Ajouter des notifications temps réel avec WebSocket
+
+## Objectif
+
+L'application permet déjà de créer et de consulter des duplicatas.
+
+Vous devez maintenant ajouter une zone de **notifications temps réel**.
+
+Lorsqu'un duplicata est créé, les utilisateurs ayant la page de liste ouverte doivent recevoir immédiatement une notification, **sans recharger la page**.
+
+La partie HTML ainsi que le JavaScript d'affichage sont déjà fournis.
+
+Votre travail porte principalement sur la partie **Spring WebSocket / STOMP**.
+
+---
+
+## Résultat attendu
+
+Ouvrez l'application dans deux navigateurs ou dans deux onglets.
+
+Lorsqu'un duplicata est créé dans le premier navigateur, une notification doit apparaître automatiquement dans la zone :
+
+**Notifications temps réel**
+
+du second navigateur.
+
+Le fonctionnement recherché est :
+
+Navigateur
+→ connexion WebSocket
+→ abonnement à `/topic/duplicatas`
+
+Puis, lors de la création d'un duplicata :
+
+Création du duplicata
+→ `DuplicataService`
+→ publication d'une notification
+→ `/topic/duplicatas`
+→ tous les navigateurs abonnés reçoivent la notification.
+
+---
+
+## 1. Configurer WebSocket
+
+Créer une classe :
+
+`WebSocketConfig`
+
+dans le package de configuration.
+
+Cette classe doit activer la gestion des messages WebSocket avec Spring.
+
+Configurer :
+
+* un endpoint de connexion WebSocket : `/ws-duplicatas`
+* un broker simple pour les destinations commençant par `/topic`
+* un préfixe `/app` pour les messages envoyés par les clients vers l'application
+
+Pour ce TP, utilisez également **SockJS** sur l'endpoint WebSocket.
+
+À la fin de cette étape, le navigateur doit pouvoir établir une connexion avec :
+
+`/ws-duplicatas`
+
+---
+
+## 2. Créer l'objet représentant une notification
+
+Créer une classe :
+
+`DuplicataNotification`
+
+Cette classe représente le message qui sera envoyé aux navigateurs.
+
+Elle pourra par exemple contenir :
+
+* le type de notification ;
+* un message ;
+* l'identifiant du duplicata ;
+* l'identifiant de l'utilisateur ;
+* le montant ;
+* la date de la notification.
+
+Pour une création, le type pourra être :
+
+`CREATION`
+
+Ajoutez une méthode permettant de construire facilement une notification à partir d'un `Duplicata`.
+
+Exemple d'idée :
+
+`DuplicataNotification.creation(duplicata)`
+
+---
+
+## 3. Créer le composant chargé de publier les notifications
+
+Créer une classe :
+
+`DuplicataWebSocketNotifier`
+
+Son rôle est uniquement de **publier les notifications WebSocket**.
+
+Injectez dans cette classe :
+
+`SimpMessagingTemplate`
+
+Ce composant Spring permet d'envoyer un message vers une destination STOMP.
+
+La destination utilisée dans ce TP sera :
+
+`/topic/duplicatas`
+
+Créer une méthode :
+
+`notifierCreation(Duplicata duplicata)`
+
+Cette méthode doit construire une `DuplicataNotification` puis la publier avec :
+
+`convertAndSend(...)`
+
+Question à se poser :
+
+> Quelle est la différence entre créer une notification et la publier dans le broker ?
+
+---
+
+## 4. Déclencher la notification depuis le service métier
+
+Modifiez `DuplicataService`.
+
+Injectez le composant :
+
+`DuplicataWebSocketNotifier`
+
+Lorsqu'un nouveau duplicata a été correctement enregistré en base de données, demandez au notifier de publier l'événement.
+
+L'ordre attendu est :
+
+`duplicataRepository.save(...)`
+
+puis :
+
+`webSocketNotifier.notifierCreation(...)`
+
+Attention : envoyez la notification **après la création du duplicata**, afin de disposer du duplicata effectivement enregistré.
+
+Le service métier ne doit pas connaître le JavaScript, le HTML ou le fonctionnement du navigateur.
+
+Il sait uniquement qu'après une création, il doit demander au composant WebSocket de publier une notification.
+
+---
+
+## 5. Tester
+
+Démarrez l'application.
+
+Ouvrez la liste des duplicatas dans deux onglets ou deux navigateurs.
+
+Vérifiez que la zone :
+
+`Notifications temps réel`
+
+indique que la connexion est établie.
+
+Créez ensuite un duplicata.
+
+La notification doit apparaître automatiquement dans les navigateurs abonnés, sans actualisation de la page.
+
+Testez ensuite avec plusieurs fenêtres ouvertes.
+
+Toutes les fenêtres abonnées à :
+
+`/topic/duplicatas`
+
+doivent recevoir le message.
+
+---
+
+## Pour aller plus loin
+
+Si la notification de création fonctionne, ajoutez la notification lors de la **suppression** d'un duplicata.
+
+Ajoutez par exemple :
+
+`DuplicataNotification.suppression(duplicata)`
+
+et dans le notifier :
+
+`notifierSuppression(duplicata)`
+
+Publiez la notification après la suppression.
+
+---
+
+## À retenir
+
+À la fin du TP, vous devez être capable d'expliquer le rôle de chacun des éléments suivants :
+
+**`WebSocketConfig`**
+Configure la connexion WebSocket, le broker et les préfixes STOMP.
+
+**`DuplicataNotification`**
+Représente les données envoyées au navigateur.
+
+**`DuplicataWebSocketNotifier`**
+Publie les notifications avec `SimpMessagingTemplate`.
+
+**`DuplicataService`**
+Déclenche la notification lorsqu'un événement métier se produit.
+
+**`/topic/duplicatas`**
+Destination à laquelle les navigateurs s'abonnent pour recevoir les notifications.
+
+Le flux complet est donc :
+
+**Création du duplicata → Service → Notifier → Broker `/topic/duplicatas` → Navigateurs abonnés**
