@@ -4,6 +4,8 @@ Objectif
 
 Sécuriser maintenant les endpoints REST qui avaient été laissés publics dans la première partie du TP.
 
+Partir du projet ressources/14_fil_rouge_security_rest.zip
+
 La partie Web MVC doit continuer à fonctionner comme précédemment avec le formulaire de connexion et la session HTTP.
 
 Pour les API REST, on utilisera une authentification HTTP Basic.
