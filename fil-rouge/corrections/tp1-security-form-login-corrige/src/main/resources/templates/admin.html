@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administration</title>
+</head>
+<body>
+    <h1>Administration</h1>
+    <p>Bienvenue <strong th:text="${utilisateur}">admin</strong>.</p>
+    <p>Cette page est réservée au rôle ADMIN.</p>
+
+    <p>
+        <a th:href="@{/}">Accueil</a> |
+        <a th:href="@{/espace-client}">Espace utilisateur</a>
+    </p>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Se déconnecter</button>
+    </form>
+</body>
+</html>

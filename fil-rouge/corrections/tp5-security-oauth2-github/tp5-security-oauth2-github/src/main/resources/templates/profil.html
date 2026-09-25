@@ -1,0 +1,10 @@
+<!DOCTYPE html><html lang="fr" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>Profil GitHub</title></head><body>
+<h1>Utilisateur authentifié</h1>
+<img th:if="${avatarUrl != null}" th:src="${avatarUrl}" width="90" alt="avatar">
+<p>Login : <strong th:text="${login}">login</strong></p>
+<p>Nom : <strong th:text="${name}">nom</strong></p>
+<p><a th:if="${githubUrl != null}" th:href="${githubUrl}">Profil GitHub</a></p>
+<p><a href="/api/me">Voir les attributs OAuth2 reçus</a></p>
+<h2>Attributs</h2><pre th:text="${attributes}"></pre>
+<form th:action="@{/logout}" method="post"><button type="submit">Déconnexion de l'application</button></form>
+</body></html>

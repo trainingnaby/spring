@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Espace client</title>
+</head>
+<body>
+    <h1>Espace client</h1>
+    <p>Connecté en tant que <strong th:text="${utilisateur}">utilisateur</strong>.</p>
+
+    <p>
+        <a th:href="@{/}">Accueil</a> |
+        <a th:href="@{/admin}">Administration</a>
+    </p>
+
+    <!-- th:action permet à l'intégration Thymeleaf/Spring Security
+         d'ajouter automatiquement le jeton CSRF au formulaire POST. -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Se déconnecter</button>
+    </form>
+</body>
+</html>

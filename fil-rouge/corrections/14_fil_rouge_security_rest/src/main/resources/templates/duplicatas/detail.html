@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Détail du duplicata</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+<body>
+<main class="container narrow">
+    <header class="page-header">
+        <div>
+            <p class="surtitle">Spring MVC + Thymeleaf</p>
+            <h1>Détail du duplicata</h1>
+            <p>Cette page illustre le binding d'une variable de chemin avec <code>@PathVariable</code>.</p>
+        </div>
+    </header>
+
+    <section class="card detail-card">
+        <dl>
+            <div class="detail-row">
+                <dt>Identifiant</dt>
+                <dd th:text="${duplicata.id}">dup-123</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Utilisateur</dt>
+                <dd th:text="${duplicata.userId}">FR_12345</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Montant</dt>
+                <dd th:text="${duplicata.montant + ' €'}">2500 €</dd>
+            </div>
+            <div class="detail-row">
+                <dt>Document PDF</dt>
+                <dd><a th:href="${duplicata.pdfUrl}" th:text="${duplicata.pdfUrl}">PDF</a></dd>
+            </div>
+        </dl>
+
+        <div class="actions">
+            <a class="button secondary" th:href="@{/ui/duplicatas}">Retour à la liste</a>
+            <form th:action="@{/ui/duplicatas/{id}/delete(id=${duplicata.id})}" method="post" class="inline-form"
+                  sec:authorize="hasRole('ADMIN')"
+                  onsubmit="return confirm('Confirmer la suppression de ce duplicata ?');">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button class="button danger" type="submit">Supprimer</button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

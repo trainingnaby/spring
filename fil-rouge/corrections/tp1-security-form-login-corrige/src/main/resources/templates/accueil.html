@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Portail commandes</h1>
+    <p>Cette page est publique.</p>
+    <p th:if="${param.logout}">Vous êtes maintenant déconnecté.</p>
+    <p>
+        <a th:href="@{/espace-client}">Espace utilisateur</a> |
+        <a th:href="@{/admin}">Administration</a>
+    </p>
+</body>
+</html>
