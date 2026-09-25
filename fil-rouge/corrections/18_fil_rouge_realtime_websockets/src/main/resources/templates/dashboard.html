@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard temps réel des duplicatas</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+<body>
+<main class="container">
+    <header class="page-header">
+        <div>
+            <p class="surtitle">Application temps réel</p>
+            <h1>Centre de supervision des duplicatas</h1>
+            <p>Suivi en direct des connexions, événements métier, messages ciblés et statistiques WebSocket.</p>
+        </div>
+        <div class="actions">
+            <a class="button secondary" th:href="@{/ui/duplicatas}">Retour aux duplicatas</a>
+            <form th:action="@{/logout}" method="post" class="inline-form">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button class="button secondary" type="submit">Déconnexion</button>
+            </form>
+        </div>
+    </header>
+
+    <section class="card websocket-panel">
+        <div class="websocket-header">
+            <div>
+                <h2>État de la connexion WebSocket</h2>
+                <p>Endpoint STOMP : <code>/ws-duplicatas</code>. Topics : <code>/topic/duplicatas</code>, <code>/topic/system</code>, <code>/topic/statistiques</code>.</p>
+            </div>
+            <span id="realtime-status" class="badge">Connexion en cours...</span>
+        </div>
+        <button id="ping-button" class="button small secondary" type="button">Envoyer un ping</button>
+    </section>
+
+    <section class="stats-grid">
+        <article class="card stat-card">
+            <span class="stat-label">Utilisateurs connectés</span>
+            <strong id="connected-users">0</strong>
+        </article>
+        <article class="card stat-card">
+            <span class="stat-label">Connexions cumulées</span>
+            <strong id="total-connections">0</strong>
+        </article>
+        <article class="card stat-card">
+            <span class="stat-label">Déconnexions cumulées</span>
+            <strong id="total-disconnections">0</strong>
+        </article>
+        <article class="card stat-card">
+            <span class="stat-label">Messages envoyés</span>
+            <strong id="messages-sent">0</strong>
+        </article>
+    </section>
+
+    <section class="dashboard-grid">
+        <article class="card">
+            <h2>Flux métier des duplicatas</h2>
+            <p>Broadcast serveur vers tous les abonnés de <code>/topic/duplicatas</code>.</p>
+            <ul id="duplicata-events" class="ws-list">
+                <li class="empty">Aucun événement métier reçu.</li>
+            </ul>
+        </article>
+
+        <article class="card">
+            <h2>Événements système</h2>
+            <p>Connexions, déconnexions, ping et événements techniques.</p>
+            <ul id="system-events" class="ws-list">
+                <li class="empty">Aucun événement système reçu.</li>
+            </ul>
+        </article>
+
+        <article class="card">
+            <h2>Notifications personnelles</h2>
+            <p>Messages ciblés envoyés vers <code>/user/queue/notifications</code>.</p>
+            <ul id="private-notifications" class="ws-list">
+                <li class="empty">Aucune notification personnelle reçue.</li>
+            </ul>
+        </article>
+
+        <article class="card">
+            <h2>Sessions actives</h2>
+            <p>Lecture REST de <code>/api/ws-monitoring/sessions</code>.</p>
+            <button id="refresh-sessions" class="button small secondary" type="button">Rafraîchir</button>
+            <ul id="sessions-list" class="ws-list">
+                <li class="empty">Aucune session connue.</li>
+            </ul>
+        </article>
+    </section>
+
+    <section class="links">
+        <p>Connecté en tant que <strong sec:authentication="name">utilisateur</strong> — rôles : <span sec:authentication="principal.authorities">ROLE_USER</span></p>
+        <a th:href="@{/actuator/health/websocket}">Health WebSocket</a>
+        <a th:href="@{/api/ws-monitoring/stats}">Stats REST WebSocket</a>
+    </section>
+</main>
+<script th:src="@{/webjars/sockjs-client/1.5.1/sockjs.min.js}"></script>
+<script th:src="@{/webjars/stomp-websocket/2.3.4/stomp.min.js}"></script>
+<script th:src="@{/js/realtime-dashboard.js}"></script>
+</body>
+</html>
