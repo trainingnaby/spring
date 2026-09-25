@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Générer un duplicata</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+<body>
+<main class="container narrow">
+    <header class="page-header">
+        <div>
+            <p class="surtitle">Spring MVC + formulaire HTML</p>
+            <h1>Générer un duplicata d'impôts</h1>
+            <p>Le formulaire réutilise le DTO validé avec Jakarta Bean Validation.</p>
+        </div>
+    </header>
+
+    <section class="card">
+        <form th:action="@{/ui/duplicatas}" th:object="${duplicataDto}" method="post" novalidate>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert error">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Erreur globale</p>
+            </div>
+
+            <div class="field">
+                <label for="userId">Identifiant fiscal</label>
+                <input id="userId" type="text" th:field="*{userId}" placeholder="Exemple : 123456789" />
+                <p class="hint">L'aspect AOP ajoute automatiquement le préfixe FR_ si nécessaire.</p>
+                <p class="error" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">Erreur userId</p>
+            </div>
+
+            <div class="field">
+                <label for="montant">Montant</label>
+                <input id="montant" type="number" th:field="*{montant}" min="1000" max="7000" />
+                <p class="hint">Le montant doit être compris entre 1000 et 7000.</p>
+                <p class="error" th:if="${#fields.hasErrors('montant')}" th:errors="*{montant}">Erreur montant</p>
+            </div>
+
+            <div class="actions">
+                <button class="button" type="submit">Générer</button>
+                <a class="button secondary" th:href="@{/ui/duplicatas}">Annuler</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

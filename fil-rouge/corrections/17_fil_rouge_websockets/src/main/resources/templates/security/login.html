@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+<body>
+<main class="container narrow">
+    <header class="page-header">
+        <div>
+            <p class="surtitle">Spring Security</p>
+            <h1>Connexion au front duplicatas</h1>
+            <p>TP sécurité MVC : authentification par formulaire et autorisations par rôle.</p>
+        </div>
+    </header>
+
+    <section class="card">
+        <div th:if="${param.error}" class="alert error">Identifiant ou mot de passe incorrect.</div>
+        <div th:if="${param.logout}" class="alert success">Vous êtes déconnecté.</div>
+
+        <form th:action="@{/login}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <div class="field">
+                <label for="username">Utilisateur</label>
+                <input id="username" name="username" type="text" autocomplete="username" autofocus>
+                <p class="hint">Compte lecture : <code>user/user</code> — compte administrateur : <code>admin/admin</code>.</p>
+            </div>
+
+            <div class="field">
+                <label for="password">Mot de passe</label>
+                <input id="password" name="password" type="password" autocomplete="current-password">
+            </div>
+
+            <div class="actions">
+                <button class="button" type="submit">Se connecter</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <h2>Connexion OAuth2</h2>
+        <p>Cette partie illustre la délégation de l'authentification à GitHub.</p>
+        <div class="actions">
+            <a class="button secondary" th:href="@{/oauth2/authorization/github}">Se connecter avec GitHub</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>
